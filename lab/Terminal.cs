@@ -8,7 +8,7 @@ public class  Terminal{
 
     public Terminal(string sym, string rex){
         this.sym = sym;
-        this.rex = new Regex("\\G (" + rex + ")" );
+        this.rex = new Regex(@"\G(" + rex + ")", RegexOptions.Compiled);
     }
 
 } // end of class terminal

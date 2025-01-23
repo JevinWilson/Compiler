@@ -8,7 +8,7 @@
 
             string inp = File.ReadAllText(args[0]);
             var tokens = new List<Token>();
-            var T = new Tokenizer();
+            var T = new Tokenizer(inp);
             T.setInput(inp);
             while (true){
                 var token = T.next();

@@ -12,3 +12,4 @@ C:\Users\jaw06\Desktop\Compiler\lab\obj\Debug\net8.0\refint\lab.dll
 C:\Users\jaw06\Desktop\Compiler\lab\obj\Debug\net8.0\lab.pdb
 C:\Users\jaw06\Desktop\Compiler\lab\obj\Debug\net8.0\lab.genruntimeconfig.cache
 C:\Users\jaw06\Desktop\Compiler\lab\obj\Debug\net8.0\ref\lab.dll
+C:\Users\jaw06\Desktop\Compiler\lab\obj\Debug\net8.0\lab.sourcelink.json

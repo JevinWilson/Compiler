@@ -1,67 +1,72 @@
 using System.Text.RegularExpressions;
 
 namespace lab {
-public class Token {
-    public string sym; //maybe use later
-    public string lexeme; 
-    public int line; 
-    public Token(string sym, string lexeme, int line) {
-        this.sym = sym;
-        this.lexeme = lexeme;
-        this.line = line;
-    }
+    public class Token {
+        public string sym; //maybe use later
+        public string lexeme; 
+        public int line; 
+        public Token(string sym, string lexeme, int line) {
+            this.sym = sym;
+            this.lexeme = lexeme;
+            this.line = line;
+        }
         public override string ToString(){
             // output
-            return $"{{ \"lexeme\": \"{this.lexeme}\", \"line\": {this.line} }}";
+            return $"{{ \"sym\": \"{this.sym}\" , \"line\" : {this.line}, \"lexeme\" : \"{this.lexeme}\"  }}";
         }
-}
+    } // end of class Token
+
     public class Tokenizer {
         string input; // stuff to tokenize
         int line; // current line number
         int index; // where we are in the input
 
-        public Tokenizer() {
-            
+        public Tokenizer(string inp) {
+            this.input = inp;
+            this.line = 1;
+            this.index = 0;
         }
+
         public void setInput(string inp) {
             this.input = inp;
             this.line = 1;
+            this.index = 0;
         }
+
         public Token next(){
-            String sym;
-            String lexeme;
-            foreach( var t in Grammar.terminals) {
+            // Skip whitespace
+            while (index < input.Length && char.IsWhiteSpace(input[index])) {
+                if (input[index] == '\n') {
+                    line++;
+                }
+                index++;
+            }
+
+            if (index >= input.Length) {
+                return null;
+            }
+
+            String sym = null;
+            String lexeme = null;
+            foreach (var t in Grammar.terminals) {
                 Match M = t.rex.Match(this.input, this.index);
                 if (M.Success) {
                     sym = t.sym;
                     lexeme = M.Groups[0].Value;
+                    index += lexeme.Length;
                     break;
                 }
             }
 
-
-            while(this.index < this.input.Length && Char.IsWhiteSpace(this.input[this.index])){
-                if (this.input[this.index] == '\n'){
-                    this.line++;
-                }
-                this.index++;
-            }
-
-            string tmp="";
-            while (this.index < this.input.Length && !Char.IsWhiteSpace(this.input[this.index])){
-                tmp += this.input[this.index];
-                this.index++;
-            }
-            if (tmp.Length == 0){
-                return null; // at end of line
-            }
-
             if (sym == null) {
-                Console.WriteLine("Error at line: " + this.line);
+                // Print error message
+                Console.Error.WriteLine($"Error: Unexpected character at line {line}, index {index}");
                 Environment.Exit(1);
             }
-            return new Token(tmp, this.line);
 
+            return new Token(sym, lexeme, line);
         }
-    }
-}
+        
+    } // end of class Tokenizer
+
+} // end of namespace
