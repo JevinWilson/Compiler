@@ -5,6 +5,7 @@
 
             // initialize our grammar
             Terminals.makeAllOfTheTerminals();
+            Grammar.addTerminals(new Terminal[] {new("WHITESPACE", @"\s+" )});
 
             string inp = File.ReadAllText(args[0]);
             var tokens = new List<Token>();
