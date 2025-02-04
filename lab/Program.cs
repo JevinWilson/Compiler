@@ -35,9 +35,16 @@ namespace lab {
                 error = errorCode
             };
 
-            string jsonOutput = JsonSerializer.Serialize(output, new JsonSerializerOptions { WriteIndented = true });
+            string jsonOutput = JsonSerializer.Serialize(output, new JsonSerializerOptions { 
+                WriteIndented = true, 
+                // print '+', '-', etc
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping 
+            });
             Console.WriteLine(jsonOutput);
+
         }
     } // end of class
 
 } // end of namespace
+
+// to run: dotnet run -- "C:\Users\jaw06\Desktop\Compiler\lab\tests\testcases\(fileneme).txt"

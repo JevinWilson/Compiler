@@ -13,7 +13,7 @@ namespace lab {
         public override string ToString(){
             var lex = lexeme.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\n", "\\n");
             // output
-            return $"{{ \"sym\": \"{this.sym}\" , \"line\" : {this.line}, \"lexeme\" : \"{lex}\"  }}";
+            return $"{{ \"sym\": \"{this.sym}\" , \"line\" : {this.line}, \"lexeme\" : \"{lex}\" }}";
         }
     } // end of class Token
 
@@ -47,14 +47,10 @@ namespace lab {
 
                 // Skip whitespace characters
                 if (char.IsWhiteSpace(currentChar)) {
+                    index++;
                     if (currentChar == '\n') {
                         line++;
-                        if (lastToken != null && implicitSemiAfter.Contains(lastToken.sym) && nesting.Count == 0) {
-                            lastToken = new Token("SEMI", "", line -1);
-                            return lastToken;
-                        }
                     }
-                    index++;
                     continue;
                 }
 
