@@ -2,9 +2,9 @@ using System.Text.RegularExpressions;
 
 namespace lab {
     public class Token {
-        public string sym; //maybe use later
-        public string lexeme; 
-        public int line; 
+        public string sym { get; set; } //maybe use later
+        public string lexeme { get; set; } 
+        public int line { get; set; } 
         public Token(string sym, string lexeme, int line) {
             this.sym = sym;
             this.lexeme = lexeme;
@@ -23,6 +23,8 @@ namespace lab {
         int index; // where we are in the input
 
         Stack<Token> nesting = new();
+        Token lastToken = null; // Added to track the last non-whitespace token
+
         public Tokenizer(string inp) {
             this.input = inp;
             this.line = 1;
@@ -30,7 +32,7 @@ namespace lab {
         }
 
         // we can insert an implicit semicolon after these things
-        List<string> implicitSemiAfter = new(){"NUM", "RPAREN"};
+        List<string> implicitSemiAfter = new(){ "NUM", "RPAREN", "ID" };
 
         public void setInput(string inp) {
             this.input = inp;
@@ -40,69 +42,59 @@ namespace lab {
 
         public Token next(){
             // Skip whitespace
-            while (index < input.Length && char.IsWhiteSpace(input[index])) {
-                if (input[index] == '\n') {
-                    line++;
+            while (index < input.Length) {
+                char currentChar = input[index];
+
+                // Skip whitespace characters
+                if (char.IsWhiteSpace(currentChar)) {
+                    if (currentChar == '\n') {
+                        line++;
+                        if (lastToken != null && implicitSemiAfter.Contains(lastToken.sym) && nesting.Count == 0) {
+                            lastToken = new Token("SEMI", "", line -1);
+                            return lastToken;
+                        }
+                    }
+                    index++;
+                    continue;
                 }
-                index++;
-            }
 
-            if (index >= input.Length) {
-                return null;
-            }
+                Token bestMatch = null;
 
-            String sym = null;
-            String lexeme = null;
-            foreach (var t in Grammar.terminals) {
-                Match M = t.rex.Match(this.input, this.index);
-                if (verbose) {
-                    Console.WriteLine("Trying terminal "+t.sym+ "   Matched? " +M.Success);
+                // maximal munch
+                foreach (var t in Grammar.terminals) {
+                    Match M = t.rex.Match(this.input, this.index);
+                    if (M.Success && (bestMatch == null || M.Length > bestMatch.lexeme.Length)) {
+                        bestMatch = new Token(t.sym, M.Groups[0].Value, this.line);
+                    }
                 }
-                if (M.Success) {
-                    // FIXME: need maximal munch
-                    sym = t.sym;
-                    lexeme = M.Groups[0].Value;
-                    index += lexeme.Length;
-                    break;
+
+                if (bestMatch == null) {
+                    Console.Error.WriteLine($"Error: Unexpected character at line {line}, index {index}");
+                    Environment.Exit(1);
                 }
+
+                index += bestMatch.lexeme.Length;
+
+                if (bestMatch.sym == "COMMENT") {
+                    continue;
+                }
+
+                // handle paranthesis and brackets
+                if (bestMatch.sym == "LPAREN" || bestMatch.sym == "LBRACE" ) {
+                    nesting.Push(bestMatch);
+                }
+                else if (bestMatch.sym == "RPAREN" || bestMatch.sym == "RBRACE" ) {
+                    if (nesting.Count > 0) {
+                        nesting.Pop();
+                    }
+                }
+                
+                lastToken = bestMatch;
+                return bestMatch;
             }
 
-            if (sym =="WHITESPACE" && lexeme.Contains('\n') && nesting.Count == 0) {
-                // implicit semicolon
-                // the previous token
-                // is in my list, return semi
-                // don't forget to update last token returned
-                // return new Token("SEMI", "", this.line);
+            return null;
 
-            if (sym == null) {
-                // Print error message
-                Console.Error.WriteLine($"Error: Unexpected character at line {line}, index {index}");
-                Environment.Exit(1);
-            }
-            this.index += lexeme.Length;
-
-            //return new Token(sym, lexeme, line);
-
-            var tok = new Token(sym, lexeme, line);
-            if (verbose) {
-                Console.WriteLine("RETURNING TOKEN "+tok);
-            }
-
-            // FIXME: adjust line number
-            if (sym == "WHITESPACE" ){
-                return this.next();
-            }
-
-            // do maintenance on the nesting stack
-            // if LPAREN or LBRACE: pust to stack
-            // if RPAREN or RBRACE: pop from stack (first do checks)
-
-            // update my 'last token' data: either store the token
-            // itself or just store its sym or just store a bool
-            // that says if it's in the eligible for implicit semi
-            return tok;
-
-            
         } // end next()
         
     } // end of class Tokenizer
