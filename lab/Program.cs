@@ -35,11 +35,16 @@ namespace lab {
                 error = errorCode
             };
 
-            string jsonOutput = JsonSerializer.Serialize(output, new JsonSerializerOptions { 
-                WriteIndented = true, 
+            // used chat for all the Json stuff
+            // Prompt: How do I format this (output from last assignment) to match this (output from result-tx.txt)?
+            var options = new JsonSerializerOptions {
+                WriteIndented = true,
                 // print '+', '-', etc
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping 
-            });
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                Converters = { new TokenConverter() }
+            };
+
+            string jsonOutput = JsonSerializer.Serialize(output, options);
             Console.WriteLine(jsonOutput);
 
         }

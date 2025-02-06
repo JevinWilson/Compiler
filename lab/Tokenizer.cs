@@ -85,6 +85,10 @@ namespace lab {
 
                 // ignore comments
                 if (bestMatch.sym == "COMMENT") {
+                    // ignore multi line comments
+                    int newLineCount = bestMatch.lexeme.Count(c => c == '\n');
+                    line += newLineCount;
+                    
                     continue;
                 }
 
@@ -100,8 +104,21 @@ namespace lab {
 
                 // check for implicit semicolon
                 if ( implicitSemiAfter.Contains(bestMatch.sym) && nesting.Count == 0 ) {
-                    lastToken = bestMatch;
-                    return bestMatch;
+                    int nextIndex = index;
+                    while (nextIndex < input.Length && char.IsWhiteSpace(input[nextIndex])) {
+                        if (input[nextIndex] == '\n') {
+                            // insert semi
+                            lastToken = bestMatch;
+                            return bestMatch;
+                        }
+                        nextIndex++;
+                    }
+
+                    if (nextIndex >= input.Length) {
+                        // insert semi
+                        lastToken = bestMatch;
+                        return bestMatch;
+                    }
                 }
                 
                 lastToken = bestMatch;
