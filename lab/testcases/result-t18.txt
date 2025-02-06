@@ -1,0 +1,11 @@
+{
+  "returncode": 0,
+  "tokens": [
+    {
+      "sym": "LBRACE",
+      "line": 1,
+      "lexeme": "{"
+    }
+  ],
+  "error": -1
+}

@@ -1,0 +1,56 @@
+{
+  "returncode": 0,
+  "tokens": [
+    {
+      "sym": "NUM",
+      "line": 1,
+      "lexeme": "1"
+    },
+    {
+      "sym": "ADDOP",
+      "line": 1,
+      "lexeme": "+"
+    },
+    {
+      "sym": "LPAREN",
+      "line": 1,
+      "lexeme": "("
+    },
+    {
+      "sym": "LBRACKET",
+      "line": 1,
+      "lexeme": "["
+    },
+    {
+      "sym": "NUM",
+      "line": 1,
+      "lexeme": "2"
+    },
+    {
+      "sym": "MULOP",
+      "line": 1,
+      "lexeme": "*"
+    },
+    {
+      "sym": "NUM",
+      "line": 1,
+      "lexeme": "3"
+    },
+    {
+      "sym": "RBRACKET",
+      "line": 1,
+      "lexeme": "]"
+    },
+    {
+      "sym": "RPAREN",
+      "line": 2,
+      "lexeme": ")"
+    },
+    {
+      "sym": "SEMI",
+      "line": 2,
+      "lexeme": ""
+    }
+  ],
+  "error": -1
+}

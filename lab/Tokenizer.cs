@@ -13,7 +13,7 @@ namespace lab {
         public override string ToString(){
             var lex = lexeme.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\n", "\\n");
             // output
-            return $"{{ \"sym\": \"{this.sym}\" , \"line\" : {this.line}, \"lexeme\" : \"{lex}\" }}";
+            return $"{{ \"sym\": \"{this.sym}\" ,\"line\" : {this.line}, \"lexeme\" : \"{lex}\" }}";
         }
     } // end of class Token
 
@@ -47,11 +47,23 @@ namespace lab {
 
                 // Skip whitespace characters
                 if (char.IsWhiteSpace(currentChar)) {
-                    index++;
+                    
                     if (currentChar == '\n') {
+                        if ( lastToken != null && implicitSemiAfter.Contains(lastToken.sym) && nesting.Count == 0) {
+                            Token semiToken = new Token("SEMI", "", line);
+                            lastToken = semiToken;
+                            index++;
+                            line++;                            
+                            return semiToken;
+                        }
+
                         line++;
+
                     }
+
+                    index++;
                     continue;
+
                 }
 
                 Token bestMatch = null;
@@ -71,6 +83,7 @@ namespace lab {
 
                 index += bestMatch.lexeme.Length;
 
+                // ignore comments
                 if (bestMatch.sym == "COMMENT") {
                     continue;
                 }
@@ -84,9 +97,21 @@ namespace lab {
                         nesting.Pop();
                     }
                 }
+
+                // check for implicit semicolon
+                if ( implicitSemiAfter.Contains(bestMatch.sym) && nesting.Count == 0 ) {
+                    lastToken = bestMatch;
+                    return bestMatch;
+                }
                 
                 lastToken = bestMatch;
                 return bestMatch;
+            }
+
+            // insert implicit semicolon at end if needed
+            if (lastToken != null && implicitSemiAfter.Contains(lastToken.sym) && nesting.Count == 0 ) {
+                lastToken = new Token("SEMI", "", line);
+                return lastToken;
             }
 
             return null;

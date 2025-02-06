@@ -1,0 +1,56 @@
+{
+  "returncode": 0,
+  "tokens": [
+    {
+      "sym": "ID",
+      "line": 1,
+      "lexeme": "foo"
+    },
+    {
+      "sym": "EQ",
+      "line": 1,
+      "lexeme": "="
+    },
+    {
+      "sym": "NUM",
+      "line": 1,
+      "lexeme": "12"
+    },
+    {
+      "sym": "ADDOP",
+      "line": 3,
+      "lexeme": "+"
+    },
+    {
+      "sym": "NUM",
+      "line": 3,
+      "lexeme": "8"
+    },
+    {
+      "sym": "SEMI",
+      "line": 3,
+      "lexeme": ""
+    },
+    {
+      "sym": "ID",
+      "line": 4,
+      "lexeme": "bar"
+    },
+    {
+      "sym": "EQ",
+      "line": 4,
+      "lexeme": "="
+    },
+    {
+      "sym": "NUM",
+      "line": 4,
+      "lexeme": "14"
+    },
+    {
+      "sym": "SEMI",
+      "line": 4,
+      "lexeme": ""
+    }
+  ],
+  "error": -1
+}

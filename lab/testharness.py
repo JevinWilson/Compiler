@@ -6,7 +6,7 @@ import json
 import sys
 
 
-EXEC=sys.argv[1]
+EXEC = r"lab/bin/Debug/net8.0/lab.exe"
 
 passed=0
 

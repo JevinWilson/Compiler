@@ -1,0 +1,51 @@
+{
+  "returncode": 0,
+  "tokens": [
+    {
+      "sym": "ID",
+      "line": 1,
+      "lexeme": "a"
+    },
+    {
+      "sym": "LBRACKET",
+      "line": 1,
+      "lexeme": "["
+    },
+    {
+      "sym": "NUM",
+      "line": 2,
+      "lexeme": "1"
+    },
+    {
+      "sym": "ADDOP",
+      "line": 3,
+      "lexeme": "+"
+    },
+    {
+      "sym": "NUM",
+      "line": 4,
+      "lexeme": "2"
+    },
+    {
+      "sym": "RBRACKET",
+      "line": 5,
+      "lexeme": "]"
+    },
+    {
+      "sym": "EQ",
+      "line": 5,
+      "lexeme": "="
+    },
+    {
+      "sym": "NUM",
+      "line": 5,
+      "lexeme": "4"
+    },
+    {
+      "sym": "SEMI",
+      "line": 5,
+      "lexeme": ""
+    }
+  ],
+  "error": -1
+}

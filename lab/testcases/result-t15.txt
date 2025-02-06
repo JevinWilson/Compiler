@@ -1,0 +1,141 @@
+{
+  "returncode": 0,
+  "tokens": [
+    {
+      "sym": "ID",
+      "line": 1,
+      "lexeme": "foo"
+    },
+    {
+      "sym": "SEMI",
+      "line": 1,
+      "lexeme": ""
+    },
+    {
+      "sym": "LBRACE",
+      "line": 2,
+      "lexeme": "{"
+    },
+    {
+      "sym": "ADDOP",
+      "line": 3,
+      "lexeme": "+"
+    },
+    {
+      "sym": "SEMI",
+      "line": 4,
+      "lexeme": ";"
+    },
+    {
+      "sym": "MULOP",
+      "line": 5,
+      "lexeme": "*"
+    },
+    {
+      "sym": "FUNC",
+      "line": 8,
+      "lexeme": "func"
+    },
+    {
+      "sym": "NUM",
+      "line": 9,
+      "lexeme": "12"
+    },
+    {
+      "sym": "SEMI",
+      "line": 9,
+      "lexeme": ""
+    },
+    {
+      "sym": "FNUM",
+      "line": 12,
+      "lexeme": "3.4"
+    },
+    {
+      "sym": "SEMI",
+      "line": 12,
+      "lexeme": ""
+    },
+    {
+      "sym": "TYPE",
+      "line": 15,
+      "lexeme": "int"
+    },
+    {
+      "sym": "SEMI",
+      "line": 15,
+      "lexeme": ""
+    },
+    {
+      "sym": "BOOLCONST",
+      "line": 16,
+      "lexeme": "true"
+    },
+    {
+      "sym": "SEMI",
+      "line": 16,
+      "lexeme": ""
+    },
+    {
+      "sym": "BOOLCONST",
+      "line": 17,
+      "lexeme": "false"
+    },
+    {
+      "sym": "SEMI",
+      "line": 17,
+      "lexeme": ""
+    },
+    {
+      "sym": "STRINGCONST",
+      "line": 18,
+      "lexeme": "\"foo\""
+    },
+    {
+      "sym": "SEMI",
+      "line": 18,
+      "lexeme": ""
+    },
+    {
+      "sym": "BREAK",
+      "line": 19,
+      "lexeme": "break"
+    },
+    {
+      "sym": "SEMI",
+      "line": 19,
+      "lexeme": ""
+    },
+    {
+      "sym": "CONTINUE",
+      "line": 20,
+      "lexeme": "continue"
+    },
+    {
+      "sym": "SEMI",
+      "line": 20,
+      "lexeme": ""
+    },
+    {
+      "sym": "RETURN",
+      "line": 21,
+      "lexeme": "return"
+    },
+    {
+      "sym": "SEMI",
+      "line": 21,
+      "lexeme": ""
+    },
+    {
+      "sym": "RBRACE",
+      "line": 22,
+      "lexeme": "}"
+    },
+    {
+      "sym": "SEMI",
+      "line": 22,
+      "lexeme": ""
+    }
+  ],
+  "error": -1
+}

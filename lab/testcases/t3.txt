@@ -1,0 +1,4 @@
+foo = 12 /*
+    a comment
+    */ + 8
+bar = 14
