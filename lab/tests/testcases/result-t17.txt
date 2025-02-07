@@ -1,5 +1,0 @@
-{
-  "returncode": 2,
-  "tokens": "Error at line 1: Expected LPAREN to match with RPAREN\n",
-  "error": 1
-}

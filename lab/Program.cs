@@ -20,19 +20,27 @@ namespace lab {
 
             // error code
             int errorCode = -1;
+            string errorMsg = "";
+            int errorLine = -1;
 
-            while (true){
-                var token = T.next();
-                if (token == null){
-                    break;
+            try {
+                while (true) {
+                    var token = T.next();
+                    if (token == null) {
+                        break;
+                    }
+                    tokens.Add(token);
                 }
-                tokens.Add(token);
+            } catch (Exception ex) {
+                errorMsg = ex.Message;
+                errorCode = 2;
+                errorLine = T.line;
             }
             
             var output = new {
-                returncode = tokens.Count > 0 ? 0 : errorCode,
-                tokens = tokens,
-                error = errorCode
+                returncode = errorCode == -1 ? 0 : errorCode,
+                tokens = tokens.Count > 0 ? tokens : new List<Token>(), 
+                error = errorCode == -1 ? -1 : T.line 
             };
 
             // used chat for all the Json stuff
