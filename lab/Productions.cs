@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 
 namespace lab{
 
@@ -6,7 +7,7 @@ public class Productions{
         Grammar.defineProductions( new PSpec[] {
 
             //simple, one production
-            new PSpec( "assign :: ID EQ NUM SEMI"),
+            new( "assign :: ID EQ NUM SEMI"),
 
             //several prod's with common lhs
             new( @"decl :: VAR ID COLON TYPE SEMI

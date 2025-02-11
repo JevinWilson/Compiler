@@ -1,4 +1,3 @@
-
 namespace lab{
 
 public class Terminals{
@@ -50,7 +49,9 @@ public class Terminals{
             new("WHILE",            @"\bwhile\b"),
             new("ID",               @"(?!\d)\w+" )
         });
+        
     } //makeThem
+
 } //class Terminals
 
 } //namespace

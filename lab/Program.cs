@@ -6,8 +6,9 @@ public class CompilersAreGreat{
         //initialize our grammar
         Terminals.makeAllOfTheTerminals();
         Productions.makeThem();
-
-        Grammar.check();
+        
+        Grammar.dump();
+        return;
 
         // Grammar.computeNullableAndFirst();
         
@@ -15,7 +16,7 @@ public class CompilersAreGreat{
 
         // return;
         
-        string inp = File.ReadAllText(args[0]);
+        /*string inp = File.ReadAllText(args[0]);
         var tokens = new List<Token>();
         var T = new Tokenizer(inp);
         while(true){
@@ -31,8 +32,10 @@ public class CompilersAreGreat{
                 Console.Write(",");
             Console.WriteLine();
         }
-        Console.WriteLine("]");
+        Console.WriteLine("]");*/
+
     }
+
 } //class
 
 } //namespace

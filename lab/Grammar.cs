@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace lab{
 
 public static class Grammar{
@@ -24,10 +26,39 @@ public static class Grammar{
         return allNonterminals.Contains(sym);
     }
 
-    public static void defineProductions(PSpec[] specs){
-        //parse stuff out of our pspec's and put it somewhere
-        foreach( var psec in specs){
-            //do something...
+    public static void defineProductions(PSpec[] specs) {
+        foreach(var pspec in specs) {
+            // First clean up the spec by replacing newlines with spaces
+            var cleanSpec = pspec.spec
+                .Replace("\n", " ")
+                .Trim();
+
+            // Find the :: in the original string
+            int sepPos = cleanSpec.IndexOf("::");
+            if (sepPos == -1)
+                throw new Exception("Invalid production format (missing ::): " + cleanSpec);
+
+            string lhs = cleanSpec.Substring(0, sepPos).Trim();
+            string rhsPart = cleanSpec.Substring(sepPos + 2).Trim();
+
+            allNonterminals.Add(lhs);
+
+            // Split RHS into alternatives
+            var alternatives = rhsPart
+                .Split('|')
+                .Select(alt => alt.Trim())
+                .Where(alt => !string.IsNullOrWhiteSpace(alt));
+
+            foreach(var alt in alternatives) {
+                // Handle lambda productions
+                if (alt == "lambda" || alt == "λ" || alt == "?") {
+                    productions.Add(new Production(pspec, lhs, Array.Empty<string>()));
+                } else {
+                    // Split the alternative into tokens
+                    var rhs = alt.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                    productions.Add(new Production(pspec, lhs, rhs));
+                }
+            }
         }
     }
 
@@ -44,7 +75,7 @@ public static class Grammar{
 
     public static void dump(){
         //dump grammar stuff to the screen (debugging)
-        foreach( var p in productions ){
+        /*foreach( var p in productions ){
             Console.WriteLine(p);
         }
         Console.Write("NULLABLE: FINISH ME");
@@ -52,6 +83,9 @@ public static class Grammar{
         foreach(var sym in first.Keys){
             Console.Write($"first[{sym}] = ");
             Console.WriteLine("FINISH ME");
+        }*/
+        foreach(var p in productions) {
+            Console.WriteLine(p);
         }
     }
 
@@ -77,8 +111,5 @@ public static class Grammar{
         }
     }
 } //end class Grammar
-
-
-
 
 } //end namespace
