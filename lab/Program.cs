@@ -3,10 +3,12 @@
 public class CompilersAreGreat{
     public static void Main(string[] args){
 
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
         //initialize our grammar
         Terminals.makeAllOfTheTerminals();
         Productions.makeThem();
-        
+
         Grammar.dump();
         return;
 
