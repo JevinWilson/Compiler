@@ -1,7 +1,7 @@
 
 namespace lab{
 
-public static class Terminals{
+public class Terminals{
     public static void makeAllOfTheTerminals(){
         Grammar.addTerminals( new Terminal[] {
             new("ADDOP",            @"[-+]"),
@@ -50,7 +50,7 @@ public static class Terminals{
             new("WHILE",            @"\bwhile\b"),
             new("ID",               @"(?!\d)\w+" )
         });
-    }
-}
+    } //makeThem
+} //class Terminals
 
-}
+} //namespace

@@ -1,172 +1,152 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace lab {
-    // Represents a token with a symbol, lexeme, and line number
-    public class Token {
-        public string sym { get; set; } // Symbol of the token
-        public string lexeme { get; set; } // The actual text of the token
-        public int line { get; set; } // Line number where the token is found
+namespace lab{
 
-        public Token(string sym, string lexeme, int line) {
-            this.sym = sym;
-            this.lexeme = lexeme;
-            this.line = line;
+public class Token{
+    public string sym; 
+    public string lexeme;
+    public int line;
+    public Token( string sym, string lexeme, int line){
+        this.sym = sym;
+        this.lexeme = lexeme;
+        this.line = line;
+    }
+    public override string ToString()
+    {
+        var lex = lexeme.Replace("\\","\\\\").Replace("\"","\\\"").Replace("\n","\\n");
+
+        return $"{{ \"sym\": \"{this.sym}\" , \"line\" : {this.line}, \"lexeme\" : \"{lex}\"  }}";
+    }
+
+}
+
+public class Tokenizer{
+
+    bool verbose=false;
+
+    string input;   //stuff we are tokenizing
+    int line = 1;   //current line number
+    int index = 0;  //where we are at in the input
+    string lastSym = null;  //last symbol returned from next()
+
+    Stack<Token> nesting = new();
+
+    public Tokenizer(string inp){
+        this.input = inp;
+    }
+
+    //we can insert an implicit semicolon after these things
+    List<string> implicitSemiAfter = new(){
+        "BOOLCONST", "BREAK", "CONTINUE", "FNUM", "NUM",
+        "PLUSPLUS", "RBRACE", "RBRACKET", "RETURN",
+        "RPAREN", "STRINGCONST", "TYPE", "ID"
+    };
+
+    private bool needImplicitSemi(){
+        return lastSym != null && nesting.Count == 0 && implicitSemiAfter.Contains(lastSym);
+    }
+
+    private void checkNesting(string sym){
+        if( this.nesting.Count == 0 ){
+            Console.WriteLine($"Error at line {this.line}: When looking for match to {sym}: Did not find any");
+            Environment.Exit(2);
         }
 
-        // Converts the token to a formatted string
-        public override string ToString() {
-            // Properly escape characters for JSON
-            var lex = lexeme.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\n", "\\n");
-            return $"{{ \"sym\": \"{this.sym}\" ,\"line\": {this.line}, \"lexeme\": \"{lex}\" }}";
+        var tok = this.nesting.Pop();
+
+        if( (sym == "RPAREN" && tok.sym != "LPAREN") || (sym == "RBRACKET" && tok.sym != "LBRACKET") ){
+            Console.WriteLine($"Error at line {this.line}: When looking for match to {sym} found {tok.sym} at line {tok.line}");
+            Environment.Exit(2);
         }
-    } // end of class Token
+    }
 
-    public class Tokenizer {
-        string input; // The input string to tokenize
-        public int line { get; private set; } // Current line number
-        int index; // Current index in the input string
-        Stack<Token> nesting = new(); // Stack to track nesting structures
-        Token lastToken = null; // The last non-whitespace token processed
+    public Token next(){
 
-        // Tokens that should allow implicit semicolons after them
-        List<string> implicitSemiAfter = new() { 
-            "NUM", "FNUM", "TYPE", "BOOLCONST", "STRINGCONST",
-            "BREAK", "CONTINUE", "RETURN", "ID", "RPAREN", "RBRACE"
-        };
-
-        public Tokenizer(string inp) {
-            this.input = inp;
-            this.line = 1;
-            this.index = 0;
+        //consume leading whitespace
+        while( this.index < this.input.Length && Char.IsWhiteSpace( this.input[this.index] ) ){
+            if( this.input[this.index++] == '\n' ){
+                this.line++;
+                if( needImplicitSemi() ){
+                    var t = new Token("SEMI","",this.line-1);
+                    lastSym = "SEMI";
+                    return t ;
+                }
+            }
         }
 
-        public void setInput(string inp) {
-            this.input = inp;
-            this.line = 1;
-            this.index = 0;
-        }
-
-        public Token next() {
-            while (index < input.Length) {
-                char currentChar = input[index];
-
-                // Skip whitespace characters
-                if (char.IsWhiteSpace(currentChar)) {
-                    if (currentChar == '\n') {
-                        // Handle implicit semicolons at line breaks
-                        if (lastToken != null && implicitSemiAfter.Contains(lastToken.sym) && nesting.Count == 0) {
-                            // Insert implicit semicolon
-                            lastToken = new Token("SEMI", "", line);
-                            index++; // Move past the newline character
-                            return lastToken;
-                        }
-                        line++;
-                    }
-                    index++;
-                    continue;
-                }
-
-                Token bestMatch = null;
-
-                // Maximal munch: match the longest possible token
-                foreach (var t in Grammar.terminals) {
-                    Match M = t.rex.Match(this.input, this.index);
-                    if (M.Success && M.Index == this.index) { // Ensure match starts at current index
-                        if (bestMatch == null || M.Length > bestMatch.lexeme.Length) {
-                            bestMatch = new Token(t.sym, M.Value, this.line);
-                        }
-                    }
-                }
-
-                if (bestMatch == null) {
-                    Console.Error.WriteLine($"Error: Unexpected character '{currentChar}' at line {line}, index {index}");
-                    Environment.Exit(1);
-                }
-
-                index += bestMatch.lexeme.Length;
-
-                // Ignore comments
-                if (bestMatch.sym == "COMMENT") {
-                    int newLineCount = bestMatch.lexeme.Count(c => c == '\n');
-                    line += newLineCount;
-                    continue;
-                }
-
-                // Handle opening symbols: parentheses and brackets
-                if (bestMatch.sym == "LPAREN" || bestMatch.sym == "LBRACKET" || bestMatch.sym == "LBRACE") {
-                    // Push opening symbols onto the stack
-                    nesting.Push(bestMatch);
-                }
-                // Handle closing symbols: check for matching opening symbols
-                else if (bestMatch.sym == "RPAREN" || bestMatch.sym == "RBRACKET" || bestMatch.sym == "RBRACE") {
-                    if (nesting.Count > 0) {
-                        var last = nesting.Peek(); // Look at the top of the stack without popping
-                        bool symbolsMatch = (bestMatch.sym == "RPAREN" && last.sym == "LPAREN") ||
-                                            (bestMatch.sym == "RBRACKET" && last.sym == "LBRACKET") ||
-                                            (bestMatch.sym == "RBRACE" && last.sym == "LBRACE");
-                        if (symbolsMatch) {
-                            // Symbols match, pop the opening symbol from the stack
-                            nesting.Pop();
-                        } else {
-                            // Symbols do not match, report error with expected opening symbol
-                            var expectedOpening = bestMatch.sym switch {
-                                "RPAREN" => "LPAREN",
-                                "RBRACKET" => "LBRACKET",
-                                "RBRACE" => "LBRACE",
-                                _ => "UNKNOWN"
-                            };
-                            var errorOutput = new {
-                                returncode = 2,
-                                tokens = $"Error at line {line}: Expected {expectedOpening} to match with {bestMatch.sym}\n",
-                                error = line
-                            };
-                            string jsonOutput = JsonSerializer.Serialize(errorOutput, new JsonSerializerOptions {
-                                WriteIndented = true,
-                                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                            });
-                            Console.WriteLine(jsonOutput);
-                            Environment.Exit(2);
-                        }
-                    } else {
-                        // No opening symbol in the stack when a closing symbol is encountered
-                        var expectedOpening = bestMatch.sym switch {
-                            "RPAREN" => "LPAREN",
-                            "RBRACKET" => "LBRACKET",
-                            "RBRACE" => "LBRACE",
-                            _ => "UNKNOWN"
-                        };
-                        var errorOutput = new {
-                            returncode = 2,
-                            tokens = $"Error at line {line}: Expected {expectedOpening} to match with {bestMatch.sym}\n",
-                            error = line
-                        };
-                        // used chat for all json stuff
-                        string jsonOutput = JsonSerializer.Serialize(errorOutput, new JsonSerializerOptions {
-                            WriteIndented = true,
-                            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                        });
-                        Console.WriteLine(jsonOutput);
-                        Environment.Exit(2);
-                    }
-                }
-
-                lastToken = bestMatch;
-                return bestMatch;
+        //If we've exhausted the input, return EOF
+        if( this.index >= this.input.Length ){
+            if(verbose){
+                Console.WriteLine("next(): At EOF!");
             }
 
-            // Insert implicit semicolon at end if needed
-            if (lastToken != null && implicitSemiAfter.Contains(lastToken.sym) && nesting.Count == 0) {
-                lastToken = new Token("SEMI", "", line);
-                return lastToken;
+            //special case: If file doesn't end with a newline,
+            //check to see if we need to manufacture a semicolon
+            if( needImplicitSemi() ){
+                var t = new Token("SEMI","",this.line);
+                lastSym = "SEMI";
+                return t ;
+            }
+
+            //see if we have any unterminated grouping symbols
+            if( this.nesting.Count > 0 ){
+                var n = this.nesting.Pop();
+                Console.WriteLine($"Error at line {this.line}: At EOF: Unpaired {n.sym} at line {n.line}");
+                Environment.Exit(2);
             }
 
             return null;
-        } // end next()
+        }
 
-    } // end of class Tokenizer
+        String sym=null;
+        String lexeme=null;
+        foreach( var t in Grammar.terminals){
+            Match M = t.rex.Match( this.input, this.index );
+            if(verbose){
+                Console.WriteLine("Trying terminal "+t.sym+ "   Matched? "+M.Success);
+            }
+            if( M.Success ){
+                if( lexeme == null || M.Groups[0].Value.Length > lexeme.Length ){
+                    sym = t.sym;
+                    lexeme = M.Groups[0].Value;
+                }
+            }
+        }
 
-} // end of namespace
+        if( sym == null ){
+            //print error message
+            Console.WriteLine($"Error at line {this.line}: Could not match anything");
+            Environment.Exit(1);
+        }
+
+        var tok = new Token( sym , lexeme, line);
+        if( verbose ){
+            Console.WriteLine("GOT TOKEN: "+tok);
+        }
+
+        foreach(var c in lexeme){
+            if( c == '\n' )
+                this.line++;
+        }
+        
+        this.index += lexeme.Length;
+
+        if( sym == "LPAREN" || sym == "LBRACKET" ){
+            this.nesting.Push(tok);
+        } else if( sym == "RPAREN" || sym == "RBRACKET"){
+            checkNesting(sym);
+        }
+
+        if( sym == "COMMENT" ){
+            //do not update lastSym here
+            return this.next();
+        } else { 
+            this.lastSym = sym;
+            return tok;
+        }
+        
+    }//next()
+
+} //class Tokenizer
+
+} //namespace

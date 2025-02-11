@@ -1,5 +1,0 @@
-{
-  "returncode": 1,
-  "tokens": "Error at line 1: Cannot tokenize at text: !\n\n",
-  "error": 1
-}

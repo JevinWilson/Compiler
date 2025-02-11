@@ -1,63 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+﻿namespace lab{
 
-namespace lab {
+public class CompilersAreGreat{
+    public static void Main(string[] args){
 
-    public class CompilersAreGreat {
-        public static void Main(string[] args) {
+        //initialize our grammar
+        Terminals.makeAllOfTheTerminals();
+        Productions.makeThem();
 
-            // initialize our grammar
-            Terminals.makeAllOfTheTerminals();
-            Grammar.addTerminals(new Terminal[] {new("WHITESPACE", @"\s+" )});
+        Grammar.check();
 
-            // read input
-            string inp = File.ReadAllText(args[0]);
-            var tokens = new List<Token>();
-            var T = new Tokenizer(inp);
-            T.setInput(inp);
+        // Grammar.computeNullableAndFirst();
+        
+        // Grammar.dump();
 
-            // error code
-            int errorCode = -1;
-            string errorMsg = "";
-            int errorLine = -1;
-
-            try {
-                while (true) {
-                    var token = T.next();
-                    if (token == null) {
-                        break;
-                    }
-                    tokens.Add(token);
-                }
-            } catch (Exception ex) {
-                errorMsg = ex.Message;
-                errorCode = 2;
-                errorLine = T.line;
-            }
-            
-            var output = new {
-                returncode = errorCode == -1 ? 0 : errorCode,
-                tokens = tokens.Count > 0 ? tokens : new List<Token>(), 
-                error = errorCode == -1 ? -1 : T.line 
-            };
-
-            // used chat for all the Json stuff
-            // Prompt: How do I format this (output from last assignment) to match this (output from result-tx.txt)?
-            var options = new JsonSerializerOptions {
-                WriteIndented = true,
-                // print '+', '-', etc
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                Converters = { new TokenConverter() }
-            };
-
-            string jsonOutput = JsonSerializer.Serialize(output, options);
-            Console.WriteLine(jsonOutput);
-
+        // return;
+        
+        string inp = File.ReadAllText(args[0]);
+        var tokens = new List<Token>();
+        var T = new Tokenizer(inp);
+        while(true){
+            Token tok = T.next();
+            if( tok == null )
+                break;
+            tokens.Add(tok);
         }
-    } // end of class
+        Console.WriteLine("[");
+        for(int i=0;i<tokens.Count;++i){
+            Console.Write(tokens[i]);
+            if( i != tokens.Count-1 )
+                Console.Write(",");
+            Console.WriteLine();
+        }
+        Console.WriteLine("]");
+    }
+} //class
 
-} // end of namespace
+} //namespace
 
 // to run: dotnet run -- "C:\Users\jaw06\Desktop\Compiler\lab\tests\testcases\(fileneme).txt"
