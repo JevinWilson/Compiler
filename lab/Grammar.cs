@@ -75,7 +75,7 @@ public static class Grammar{
 
     public static void dump(){
         //dump grammar stuff to the screen (debugging)
-        /*foreach( var p in productions ){
+        foreach( var p in productions ){
             Console.WriteLine(p);
         }
         Console.Write("NULLABLE: FINISH ME");
@@ -83,10 +83,8 @@ public static class Grammar{
         foreach(var sym in first.Keys){
             Console.Write($"first[{sym}] = ");
             Console.WriteLine("FINISH ME");
-        }*/
-        foreach(var p in productions) {
-            Console.WriteLine(p);
         }
+        
     }
 
     public static void computeNullableAndFirst(){
