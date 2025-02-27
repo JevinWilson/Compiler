@@ -85,13 +85,19 @@ public static class Grammar{
         // print first sets for all terminals first
         foreach(var sym in allTerminals.OrderBy(x => x)){
             Console.Write($"first[{sym}] = ");
-            Console.WriteLine(string.Join(", ", first[sym].OrderBy(x => x)));
+            Console.WriteLine(sym);
         }
 
         // then print first sets for all nonterminals
         foreach(var sym in allNonterminals.OrderBy(x => x)){
             Console.Write($"first[{sym}] = ");
-            Console.WriteLine(string.Join(", ", first[sym].OrderBy(x => x)));
+            if (first[sym].Count > 0) {
+                var sortedFirst = first[sym].OrderBy(x => x).ToList();
+                Console.WriteLine(string.Join(", ", sortedFirst));
+            } else {
+                Console.WriteLine();
+            }
+            
         }
     }
 
