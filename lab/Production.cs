@@ -5,11 +5,14 @@ public class Production {
     public string lhs;      //foo
     public string[] rhs;    //[ bar, baz, bam]
     public PSpec pspec;
+    public readonly int index;
 
-    public Production(PSpec pspec, string lhs, string[] rhs){
+    public Production(PSpec pspec, string lhs, string[] rhs, int index){
         this.pspec=pspec;
         this.lhs=lhs;
         this.rhs=rhs;
+        this.index=index;
+
     }
     public override string ToString(){
         string rhsStr;

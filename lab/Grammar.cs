@@ -52,11 +52,11 @@ public static class Grammar{
             foreach(var alt in alternatives) {
                 // Handle lambda productions
                 if (alt == "lambda" || alt == "λ" || alt == "?") {
-                    productions.Add(new Production(pspec, lhs, Array.Empty<string>()));
+                    productions.Add(new Production(pspec, lhs, Array.Empty<string>(), productions.Count));
                 } else {
                     // Split the alternative into tokens
                     var rhs = alt.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-                    productions.Add(new Production(pspec, lhs, rhs));
+                    productions.Add(new Production(pspec, lhs, rhs, productions.Count));
                 }
             }
         }
@@ -79,47 +79,38 @@ public static class Grammar{
             Console.WriteLine(p);
         }
 
-        Console.Write("NULLABLE: ");
-        Console.WriteLine(string.Join(", ", nullable.OrderBy(x => x)));
+        Console.WriteLine("NULLABLE: ");
+        Console.WriteLine(string.Join(", ", nullable));
 
-        // print first sets for all terminals first
-        foreach(var sym in allTerminals.OrderBy(x => x)){
-            Console.Write($"first[{sym}] = ");
-            Console.WriteLine(sym);
-        }
-
-        // then print first sets for all nonterminals
-        foreach(var sym in allNonterminals.OrderBy(x => x)){
-            Console.Write($"first[{sym}] = ");
-            if (first[sym].Count > 0) {
-                var sortedFirst = first[sym].OrderBy(x => x).ToList();
-                Console.WriteLine(string.Join(", ", sortedFirst));
-            } else {
-                Console.WriteLine();
-            }
-            
+        foreach(var sym in first.Keys) {
+            Console.WriteLine($"first[{sym}] = ");
+            Console.WriteLine("{" + string.Join(", ", first[sym]) + "}");
         }
     }
 
     public static void computeNullableAndFirst(){
-        var flag = true;
-        while(flag){
-            flag=false;
-            foreach(var prod in productions) {
-                //skip if already marked nullable
-                if( nullable.Contains(prod.lhs) )
-                    continue;
+        // initialize nullable set
+        nullable = new HashSet<string>();
 
-                // empty production (lambda) is nullable
-                if (prod.rhs.Length == 0) {
-                    nullable.Add(prod.lhs);
+        var flag = true;
+        while(flag) {
+            flag = false;
+
+            //for each production
+            foreach(var p in productions) {
+                // if lhs is already nullable, skip
+                if (nullable.Contains(p.lhs)) continue;
+
+                // check if rhs is empty (lambda production)
+                if (p.rhs.Length == 0) {
+                    nullable.Add(p.lhs);
                     flag = true;
                     continue;
                 }
 
                 // check if all symbols in rhs are nullable
                 bool allNullable = true;
-                foreach(var sym in prod.rhs) {
+                foreach(var sym in p.rhs) {
                     if (!nullable.Contains(sym)) {
                         allNullable = false;
                         break;
@@ -127,41 +118,52 @@ public static class Grammar{
                 }
 
                 if (allNullable) {
-                    nullable.Add(prod.lhs);
+                    nullable.Add(p.lhs);
                     flag = true;
                 }
             }
         }
-        
-        foreach( var sym in Grammar.allTerminals){
-            first[sym] = new();
-            first[sym].Add(sym);
+
+        // initialize first sets for terminals
+        foreach(var sym in allTerminals) {
+            first[sym] = new HashSet<string> { sym };
         }
 
-        foreach(var sym in Grammar.allNonterminals){
-            first[sym] = new();
+        // initialize first sets for nonterminals
+        foreach(var sym in allNonterminals) {
+            first[sym] = new HashSet<string>();
         }
 
-        flag=true;
-        while(flag){
-            flag=false;
-            foreach(var prod in productions) {
+        flag = true;
+        while(flag) {
+            flag = false;
+
+            // for each production
+            foreach(var p in productions) {
                 // for each symbol in rhs
-                for(int i = 0; i < prod.rhs.Length; i++) {
-                    var currentSym = prod.rhs[i];
-                    var oldSize = first[prod.lhs].Count;
+                for(int i = 0; i < p.rhs.Length; i++) {
+                    string sym = p.rhs[i];
 
-                    // add all symbols from first(currentSym) to first(lhs)
-                    foreach(var f in first[currentSym]) {
-                        first[prod.lhs].Add(f);
+                    // add first(sym) to first(lhs)
+                    int oldCount = first[p.lhs].Count;
+                    first[p.lhs].UnionWith(first[sym]);
+
+                    if (first[p.lhs].Count > oldCount) {
+                        flag = true;
                     }
 
-                    if(first[prod.lhs].Count > oldSize) 
-                        flag = true;
-
-                    // if current symbol is not nullable, stop
-                    if(!nullable.Contains(currentSym))
+                    // if sym is not nullable, break
+                    if (!nullable.Contains(sym)) {
                         break;
+                    }
+
+                    // if we're at the end of rhs and all symbols are nullable
+                    if (i == p.rhs.Length -1 && nullable.Contains(sym)) {
+                        if (!nullable.Contains(p.lhs)) {
+                            nullable.Add(p.lhs);
+                            flag = true;
+                        }
+                    }
                 }
             }
         }
