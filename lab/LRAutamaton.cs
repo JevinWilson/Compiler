@@ -1,11 +1,11 @@
 namespace lab {
     public class LRAutomaton {
-        // Build the LR(0) automaton for a grammar
+        // build the LR(0) automaton for a grammar
         public static void BuildLR0Automaton(string startSymbol) {
-            // Clear any existing DFA nodes
+            // clear any existing DFA nodes
             DFANode.allNodes.Clear();
             
-            // Add the augmented start production (S' -> S)
+            // start production (S' -> S)
             string augmentedStart = startSymbol + "'";
             var augmentedProduction = new Production(
                 new PSpec($"{augmentedStart} :: {startSymbol}"), 
@@ -17,21 +17,19 @@ namespace lab {
             Grammar.productions.Add(augmentedProduction);
             Grammar.allNonterminals.Add(augmentedStart);
             
-            // Create initial LR item for start production with dot at the beginning
             var initialItem = new LRItem(Grammar.productions.Count - 1, 0);
             
-            // Compute the closure of the initial item
+            // compute the closure of the initial item
             var initialItemSet = Closure(new HashSet<LRItem> { initialItem });
             
-            // Create the initial DFA node
+            // create the initial DFA node
             var initialNode = new DFANode(initialItemSet);
             
-            // Process all created nodes until no more are created
             int processedCount = 0;
             while (processedCount < DFANode.allNodes.Count) {
                 var currentNode = DFANode.allNodes[processedCount++];
                 
-                // Find all symbols that appear after the dot in this node's items
+                // find all symbols that appear after the dot in this node's items
                 var symbols = new HashSet<string>();
                 foreach (var item in currentNode.items) {
                     if (item.dpos < item.production.rhs.Length) {
@@ -39,13 +37,12 @@ namespace lab {
                     }
                 }
                 
-                // For each symbol, compute the GOTO and create a new node if needed
+                // for each symbol, compute the GOTO and create a new node if needed
                 foreach (var symbol in symbols) {
                     var gotoSet = ComputeGoto(currentNode.items, symbol);
                     
-                    // If not empty, create a new node or reuse existing one
                     if (gotoSet.Count > 0) {
-                        // Check if this item set already exists in a node
+                        // check if item set already exists in node
                         DFANode targetNode = null;
                         foreach (var node in DFANode.allNodes) {
                             if (node.items.SetEquals(gotoSet)) {
@@ -54,19 +51,19 @@ namespace lab {
                             }
                         }
                         
-                        // If not found, create a new node
+                        // ff not  create a new node
                         if (targetNode == null) {
                             targetNode = new DFANode(gotoSet);
                         }
                         
-                        // Add the transition from current node to target node
+                        // add the transition from current node to target 
                         currentNode.transitions[symbol] = targetNode;
                     }
                 }
             }
         }
         
-        // Compute the closure of a set of LR items
+        // compute the closure of set of LR items
         private static HashSet<LRItem> Closure(HashSet<LRItem> items) {
             var result = new HashSet<LRItem>(items);
             bool changed = true;
@@ -76,12 +73,12 @@ namespace lab {
                 var newItems = new HashSet<LRItem>();
                 
                 foreach (var item in result) {
-                    // If dot is before a nonterminal, add all productions for that nonterminal
+                    // if dot is before a nonterminal, add all productions for that nonterminal
                     if (item.dpos < item.production.rhs.Length) {
                         string symbol = item.production.rhs[item.dpos];
                         
                         if (Grammar.isNonterminal(symbol)) {
-                            // Find all productions with this nonterminal on the left
+                            // find all productions with this nonterminal on the left
                             for (int i = 0; i < Grammar.productions.Count; i++) {
                                 var production = Grammar.productions[i];
                                 if (production.lhs == symbol) {
@@ -96,7 +93,6 @@ namespace lab {
                     }
                 }
                 
-                // Add all new items to the result
                 result.UnionWith(newItems);
             }
             
@@ -119,5 +115,7 @@ namespace lab {
             // Take the closure of the resulting set
             return Closure(result);
         }
-    }
-}
+
+    } //class LRAutomaton
+
+} //namespace

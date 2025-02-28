@@ -23,7 +23,7 @@ namespace lab {
                 result += " " + p.rhs[i];
             }
             
-            // Handle dot at the end
+            // handle dot at the end
             if (dpos >= p.rhs.Length) result += " •";
             
             return result;

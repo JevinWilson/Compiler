@@ -40,17 +40,17 @@ namespace lab {
                 sw.WriteLine("digraph d {");
                 sw.WriteLine("    node [shape=rectangle,fontname=Helvetica];");
                 
-                // Write all nodes
+                // write all nodes
                 foreach (var node in allNodes) {
                     string label = $"q{node.id}\\n";
                     foreach (var item in node.items) {
-                        // Escape any double quotes in the item's string representation
+                        // escape any double quotes in the item's string representation
                         label += item.ToString().Replace("\"", "\\\"") + "\\n";
                     }
                     sw.WriteLine($"    q{node.id} [label=\"{label}\"];");
                 }
                 
-                // Write all transitions
+                // write all transitions
                 foreach (var node in allNodes) {
                     foreach (var transition in node.transitions) {
                         sw.WriteLine($"    q{node.id} -> q{transition.Value.id} [label=\"{transition.Key}\"];");
