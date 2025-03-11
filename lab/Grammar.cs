@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace lab{
 
 public static class Grammar{
@@ -9,6 +7,7 @@ public static class Grammar{
     public static HashSet<string> allNonterminals = new();
     public static HashSet<string> nullable = new();
     public static Dictionary<string,HashSet<string>> first = new();
+    public static Dictionary<string,List<Production>> productionsByLHS = new();
 
     public static void addTerminals( Terminal[] terminals){
         foreach(var t in terminals){
@@ -26,51 +25,94 @@ public static class Grammar{
         return allNonterminals.Contains(sym);
     }
 
-    public static void defineProductions(PSpec[] specs) {
-        foreach(var pspec in specs) {
-            // First clean up the spec by replacing newlines with spaces
-            var cleanSpec = pspec.spec
-                .Replace("\n", " ")
-                .Trim();
-
-            // Find the :: in the original string
-            int sepPos = cleanSpec.IndexOf("::");
-            if (sepPos == -1)
-                throw new Exception("Invalid production format (missing ::): " + cleanSpec);
-
-            string lhs = cleanSpec.Substring(0, sepPos).Trim();
-            string rhsPart = cleanSpec.Substring(sepPos + 2).Trim();
-
-            allNonterminals.Add(lhs);
-
-            // Split RHS into alternatives
-            var alternatives = rhsPart
-                .Split('|')
-                .Select(alt => alt.Trim())
-                .Where(alt => !string.IsNullOrWhiteSpace(alt));
-
-            foreach(var alt in alternatives) {
-                // Handle lambda productions
-                if (alt == "lambda" || alt == "λ" || alt == "?") {
-                    productions.Add(new Production(pspec, lhs, Array.Empty<string>(), productions.Count));
-                } else {
-                    // Split the alternative into tokens
-                    var rhs = alt.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-                    productions.Add(new Production(pspec, lhs, rhs, productions.Count));
+    public static int defineProductions(PSpec[] specs){
+        //Return the index of the first production that we added
+        int howMany = productions.Count;
+        foreach( var pspec in specs){
+            var idx = pspec.spec.IndexOf("::");
+            if( idx == -1 )
+                throw new Exception("No :: in production spec");
+            string lhs = pspec.spec.Substring(0,idx).Trim();
+            Grammar.allNonterminals.Add(lhs);
+            string rhss = pspec.spec.Substring(idx+2).Trim();
+            string[] rhsl = rhss.Trim().Split("|",StringSplitOptions.RemoveEmptyEntries );
+            foreach( string tmp in rhsl){
+                string[] rhs = tmp.Trim().Split(" ",StringSplitOptions.RemoveEmptyEntries);
+                if( rhs.Length == 1 && (rhs[0] == "lambda" || rhs[0] == "\u03bb" ) )
+                    rhs = new string[0];
+                for(int i=0;i<rhs.Length;++i){
+                    rhs[i]=rhs[i].Trim();
                 }
+                var P = new Production(pspec, lhs, rhs);
+                Grammar.productions.Add( P );
+                if( !Grammar.productionsByLHS.ContainsKey(P.lhs) )
+                    Grammar.productionsByLHS[P.lhs] = new();
+                Grammar.productionsByLHS[P.lhs].Add(P);
             }
         }
+        return howMany;
     }
 
     public static void check(){
         //check for problems. panic if so.
+        var unknown = new HashSet<string>();
         foreach( Production p in productions){
             foreach( string sym in p.rhs){
                 if(!isTerminal(sym) && !isNonterminal(sym)){
-                    throw new Exception("Undefined symbol: "+sym);
+                    unknown.Add(sym);
                 }
             }
         }
+        foreach( string sym in unknown){
+            Console.WriteLine("WARNING: Undefined symbol: "+sym);
+        }
+
+    }
+
+    public static void computeNullableAndFirst(){
+        bool keeplooping=true;
+        while(keeplooping){
+            keeplooping=false;
+            foreach( Production P in productions){
+                if( nullable.Contains(P.lhs) )
+                    continue;
+                bool foundNonNullable=false;
+                foreach(string sym in P.rhs){
+                    if( !nullable.Contains(sym) ){
+                        foundNonNullable=true;
+                        break;
+                    }
+                }
+                if(!foundNonNullable){
+                    nullable.Add(P.lhs);
+                    keeplooping=true;
+                }
+            }
+        }
+
+        foreach(string sym in allTerminals){
+            first[sym] = new (){ sym };
+        }
+        foreach(string sym in allNonterminals){
+            first[sym] = new();
+        }
+
+        keeplooping=true;
+        while(keeplooping){
+            keeplooping=false;
+            foreach( Production P in productions ){
+                foreach( string sym in P.rhs ){
+                    int s1 = first[P.lhs].Count;
+                    first[P.lhs].UnionWith( first[sym] );
+                    int s2 = first[P.lhs].Count;
+                    if( s1 != s2 )
+                        keeplooping=true;
+                    if(!nullable.Contains(sym))
+                        break;
+                }
+            }
+        }
+
     }
 
     public static void dump(){
@@ -78,101 +120,17 @@ public static class Grammar{
         foreach( var p in productions ){
             Console.WriteLine(p);
         }
-
-        Console.WriteLine("NULLABLE: ");
-        Console.WriteLine(string.Join(", ", nullable));
-
-        foreach(var sym in first.Keys) {
-            Console.WriteLine($"first[{sym}] = ");
-            Console.WriteLine("{" + string.Join(", ", first[sym]) + "}");
+        Console.Write("Nullable: ");
+        Console.WriteLine( String.Join(" , ", nullable ) );
+        foreach(string sym in first.Keys){
+            Console.Write($"first[{sym}] = ");
+            Console.WriteLine( String.Join(" , ", first[sym] ) );
         }
-    }
-
-    public static void computeNullableAndFirst(){
-        // initialize nullable set
-        nullable = new HashSet<string>();
-
-        var flag = true;
-        while(flag) {
-            flag = false;
-
-            //for each production
-            foreach(var p in productions) {
-                // if lhs is already nullable, skip
-                if (nullable.Contains(p.lhs)) continue;
-
-                // check if rhs is empty (lambda production)
-                if (p.rhs.Length == 0) {
-                    nullable.Add(p.lhs);
-                    flag = true;
-                    continue;
-                }
-
-                // check if all symbols in rhs are nullable
-                bool allNullable = true;
-                foreach(var sym in p.rhs) {
-                    if (!nullable.Contains(sym)) {
-                        allNullable = false;
-                        break;
-                    }
-                }
-
-                if (allNullable) {
-                    nullable.Add(p.lhs);
-                    flag = true;
-                }
-            }
-        }
-
-        // initialize first sets for terminals
-        foreach(var sym in allTerminals) {
-            first[sym] = new HashSet<string> { sym };
-        }
-
-        // initialize first sets for nonterminals
-        foreach(var sym in allNonterminals) {
-            first[sym] = new HashSet<string>();
-        }
-
-        flag = true;
-        while(flag) {
-            flag = false;
-
-            // for each production
-            foreach(var p in productions) {
-                // for each symbol in rhs
-                for(int i = 0; i < p.rhs.Length; i++) {
-                    string sym = p.rhs[i];
-
-                    // add first(sym) to first(lhs)
-                    int oldCount = first[p.lhs].Count;
-                    first[p.lhs].UnionWith(first[sym]);
-
-                    if (first[p.lhs].Count > oldCount) {
-                        flag = true;
-                    }
-
-                    // if sym is not nullable, break
-                    if (!nullable.Contains(sym)) {
-                        break;
-                    }
-
-                    // if we're at the end of rhs and all symbols are nullable
-                    if (i == p.rhs.Length -1 && nullable.Contains(sym)) {
-                        if (!nullable.Contains(p.lhs)) {
-                            nullable.Add(p.lhs);
-                            flag = true;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public static void defineTerminals(Terminal[] terminals) {
-        addTerminals(terminals);
     }
 
 } //end class Grammar
+
+
+
 
 } //end namespace

@@ -1,58 +1,60 @@
-namespace lab {
-    public class LRItem {
-        public readonly int productionIndex;
-        public readonly int dpos;
+namespace lab{
 
-        public LRItem(int pi, int dpos) {
-            this.productionIndex = pi;
-            this.dpos = dpos;
-        }
-
-        public Production production {
-            get {
-                return Grammar.productions[this.productionIndex];
-            }
-        }
-
-        public override string ToString() {
-            Production p = this.production;
-            string result = $"{p.lhs} ::";
-            
-            for (int i = 0; i < p.rhs.Length; i++) {
-                if (i == dpos) result += " •";
-                result += " " + p.rhs[i];
-            }
-            
-            // handle dot at the end
-            if (dpos >= p.rhs.Length) result += " •";
-            
-            return result;
-        }
-
-        public override int GetHashCode() {
-            return productionIndex * 31 + dpos;
-        }
-
-        public override bool Equals(object obj) {
-            if (Object.ReferenceEquals(obj, null))
-                return false;
-            if (obj.GetType() != typeof(LRItem))
-                return false;
-                
-            LRItem other = (LRItem)obj;
-            return productionIndex == other.productionIndex && dpos == other.dpos;
-        }
-
-        public static bool operator ==(LRItem o1, object o2) {
-            if (Object.ReferenceEquals(o1, null))
-                return Object.ReferenceEquals(o2, null);
-            return o1.Equals(o2);
-        }
-
-        public static bool operator !=(LRItem o1, object o2) {
-            return !(o1 == o2);
-        }
-
-    } //class LRItem
+public class LRItem{
+    public readonly Production production;
+    public readonly int dpos;
     
-} //namespace
+    public LRItem(Production production, int dpos){
+        this.production = production;
+        this.dpos=dpos;
+    }
+
+    public bool dposAtEnd(){
+        return this.dpos == this.production.rhs.Length ;
+    }
+
+    public string symbolAfterDistinguishedPosition {
+        get {
+            return this.production.rhs[this.dpos];
+        }
+    }
+
+    public override int GetHashCode()
+    {
+        return this.production.unique ^ (dpos<<16);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if( Object.ReferenceEquals(obj,null) )
+            return false;
+        LRItem I = obj as LRItem;
+        if( Object.ReferenceEquals(I,null) )
+            return false;       //obj was not an LRItem
+        return this.production.unique == I.production.unique &&
+               this.dpos == I.dpos;
+    }
+
+    public static bool operator==(LRItem o1, LRItem o2){
+        if( Object.ReferenceEquals(o1, null )){
+            return Object.ReferenceEquals(o2,null);
+        }
+        return o1.Equals(o2);
+    }
+    public static bool operator!=(LRItem o1, LRItem o2){
+        return !(o1==o2);
+    }
+    public override string ToString()
+    {
+        string s = $"{this.production.lhs} :: ";
+        for(var i=0;i<this.dpos;++i)
+            s += $"{this.production.rhs[i]} ";
+        s += "\u2022";  //bullet
+        for(var i=this.dpos;i<this.production.rhs.Length;++i)
+            s += $" {this.production.rhs[i]}";
+        return s;
+    }
+
+}
+
+} //end namespace lab

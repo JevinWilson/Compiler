@@ -1,18 +1,19 @@
 namespace lab{
 
 public class Production {
+    private static int counter=0;
+
     // foo :: bar baz bam
     public string lhs;      //foo
     public string[] rhs;    //[ bar, baz, bam]
     public PSpec pspec;
-    public readonly int index;
+    public readonly int unique;
 
-    public Production(PSpec pspec, string lhs, string[] rhs, int index){
+    public Production(PSpec pspec, string lhs, string[] rhs){
         this.pspec=pspec;
         this.lhs=lhs;
         this.rhs=rhs;
-        this.index=index;
-
+        this.unique = counter++;
     }
     public override string ToString(){
         string rhsStr;

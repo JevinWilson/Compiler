@@ -1,8 +1,0 @@
-digraph d {
-    node [shape=rectangle,fontname=Helvetica];
-    q0 [label="q0\nS' :: • S\nS :: • ID\n"];
-    q1 [label="q1\nS' :: S •\n"];
-    q2 [label="q2\nS :: ID •\n"];
-    q0 -> q1 [label="S"];
-    q0 -> q2 [label="ID"];
-}
