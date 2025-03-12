@@ -1,44 +1,34 @@
 ﻿using System.Collections.Immutable;
 
-namespace lab{
+namespace lab {
 
-public class CompilersAreGreat{
-    private const int V = 3;
+public class CompilersAreGreat {
+    //private const int V = 3;
 
-    public static void Main(string[] args){
+    public static void Main(string[] args) {
 
-        //initialize our grammar
-        Terminals.makeThem();
-        Productions.makeThem();
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-        Grammar.check();
-        Grammar.computeNullableAndFirst();
-        DFA.makeDFA();
-        DFA.dump("dfa.dot");
+        // Initialize grammar
+        //Terminals.makeThem();
+        // Not using our default productions
+        //Productions.makeThem();
 
-        foreach(var Q in DFA.allStates){
-            Console.Write(Q);
-        }
-        return;
+        //Grammar.check();
+        //Grammar.computeNullableAndFirst();
+
+        Grammar.terminals.Clear();
+        Grammar.allTerminals.Clear();
+        lab.Terminals.makeThem();
         
-        string inp = File.ReadAllText(args[0]);
-        var tokens = new List<Token>();
-        var T = new Tokenizer(inp);
-        while(true){
-            Token tok = T.next();
-            if( tok == null )
-                break;
-            tokens.Add(tok);
-        }
-        Console.WriteLine("[");
-        for(int i=0;i<tokens.Count;++i){
-            Console.Write(tokens[i]);
-            if( i != tokens.Count-1 )
-                Console.Write(",");
-            Console.WriteLine();
-        }
-        Console.WriteLine("]");
-    }
-} //class
+        // Build DFA
+        DFA.makeDFA();
 
-} //namespace
+        foreach (var state in DFA.allStates) {
+            Console.WriteLine(state);
+        }
+
+    }
+}
+
+} // namespace
