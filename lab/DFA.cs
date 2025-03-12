@@ -1,19 +1,10 @@
 namespace lab{
 
-<<<<<<< HEAD
 public class ItemSet {
     public HashSet<LRItemWithLookahead> items;
     
     public ItemSet() {
         this.items = new HashSet<LRItemWithLookahead>();
-=======
-public class ItemSet{
-    public HashSet<LRItem> items;
-    public override int GetHashCode()
-    {
-        //FIXME: Write this
-        return 0;
->>>>>>> fcc40028f40a1ff0d2b6c72c5ec5dfceee051f30
     }
     
     public override int GetHashCode() {
@@ -29,7 +20,6 @@ public class ItemSet{
             return false;
         
         ItemSet S = obj as ItemSet;
-<<<<<<< HEAD
         if (Object.ReferenceEquals(S, null))
             return false;
         
@@ -41,11 +31,6 @@ public class ItemSet{
                 return false;
         }
         
-=======
-        if( Object.ReferenceEquals(S,null) )
-            return false;       
-        //FIXME: Write this
->>>>>>> fcc40028f40a1ff0d2b6c72c5ec5dfceee051f30
         return true;
     }
 
@@ -86,7 +71,6 @@ public class DFAState{
         this.label = label;
         this.unique = counter++;
     }
-<<<<<<< HEAD
     public override string ToString() {
         string r = $"State {this.unique}\n";
         r += this.label;
@@ -95,16 +79,6 @@ public class DFAState{
         foreach (string sym in this.transitions.Keys.OrderBy(s => s)) {
             DFAState q = this.transitions[sym];
             r += $"\n        {sym} \u2192 {q.unique}";
-=======
-    public override string ToString()
-    {
-        string r = $"State {this.unique}\n";
-        r += this.label;
-        r += "---------------\n";
-        foreach( string sym in this.transitions.Keys){
-            DFAState q = transitions[sym];
-            r += $"{sym} -> {q.unique}";
->>>>>>> fcc40028f40a1ff0d2b6c72c5ec5dfceee051f30
         }
         
         return r;
@@ -112,7 +86,6 @@ public class DFAState{
 
 }
 
-<<<<<<< HEAD
 public static class DFA {
     public static List<DFAState> allStates = new();
     
@@ -121,16 +94,6 @@ public static class DFA {
             sw.WriteLine("digraph d{");
 
             foreach (DFAState q in allStates) {
-=======
-public static class DFA{
-    static List<DFAState> allStates = new();
-    
-    static void dump(string filename){
-        using(var sw = new StreamWriter(filename)){
-            sw.WriteLine("digraph d{");
-
-            foreach( DFAState q in allStates ){
->>>>>>> fcc40028f40a1ff0d2b6c72c5ec5dfceee051f30
                 string x = q.label.ToString();
                 x = x.Replace("\n", "\\n");
                 sw.WriteLine($"q{q.unique} [label=\"{x}\"];");
@@ -181,7 +144,6 @@ public static class DFA{
         result.items = new HashSet<LRItemWithLookahead>(kernel);
         
         bool keeplooping = true;
-<<<<<<< HEAD
         while (keeplooping) {
             keeplooping = false;
             HashSet<LRItemWithLookahead> newItems = new HashSet<LRItemWithLookahead>();
@@ -241,18 +203,6 @@ public static class DFA{
                             var newItemWithLookahead = new LRItemWithLookahead(newItem, newLookaheads);
                             newItems.Add(newItemWithLookahead);
                         }
-=======
-        while( keeplooping ){
-            keeplooping=false;
-            HashSet<LRItem> tmp = new();
-            foreach(LRItem I in s){
-                string sym = I.symbolAfterDistinguishedPosition;
-                if( Grammar.allNonterminals.Contains(sym)){
-                    //sym is a nonterminal
-                    foreach( Production p in Grammar.productionsByLHS[sym]){
-                        var I2 = new LRItem(p,0 );
-                        tmp.Add(I2);
->>>>>>> fcc40028f40a1ff0d2b6c72c5ec5dfceee051f30
                     }
                 }
             }
@@ -358,22 +308,6 @@ public static class DFA{
                     statemap[nextStateItems] = q2;
                     allStates.Add(q2);
                 }
-<<<<<<< HEAD
-=======
-                if( q.transitions.ContainsKey(sym) )
-                    throw new Exception("BUG!");
-                q.transitions[sym] = statemap[lbl];
-            }
-        }
-
-    } //makeDFA
-
-    static Dictionary<string, HashSet<LRItem> > getOutgoingTransitions(DFAState q){
-        var tr = new Dictionary<string, HashSet<LRItem> >();
-        foreach( LRItem I in q.label.items){
-            if( !I.dposAtEnd ) {
-                string sym = I.symbolAfterDistinguishedPosition;
->>>>>>> fcc40028f40a1ff0d2b6c72c5ec5dfceee051f30
                 
                 if (q.transitions.ContainsKey(sym))
                     throw new Exception("Bug: Transition already exists!");
