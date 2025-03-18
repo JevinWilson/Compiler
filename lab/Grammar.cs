@@ -5,10 +5,10 @@ public static class Grammar{
     public static HashSet<string> allTerminals = [];
     public static List<Production> productions = new();
     public static HashSet<string> allNonterminals = new();
+    public static Dictionary<string,List<Production>> productionsByLHS = new();
     public static HashSet<string> nullable = new();
     public static Dictionary<string,HashSet<string>> first = new();
-    public static Dictionary<string,List<Production>> productionsByLHS = new();
-
+    
     public static void addTerminals( Terminal[] terminals){
         foreach(var t in terminals){
             if( isTerminal( t.sym ) )
@@ -43,31 +43,16 @@ public static class Grammar{
                 for(int i=0;i<rhs.Length;++i){
                     rhs[i]=rhs[i].Trim();
                 }
-                var P = new Production(pspec, lhs, rhs);
-                Grammar.productions.Add( P );
-                if( !Grammar.productionsByLHS.ContainsKey(P.lhs) )
-                    Grammar.productionsByLHS[P.lhs] = new();
-                Grammar.productionsByLHS[P.lhs].Add(P);
+                var p = new Production(pspec, lhs, rhs);
+                Grammar.productions.Add( p );
+                if(! productionsByLHS.Keys.Contains(lhs))
+                    productionsByLHS[lhs]= new();
+                productionsByLHS[lhs].Add(p);
             }
         }
         return howMany;
     }
 
-    public static void check(){
-        //check for problems. panic if so.
-        var unknown = new HashSet<string>();
-        foreach( Production p in productions){
-            foreach( string sym in p.rhs){
-                if(!isTerminal(sym) && !isNonterminal(sym)){
-                    unknown.Add(sym);
-                }
-            }
-        }
-        foreach( string sym in unknown){
-            Console.WriteLine("WARNING: Undefined symbol: "+sym);
-        }
-
-    }
 
     public static void computeNullableAndFirst(){
         bool keeplooping=true;
@@ -116,6 +101,7 @@ public static class Grammar{
     }
 
     public static void dump(){
+        Console.WriteLine("Dumping grammar:");
         //dump grammar stuff to the screen (debugging)
         foreach( var p in productions ){
             Console.WriteLine(p);
@@ -127,6 +113,23 @@ public static class Grammar{
             Console.WriteLine( String.Join(" , ", first[sym] ) );
         }
     }
+    
+    public static void check(){
+        //check for problems. panic if so.
+        var unknown = new HashSet<string>();
+        foreach( Production p in productions){
+            foreach( string sym in p.rhs){
+                if(!isTerminal(sym) && !isNonterminal(sym)){
+                    unknown.Add(sym);
+                }
+            }
+        }
+        foreach( string sym in unknown){
+            Console.WriteLine("WARNING: Undefined symbol: "+sym);
+        }
+
+    }
+
 
 } //end class Grammar
 

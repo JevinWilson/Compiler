@@ -3,14 +3,14 @@ namespace lab{
 public class LRItem{
     public readonly Production production;
     public readonly int dpos;
-    
+    public HashSet<string> lookahead = new();
     public LRItem(Production production, int dpos){
         this.production = production;
         this.dpos=dpos;
     }
 
     public bool dposAtEnd(){
-        return this.dpos == this.production.rhs.Length ;
+        return this.dpos == this.production.rhs.Length;
     }
 
     public string symbolAfterDistinguishedPosition {
@@ -44,18 +44,21 @@ public class LRItem{
     public static bool operator!=(LRItem o1, LRItem o2){
         return !(o1==o2);
     }
-    public override string ToString() {
+    public override string ToString()
+    {
         string s = $"{this.production.lhs} :: ";
-        for(var i=0; i<this.dpos; ++i)
-            s += $"{this.production.rhs[i]} ";
-
-        s += " \u2022"; 
-        for(var i=this.dpos; i<this.production.rhs.Length; ++i)
-            s += $" {this.production.rhs[i]}";
-            
+        for(int i=0;i<this.dpos;++i){
+            s += this.production.rhs[i] + " ";
+        }
+        s += "\u2022";
+        for(int i=this.dpos;i<this.production.rhs.Length;++i){
+            s += " "+this.production.rhs[i];
+        }
+        s += " \u2551 ";
+        s += String.Join(" ",this.lookahead);
         return s;
     }
 
 }
 
-} //end namespace lab
+}

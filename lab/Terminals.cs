@@ -10,12 +10,10 @@ public class Terminals{
             new("BITNOTOP",         @"~"),
             new("BITOP",            @"[|&^]"),
             new("BOOLCONST",        @"\b(true|false)\b"),
-            new("BREAK",            @"\bbreak\b"),
             new("CLASS",            @"\bclass\b"),
             new("COLON",            @":"),
             new("COMMA",            @","),
-            new("COMMENT",          @"(//[^\n]*)|(/\*(.|[\n])*?\*/)"),
-            new("CONTINUE",         @"\bcontinue\b"),
+            new("COMMENT",          @"//[^\n]*"),
             new("DOT",              @"\."),
             new("ELSE",             @"\belse\b"),
             new("EQ",               @"="),
@@ -50,7 +48,7 @@ public class Terminals{
             new("WHILE",            @"\bwhile\b"),
             new("ID",               @"(?!\d)\w+" )
         });
-    } //makeThem
-} //class Terminals
+    }
+}
 
-} //namespace
+}
