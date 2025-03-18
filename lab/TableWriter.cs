@@ -1,94 +1,55 @@
+using System.Net.Mail;
+
 namespace lab{
-    
-    public static class SymbolTable{
 
-        static int numLocals=0;
-        static int nestingLevel=0;
-        static Stack< List<VarInfo> > shadowed = new();
+public static class TableWriter{
 
-        static Dictionary<string, VarInfo> table = new();
+    public static void create(){
+        //create a file called ParseTable.cs which has the parse table
+        using( var w = new StreamWriter("ParseTable.cs") ){
+            w.WriteLine("namespace lab{");
+            w.WriteLine("public static class ParseTable{");
+            w.WriteLine("    public static List<Dictionary<string,ParseAction> > table = new() {");
 
-        public static void enterFunctionScope(){ 
-            numLocals=0;
-            nestingLevel++;
-            shadowed.Push(new());
-        }
-        public static void leaveFunctionScope(){
-            nestingLevel--;
-            numLocals=0;        //bogus
-            removeVariablesFromTableWithNestingLevelGreaterThanThreshold(nestingLevel);
-            restoreShadowedVariables();
-        }
-
-        public static void enterLocalScope(){
-            nestingLevel++;    
-            shadowed.Push(new());
-        }
-        public static void leaveLocalScope(){
-            nestingLevel--;
-            //...fixme...
-            //destroy locals
-            throw new Exception();
-        }
-
-        static void removeVariablesFromTableWithNestingLevelGreaterThanThreshold(int v){
-            //delete anything from table where 
-            //table thing's nestinglevel > v
-        }
-
-        static void restoreShadowedVariables(){
-            foreach(VarInfo vi in shadowed.Peek()){
-                string varname = vi.token.lexeme;
-                table[varname] = vi;
-            }
-            shadowed.Pop();
-        }
-
-        public static VarInfo lookup(Token id){
-            throw new Exception("FINISH ME");
-            //look in table
-            //find thing
-            //if not found, signal error
-            //else return data    
-        }
-
-        public static void declareGlobal(Token token, NodeType type){
-            string varname = token.lexeme;
-            if( table.ContainsKey(varname)){
-                Utils.error(token, "Redeclaration of variable");
-            }
-            table[varname] = new VarInfo(token,
-                nestingLevel, //always zero
-                type, new GlobalLocation());
-        }
-        public static void declareLocal(Token token, NodeType type){
-            string varname = token.lexeme;
-            if( table.ContainsKey(varname)){
-                VarInfo vi = table[varname];
-                if( vi.nestingLevel == nestingLevel ){
-                    Utils.error(token, "Redeclaration of variable");
-                } else if( vi.nestingLevel > nestingLevel ){
-                    throw new Exception("ICE");
-                } else {
-                    //vi.nestingLevel must be < nestingLevel
-                    shadowed.Peek().Add( table[varname] );
+            for(int i=0;i<DFA.allStates.Count;++i){
+                w.WriteLine("        // DFA STATE "+i); //index in allStates == state's "unique" number
+                DFAState q = DFA.allStates[i];
+                foreach(LRItem I in q.label.items){
+                    w.WriteLine($"        // {I}");
                 }
+                w.WriteLine("        new Dictionary<string,ParseAction>(){");
+                //shift rules
+                foreach( string sym in q.transitions.Keys){
+                    w.Write("                ");
+                    w.Write("{");
+                    w.Write($"\"{sym}\" , ");
+                    w.Write($"new ParseAction(PAction.SHIFT, {q.transitions[sym].unique}, null, -1)");
+                    w.WriteLine("},");
+                }
+                //reduce rules
+                foreach( LRItem I in q.label.items){
+                    if( I.dposAtEnd() ){
+                        foreach( string lookahead in I.lookahead){
+                            w.Write($"                ");
+                            w.Write("{");
+                            w.Write($"\"{lookahead}\"");
+                            w.Write(",");
+                            w.Write($"new ParseAction(PAction.REDUCE, {I.production.rhs.Length}, \"{I.production.lhs}\", {I.production.unique})");
+                            w.WriteLine("},");
+                        }
+                    }
+                }
+                w.WriteLine("        },");
             }
-            table[varname] = new VarInfo(token, 
-                    nestingLevel, 
-                    type, 
-                    new LocalLocation(numLocals)
-            );
-            numLocals++;
-        }
-        public static void declareParameter(Token token, NodeType type){ 
-            //...
-            throw new Exception("FINISH ME"); 
-        }
 
-        public static bool currentlyInGlobalScope(){
-            throw new Exception("Finish me");
+            w.WriteLine("    }; //close the table initializer");
+            w.WriteLine("} //close the ParseTable class");
+            w.WriteLine("} //close the namespace lab thing");
         }
     }
 
-}
+
+
+} //class TableWriter
+
+} //namespace lab

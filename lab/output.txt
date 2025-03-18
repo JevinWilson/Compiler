@@ -1,0 +1,42 @@
+Row 0:
+    S S 1 
+    cond S 2 
+    assign S 3 
+    IF S 4 
+    ID S 5 
+Row 1:
+    $ R 1 S'
+Row 2:
+    $ R 1 S
+    ELSE R 1 S
+Row 3:
+    $ R 1 S
+    ELSE R 1 S
+Row 4:
+    ID S 6 
+Row 5:
+    EQ S 7 
+Row 6:
+    S S 8 
+    cond S 2 
+    assign S 3 
+    IF S 4 
+    ID S 5 
+Row 7:
+    NUM S 9 
+Row 8:
+Shift-Reduce conflict in state 8 on symbol ELSE
+    ELSE S 10 
+    $ R 3 cond
+Row 9:
+    $ R 3 assign
+    ELSE R 3 assign
+Row 10:
+    S S 11 
+    cond S 2 
+    assign S 3 
+    IF S 4 
+    ID S 5 
+Row 11:
+    $ R 5 cond
+    ELSE R 5 cond
