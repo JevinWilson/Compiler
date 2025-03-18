@@ -58,7 +58,7 @@ public class LRItemWithLookahead {
     public override string ToString() {
         string itemStr = this.item.ToString();
         string lookaheadStr = String.Join(" ", this.lookaheads.OrderBy(s => s));
-        return $"{itemStr} \u2551 {lookaheadStr}"; // Using the double vertical line separator
+        return $"{itemStr} \u2551 {lookaheadStr}"; // double vertical line
     }
 }
 

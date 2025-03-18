@@ -44,14 +44,15 @@ public class LRItem{
     public static bool operator!=(LRItem o1, LRItem o2){
         return !(o1==o2);
     }
-    public override string ToString()
-    {
+    public override string ToString() {
         string s = $"{this.production.lhs} :: ";
-        for(var i=0;i<this.dpos;++i)
+        for(var i=0; i<this.dpos; ++i)
             s += $"{this.production.rhs[i]} ";
-        s += "\u2022";  //bullet
-        for(var i=this.dpos;i<this.production.rhs.Length;++i)
+
+        s += " \u2022"; 
+        for(var i=this.dpos; i<this.production.rhs.Length; ++i)
             s += $" {this.production.rhs[i]}";
+            
         return s;
     }
 
