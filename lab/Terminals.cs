@@ -15,6 +15,9 @@ public class Terminals{
             new("RP",               @"\)"),
             new("IF",               @"\bif\b"),
             new("ELSE",             @"\belse\b"),
+            new("TYPE",             @"\bint\b"),
+            new("SEMI",             @";"),
+            new("VOID",             @"\bvoid\b"),
             new("ID",               @"(?!\d)\w+" )
         });
     }

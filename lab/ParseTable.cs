@@ -3,98 +3,125 @@ public static class ParseTable{
     public static List<Dictionary<string,ParseAction> > table = new() {
         // DFA STATE 0
         // S' :: • S ║ $
-        // S :: • cond ║ $
-        // S :: • assign ║ $
-        // cond :: • IF ID S ║ $
-        // cond :: • IF ID S ELSE S ║ $
-        // assign :: • ID EQ NUM ║ $
+        // S :: • decls ║ $
+        // decls :: • decl decls ║ $
+        // decl :: • vardecl ║ TYPE VOID
+        // decl :: • funcdecl ║ TYPE VOID
+        // vardecl :: • nonVoidType ID SEMI ║ TYPE VOID
+        // funcdecl :: • anyType ID LP RP SEMI ║ TYPE VOID
+        // nonVoidType :: • TYPE ║ ID
+        // anyType :: • VOID ║ ID
+        // anyType :: • TYPE ║ ID
         new Dictionary<string,ParseAction>(){
                 {"S" , new ParseAction(PAction.SHIFT, 1, null, -1)},
-                {"cond" , new ParseAction(PAction.SHIFT, 2, null, -1)},
-                {"assign" , new ParseAction(PAction.SHIFT, 3, null, -1)},
-                {"IF" , new ParseAction(PAction.SHIFT, 4, null, -1)},
-                {"ID" , new ParseAction(PAction.SHIFT, 5, null, -1)},
+                {"decls" , new ParseAction(PAction.SHIFT, 2, null, -1)},
+                {"decl" , new ParseAction(PAction.SHIFT, 3, null, -1)},
+                {"vardecl" , new ParseAction(PAction.SHIFT, 4, null, -1)},
+                {"funcdecl" , new ParseAction(PAction.SHIFT, 5, null, -1)},
+                {"nonVoidType" , new ParseAction(PAction.SHIFT, 6, null, -1)},
+                {"anyType" , new ParseAction(PAction.SHIFT, 7, null, -1)},
+                {"TYPE" , new ParseAction(PAction.SHIFT, 8, null, -1)},
+                {"VOID" , new ParseAction(PAction.SHIFT, 9, null, -1)},
         },
         // DFA STATE 1
         // S' :: S • ║ $
         new Dictionary<string,ParseAction>(){
-                {"$" , new ParseAction(PAction.REDUCE, 1, "S'", 5)},
+                {"$" , new ParseAction(PAction.REDUCE, 1, "S'", 9)},
         },
         // DFA STATE 2
-        // S :: cond • ║ $ ELSE
+        // S :: decls • ║ $
         new Dictionary<string,ParseAction>(){
                 {"$" , new ParseAction(PAction.REDUCE, 1, "S", 0)},
-                {"ELSE" , new ParseAction(PAction.REDUCE, 1, "S", 0)},
         },
         // DFA STATE 3
-        // S :: assign • ║ $ ELSE
+        // decls :: decl • decls ║ $
+        // decls :: • decl decls ║ $
+        // decl :: • vardecl ║ TYPE VOID
+        // decl :: • funcdecl ║ TYPE VOID
+        // vardecl :: • nonVoidType ID SEMI ║ TYPE VOID
+        // funcdecl :: • anyType ID LP RP SEMI ║ TYPE VOID
+        // nonVoidType :: • TYPE ║ ID
+        // anyType :: • VOID ║ ID
+        // anyType :: • TYPE ║ ID
         new Dictionary<string,ParseAction>(){
-                {"$" , new ParseAction(PAction.REDUCE, 1, "S", 1)},
-                {"ELSE" , new ParseAction(PAction.REDUCE, 1, "S", 1)},
+                {"decls" , new ParseAction(PAction.SHIFT, 16, null, -1)},
+                {"decl" , new ParseAction(PAction.SHIFT, 3, null, -1)},
+                {"vardecl" , new ParseAction(PAction.SHIFT, 4, null, -1)},
+                {"funcdecl" , new ParseAction(PAction.SHIFT, 5, null, -1)},
+                {"nonVoidType" , new ParseAction(PAction.SHIFT, 6, null, -1)},
+                {"anyType" , new ParseAction(PAction.SHIFT, 7, null, -1)},
+                {"TYPE" , new ParseAction(PAction.SHIFT, 8, null, -1)},
+                {"VOID" , new ParseAction(PAction.SHIFT, 9, null, -1)},
         },
         // DFA STATE 4
-        // cond :: IF • ID S ║ $ ELSE
-        // cond :: IF • ID S ELSE S ║ $ ELSE
+        // decl :: vardecl • ║ TYPE VOID
         new Dictionary<string,ParseAction>(){
-                {"ID" , new ParseAction(PAction.SHIFT, 8, null, -1)},
+                {"TYPE" , new ParseAction(PAction.REDUCE, 1, "decl", 2)},
+                {"VOID" , new ParseAction(PAction.REDUCE, 1, "decl", 2)},
         },
         // DFA STATE 5
-        // assign :: ID • EQ NUM ║ $ ELSE
+        // decl :: funcdecl • ║ TYPE VOID
         new Dictionary<string,ParseAction>(){
-                {"EQ" , new ParseAction(PAction.SHIFT, 6, null, -1)},
+                {"TYPE" , new ParseAction(PAction.REDUCE, 1, "decl", 3)},
+                {"VOID" , new ParseAction(PAction.REDUCE, 1, "decl", 3)},
         },
         // DFA STATE 6
-        // assign :: ID EQ • NUM ║ $ ELSE
+        // vardecl :: nonVoidType • ID SEMI ║ TYPE VOID
         new Dictionary<string,ParseAction>(){
-                {"NUM" , new ParseAction(PAction.SHIFT, 7, null, -1)},
+                {"ID" , new ParseAction(PAction.SHIFT, 14, null, -1)},
         },
         // DFA STATE 7
-        // assign :: ID EQ NUM • ║ $ ELSE
+        // funcdecl :: anyType • ID LP RP SEMI ║ TYPE VOID
         new Dictionary<string,ParseAction>(){
-                {"$" , new ParseAction(PAction.REDUCE, 3, "assign", 2)},
-                {"ELSE" , new ParseAction(PAction.REDUCE, 3, "assign", 2)},
+                {"ID" , new ParseAction(PAction.SHIFT, 10, null, -1)},
         },
         // DFA STATE 8
-        // cond :: IF ID • S ║ $ ELSE
-        // cond :: IF ID • S ELSE S ║ $ ELSE
-        // S :: • cond ║ $ ELSE
-        // S :: • assign ║ $ ELSE
-        // cond :: • IF ID S ║ $ ELSE
-        // cond :: • IF ID S ELSE S ║ $ ELSE
-        // assign :: • ID EQ NUM ║ $ ELSE
+        // nonVoidType :: TYPE • ║ ID
+        // anyType :: TYPE • ║ ID
         new Dictionary<string,ParseAction>(){
-                {"S" , new ParseAction(PAction.SHIFT, 9, null, -1)},
-                {"cond" , new ParseAction(PAction.SHIFT, 2, null, -1)},
-                {"assign" , new ParseAction(PAction.SHIFT, 3, null, -1)},
-                {"IF" , new ParseAction(PAction.SHIFT, 4, null, -1)},
-                {"ID" , new ParseAction(PAction.SHIFT, 5, null, -1)},
+                {"ID" , new ParseAction(PAction.REDUCE, 1, "nonVoidType", 6)},
         },
         // DFA STATE 9
-        // cond :: IF ID S • ║ $ ELSE
-        // cond :: IF ID S • ELSE S ║ $ ELSE
+        // anyType :: VOID • ║ ID
         new Dictionary<string,ParseAction>(){
-                {"ELSE" , new ParseAction(PAction.SHIFT, 10, null, -1)},
-                {"$" , new ParseAction(PAction.REDUCE, 3, "cond", 3)},
+                {"ID" , new ParseAction(PAction.REDUCE, 1, "anyType", 7)},
         },
         // DFA STATE 10
-        // cond :: IF ID S ELSE • S ║ $ ELSE
-        // S :: • cond ║ $ ELSE
-        // S :: • assign ║ $ ELSE
-        // cond :: • IF ID S ║ $ ELSE
-        // cond :: • IF ID S ELSE S ║ $ ELSE
-        // assign :: • ID EQ NUM ║ $ ELSE
+        // funcdecl :: anyType ID • LP RP SEMI ║ TYPE VOID
         new Dictionary<string,ParseAction>(){
-                {"S" , new ParseAction(PAction.SHIFT, 11, null, -1)},
-                {"cond" , new ParseAction(PAction.SHIFT, 2, null, -1)},
-                {"assign" , new ParseAction(PAction.SHIFT, 3, null, -1)},
-                {"IF" , new ParseAction(PAction.SHIFT, 4, null, -1)},
-                {"ID" , new ParseAction(PAction.SHIFT, 5, null, -1)},
+                {"LP" , new ParseAction(PAction.SHIFT, 11, null, -1)},
         },
         // DFA STATE 11
-        // cond :: IF ID S ELSE S • ║ $ ELSE
+        // funcdecl :: anyType ID LP • RP SEMI ║ TYPE VOID
         new Dictionary<string,ParseAction>(){
-                {"$" , new ParseAction(PAction.REDUCE, 5, "cond", 4)},
-                {"ELSE" , new ParseAction(PAction.REDUCE, 5, "cond", 4)},
+                {"RP" , new ParseAction(PAction.SHIFT, 12, null, -1)},
+        },
+        // DFA STATE 12
+        // funcdecl :: anyType ID LP RP • SEMI ║ TYPE VOID
+        new Dictionary<string,ParseAction>(){
+                {"SEMI" , new ParseAction(PAction.SHIFT, 13, null, -1)},
+        },
+        // DFA STATE 13
+        // funcdecl :: anyType ID LP RP SEMI • ║ TYPE VOID
+        new Dictionary<string,ParseAction>(){
+                {"TYPE" , new ParseAction(PAction.REDUCE, 5, "funcdecl", 5)},
+                {"VOID" , new ParseAction(PAction.REDUCE, 5, "funcdecl", 5)},
+        },
+        // DFA STATE 14
+        // vardecl :: nonVoidType ID • SEMI ║ TYPE VOID
+        new Dictionary<string,ParseAction>(){
+                {"SEMI" , new ParseAction(PAction.SHIFT, 15, null, -1)},
+        },
+        // DFA STATE 15
+        // vardecl :: nonVoidType ID SEMI • ║ TYPE VOID
+        new Dictionary<string,ParseAction>(){
+                {"TYPE" , new ParseAction(PAction.REDUCE, 3, "vardecl", 4)},
+                {"VOID" , new ParseAction(PAction.REDUCE, 3, "vardecl", 4)},
+        },
+        // DFA STATE 16
+        // decls :: decl decls • ║ $
+        new Dictionary<string,ParseAction>(){
+                {"$" , new ParseAction(PAction.REDUCE, 2, "decls", 1)},
         },
     }; //close the table initializer
 } //close the ParseTable class

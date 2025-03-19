@@ -6,9 +6,13 @@ public class Productions{
        
 
         Grammar.defineProductions( new PSpec[] {
-            new("S :: cond | assign"),
-            new("assign :: ID EQ NUM"),
-            new("cond :: IF ID S | IF ID S ELSE S"),
+            new("S :: decls"),
+            new("decls :: decl decls"),
+            new("decl :: vardecl | funcdecl"),
+            new("vardecl :: nonVoidType ID SEMI"),
+            new("funcdecl :: anyType ID LP RP SEMI"),
+            new("nonVoidType :: TYPE"),
+            new("anyType :: VOID | TYPE")
         });
         
     }
