@@ -7,12 +7,48 @@ public class CompilersAreGreat{
 
     public static void Main(string[] args){
 
+
+    var root = new TreeNode("sum",-1);
+    var sumA = new TreeNode("sum",-1);
+    var plusA = new TreeNode( new Token("PLUS","+",1) );
+    var num3 = new TreeNode( new Token("NUM","3",1) );
+    root.appendChild(sumA);
+    root.appendChild(plusA);
+    root.appendChild(num3);
+
+    var sumB = new TreeNode("sum",-1);
+    var plusB = new TreeNode( new Token("PLUS","+",1) );
+    var num2 = new TreeNode( new Token("NUM","2",1) );
+    sumA.appendChild(sumB);
+    sumA.appendChild(plusB);
+    sumA.appendChild(num2);
+
+    var num1 = new TreeNode( new Token("NUM","1",1) );
+    sumB.appendChild(num1);
+
+    var fooby = new TreeNode("fooby",-1);
+    num1.appendChild(fooby);
+    num2.appendChild(new TreeNode("dooby",-1));
+    num3.appendChild(new TreeNode("doo",-1));
+    fooby.appendChild(new TreeNode("nooby",-1));
+    num1.appendChild(new TreeNode("blargh",-1));
+
+    root.print();
+
+    return;
+
+
+        // ImmutableHashSet<int> x1 = ImmutableHashSet.Create<int>(1,2, V);
+        // var x2 = ImmutableHashSet.Create<int>(1,2,3);
+        // Console.WriteLine(x1.GetHashCode());
+        // Console.WriteLine(x2.GetHashCode());
+        // return;
+
         //initialize our grammar
         Terminals.makeThem();
         Productions.makeThem();
-        //ProductionsExpr.makeThem();
 
-        if( args.Contains("-g") ){
+        if( args.Length == 1 && args[0] == "-g" ){
             Grammar.check();
             Grammar.computeNullableAndFirst();
             DFA.makeDFA(); //time consuming
@@ -20,53 +56,12 @@ public class CompilersAreGreat{
             return;
         }
 
-        TreeNode root=null;
+        string inp = File.ReadAllText(args[0]);
+        var tokens = new List<Token>();
+        var T = new Tokenizer(inp);
 
-        for(int i=0;i<args.Length;++i){
-            if( args[i] == "-t" ){
-                i++;
-                if( i >= args.Length ){
-                    Console.WriteLine("-t requires an argument");
-                    Environment.Exit(1);
-                }
-                string treefile = args[i];
-                using(var r = new StreamReader(treefile)){
-                    string data = r.ReadToEnd();
-                    var dopts = new System.Text.Json.JsonSerializerOptions();
-                    dopts.IncludeFields=true;
-                    dopts.WriteIndented=true;
-                    dopts.MaxDepth=1000000;
-                    root = System.Text.Json.JsonSerializer.Deserialize<TreeNode>(data,dopts);
-                    root.setParents();
-                }
-            }
-        }
+        TreeNode rootx = Parser.parse(T);
 
-        if( root == null){
-            string inp = File.ReadAllText(args[0]);
-            var tokens = new List<Token>();
-            var T = new Tokenizer(inp);
-            root = Parser.parse(T);
-        }
-        
-        root.collectClassNames();
-        root.setNodeTypes();
-
-        //root.removeUnitProductions();     
-
-        Console.WriteLine("The tree:");
-        root.print();
-        
-        //debug output: Write the tree in JSON format
-        var opts = new System.Text.Json.JsonSerializerOptions();
-        opts.IncludeFields=true;
-        opts.WriteIndented=true;
-        opts.MaxDepth=1000000;
-        string J = System.Text.Json.JsonSerializer.Serialize(root,opts);
-        using(var w = new StreamWriter("tree.json")){
-            w.WriteLine(J);
-            //root.toJson(w);
-        }
     }
 } //class
 

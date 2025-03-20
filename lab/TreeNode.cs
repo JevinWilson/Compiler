@@ -69,37 +69,37 @@ public class TreeNode{
         }
     }
 
-    // public void toJson(StreamWriter w){
-    //     w.WriteLine("{");
-    //     w.WriteLine( $"\"sym\" : \"{this.sym}\",");
-    //     w.WriteLine( $"\"token\" : ");
-    //     if( this.token != null )
-    //         this.token.toJson(w);
-    //     else
-    //         w.Write("null");
-    //     w.WriteLine(",");
-    //     w.WriteLine( $"\"productionNumber\" : {this.productionNumber},");
-    //     w.WriteLine($"\"varInfo\" : ");
-    //     if( this.varInfo != null )
-    //         this.varInfo.toJson(w);
-    //     else
-    //         w.Write("null");
-    //     w.WriteLine(",");
-    //     w.Write($"\"nodeType\" : ");
-    //     if(this.nodeType != null )
-    //         this.nodeType.toJson(w);
-    //     else
-    //         w.Write("null");
-    //     w.WriteLine(",");
-    //     w.WriteLine( "\"children\": [");
-    //     for(int i=0;i<this.children.Count;i++){
-    //         this.children[i].toJson(w);
-    //         if( i != this.children.Count-1)
-    //             w.WriteLine(",");
-    //     }
-    //     w.WriteLine("],");
-    //     w.WriteLine("}");
-    // }
+    public void toJson(StreamWriter w){
+        w.WriteLine("{");
+        w.WriteLine( $"\"sym\" : \"{this.sym}\",");
+        w.WriteLine( $"\"token\" : ");
+        if( this.token != null )
+            this.token.toJson(w);
+        else
+            w.Write("null");
+        w.WriteLine(",");
+        w.WriteLine( $"\"productionNumber\" : {this.productionNumber},");
+        w.WriteLine($"\"varInfo\" : ");
+        if( this.varInfo != null )
+            this.varInfo.toJson(w);
+        else
+            w.Write("null");
+        w.WriteLine(",");
+        w.Write($"\"nodeType\" : ");
+        if(this.nodeType != null )
+            this.nodeType.toJson(w);
+        else
+            w.Write("null");
+        w.WriteLine(",");
+        w.WriteLine( "\"children\": [");
+        for(int i=0;i<this.children.Count;i++){
+            this.children[i].toJson(w);
+            if( i != this.children.Count-1)
+                w.WriteLine(",");
+        }
+        w.WriteLine("],");
+        w.WriteLine("}");
+    }
 
 
     // public static TreeNode fromJson(StreamReader r){
