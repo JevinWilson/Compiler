@@ -1,17 +1,20 @@
-using System.Text.RegularExpressions;
 
 namespace lab{
 
-public class Terminal{
-    public string sym;
-    public Regex rex;
+public class Terminals{
+    public static void makeThem(){
+        Grammar.addTerminals( new Terminal[] {
+            new("COMMENT",          @"//[^\n]*"),
+            new("EQ",               @"="),
+            new("LPAREN",           @"\("),
+            new("MUL",              @"\*"),
+            new("NUM",              @"\d+" ),
+            new("PLUS",             @"\+"),
+            new("RPAREN",           @"\)"),
+            new("SEMI",             @";"),
+            new("ID",               @"(?!\d)\w+" )
+        });
+    } //makeThem
+} //class Terminals
 
-    public Terminal(string sym, string rex){
-        this.sym=sym;
-        this.rex= new Regex( "\\G(" + rex + ")" );
-    }
-
-} //end of class Terminal
-
-
-} //end of namespace
+} //namespace
