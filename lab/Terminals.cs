@@ -6,22 +6,15 @@ public class Terminals{
         Grammar.addTerminals( new Terminal[] {
             new("COMMENT",          @"//[^\n]*"),
             new("EQ",               @"="),
-            new("LB",               @"\["),
-            new("LP",               @"\("),
+            new("LPAREN",           @"\("),
             new("MUL",              @"\*"),
             new("NUM",              @"\d+" ),
             new("PLUS",             @"\+"),
-            new("RB",               @"\]"),
-            new("RP",               @"\)"),
-            new("IF",               @"\bif\b"),
-            new("ELSE",             @"\belse\b"),
-            new("TYPE",             @"\bint\b"),
+            new("RPAREN",           @"\)"),
             new("SEMI",             @";"),
-            new("VOID",             @"\bvoid\b"),
             new("ID",               @"(?!\d)\w+" )
         });
-    }
+    } //makeThem
+} //class Terminals
 
-}
-
-}
+} //namespace
