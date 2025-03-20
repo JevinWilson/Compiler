@@ -1,0 +1,111 @@
+{
+  "sym": "S",
+  "token": null,
+  "children": [
+    {
+      "sym": "sum",
+      "token": null,
+      "children": [
+        {
+          "sym": "sum",
+          "token": null,
+          "children": [
+            {
+              "sym": "prod",
+              "token": null,
+              "children": [
+                {
+                  "sym": "factor",
+                  "token": null,
+                  "children": [
+                    {
+                      "sym": "NUM",
+                      "token": {
+                        "sym": "NUM",
+                        "lexeme": "1",
+                        "line": 1
+                      },
+                      "children": [],
+                      "productionNumber": -1,
+                      "varInfo": null,
+                      "nodeType": null
+                    }
+                  ],
+                  "productionNumber": 5,
+                  "varInfo": null,
+                  "nodeType": null
+                }
+              ],
+              "productionNumber": 4,
+              "varInfo": null,
+              "nodeType": null
+            }
+          ],
+          "productionNumber": 2,
+          "varInfo": null,
+          "nodeType": null
+        },
+        {
+          "sym": "PLUS",
+          "token": {
+            "sym": "PLUS",
+            "lexeme": "\u002B",
+            "line": 1
+          },
+          "children": [],
+          "productionNumber": -1,
+          "varInfo": null,
+          "nodeType": null
+        },
+        {
+          "sym": "prod",
+          "token": null,
+          "children": [
+            {
+              "sym": "factor",
+              "token": null,
+              "children": [
+                {
+                  "sym": "NUM",
+                  "token": {
+                    "sym": "NUM",
+                    "lexeme": "2",
+                    "line": 1
+                  },
+                  "children": [],
+                  "productionNumber": -1,
+                  "varInfo": null,
+                  "nodeType": null
+                }
+              ],
+              "productionNumber": 5,
+              "varInfo": null,
+              "nodeType": null
+            }
+          ],
+          "productionNumber": 4,
+          "varInfo": null,
+          "nodeType": null
+        }
+      ],
+      "productionNumber": 1,
+      "varInfo": null,
+      "nodeType": null
+    },
+    {
+      "sym": "SEMI",
+      "token": {
+        "sym": "SEMI",
+        "lexeme": "",
+        "line": 1
+      },
+      "children": [],
+      "productionNumber": -1,
+      "varInfo": null,
+      "nodeType": null
+    }
+  ],
+  "productionNumber": 0,
+  "varInfo": null,
+  "nodeType": null
+}
