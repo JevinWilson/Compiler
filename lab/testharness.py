@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-EXE = r"C:\Users\jaw06\Desktop\Compiler\lab\bin\Debug\net8.0\lab.exe"
+EXE = r"c:\users\bob\lab.exe"
 
 
 
@@ -33,10 +33,11 @@ def main():
 
     alltests.sort()
 
+    numpassed=0
+    numfailed=0
+
     for dirpath,f in alltests:
         print("Testing",f,"...")
-
-        numtests += 1
 
         resultfile = f"{base}/tests/outputs/{f}"
 
@@ -45,73 +46,85 @@ def main():
         except FileNotFoundError:
             pass
 
-        rv = run(f"{base}/tests/inputs/{f}")
+        exitcode,output = run(f"{base}/tests/inputs/{f}")
 
         print("Parser finished with",f)
 
-        if os.path.exists(resultfile):
-            if rv == 0:
-                with open(resultfile) as fp:
-                    try:
-                        expectedJ = json.load(fp)
-                    except json.JSONDecodeError as e:
-                        print("Error in test harness file",resultfile)
-                        print("Badly formatted: At line",e.lineno," column",e.colno,":",e.msg)
-                        return
-                try:
-                    with open("tree.json") as fp:
-                        actualJ = json.load(fp)
-                except FileNotFoundError:
-                    print("Program returned success, but tree.json does not exist")
-                    return
-                except json.JSONDecodeError as e:
-                    print("tree.json is badly formatted: At line",e.lineno," column",e.colno,":",e.msg)
-                    return
-
-                ok = compare(expectedJ, actualJ)
-                if not ok:
-                    print("Tree does not match expected")
-                    return
-
-            else:
-                print("Problem: Did not parse",f,"but it should have parsed")
+        with open(resultfile) as fp:
+            try:
+                expected = json.load(fp)
+            except json.JSONDecodeError as e:
+                print("Error in test harness file",resultfile)
+                print("Badly formatted: At line",e.lineno," column",e.colno,":",e.msg)
                 return
+
+        if expected["returncode"] == 0:
+            if exitcode != 0:
+                print("Parser returned an error, but it should have parsed the file successfully")
+                numfailed+=1
+            else:
+                if compare(expected["declarations"],output):
+                    print("OK!")
+                    numpassed += 1
+                else:
+                    numfailed += 1
         else:
-            if rv == 0:
-                print("Problem: Parsed",f,"but it should not have")
-                return
+            if exitcode == 0:
+                print("Parser accepted the file, but it should have returned an error")
+                numfailed+=1
             else:
-                pass
+                numpassed += 1
 
+
+    numtests = numpassed + numfailed
     if numtests == 0 :
         print("Did not run any tests?!")
         return
 
-    print(numtests,"tests passed OK")
+    print(numpassed,"of",numtests,"tests passed OK")
+    print(numfailed,"of",numtests,"tests failed")
 
     return
 
 def run(fname):
     cmd = [EXE,fname]
-    P = subprocess.run(cmd)
-    return P.returncode
+    P = subprocess.Popen(cmd,stdout=subprocess.PIPE)
+    o,e = P.communicate()
+    o=o.decode()
+    o=o.strip()
+    if o:
+        print(o)
+    return P.returncode, o
 
-def compare(J1,J2):
-    if J1.get("sym") != J2.get("sym"):
-        print("Symbol mismatch:",J1.get("sym"),"vs.",J2.get("sym"))
-        return False
-    if J1.get("token") != J2.get("token"):
-        print("Token mismatch:",J1.get("token"),"vs.",J2.get("token"))
-        return False
-    c1 = J1.get("children",[])
-    c2 = J2.get("children",[])
-    if len(c1) != len(c2):
-        print("Child length mismatch:",len(c1),"vs.",len(c2))
-        return False
-    for i in range(len(c1)):
-        if not compare(c1[i],c2[i]):
-            return False
-    return True
+def compare(expected, output):
+    classes=set()
+    funcs=set()
+    for line in output.split("\n"):
+        if line.startswith("CLASS:"):
+            name = line[6:].strip()
+            classes.add(name)
+        elif line.startswith("FUNC:"):
+            name = line[5:].strip()
+            funcs.add(name)
+
+    ec = set(expected["classes"])
+    ef = set(expected["funcs"])
+
+    ok=True
+
+    if ec != classes:
+        print("Mismatch for classes:")
+        print("Expected:", sorted(list(ec)))
+        print("Got:     ", sorted(list(classes)))
+        ok=False
+
+    if ef != funcs:
+        print("Mismatch for functions:")
+        print("Expected:", sorted(list(ef)))
+        print("Got:     ", sorted(list(funcs)))
+        ok=False
+
+    return ok
 
 main()
 input("Press 'enter' to quit")

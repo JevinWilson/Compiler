@@ -1,0 +1,1 @@
+{"returncode": 0, "declarations": {"funcs": ["foo", "bar", "baz", "bam", "boom"], "classes": ["zz", "y"]}}

@@ -1,0 +1,11 @@
+func foo() {
+}
+
+func bar() : int {
+}
+
+func baz( a: int ) {
+}
+
+func bam( a: int ): int {
+}
