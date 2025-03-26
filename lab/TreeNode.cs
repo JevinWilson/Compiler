@@ -196,6 +196,13 @@ public class TreeNode{
         this.production?.pspec.collectClassNames(this);
     }
 
+    public void collectFuncNames(){
+        if (this.production?.pspec.collectFuncNames != null) {
+            this.production?.pspec.collectFuncNames(this);
+
+        }
+    }
+
     public void setNodeTypes(){
         this.production?.pspec.setNodeTypes(this);
     }
