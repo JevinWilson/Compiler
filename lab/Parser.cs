@@ -9,7 +9,7 @@ public static class Parser{
 
         stk.Push(0);
 
-        Token tok = tokenizer.next();
+        Token tok=tokenizer.next();
         while(true){
             int currentState = stk.Peek();
             Dictionary<string,ParseAction> row = ParseTable.table[currentState];
@@ -26,7 +26,7 @@ public static class Parser{
             ParseAction A = row[tok.sym];
             if(A.action == PAction.SHIFT) {
                 stk.Push(A.num);
-                tstk.Push(new TreeNode(tok));
+                tstk.Push( new TreeNode( tok.sym, tok, -1) );
                 tok = tokenizer.next();
             } else {
                 //REDUCE!
@@ -34,21 +34,19 @@ public static class Parser{
                     return tstk.Pop();
                 }
 
-                var n = new TreeNode(A.sym, A.productionNumber);
-                for(int i=0; i<A.num; i++){
+                var n = new TreeNode( A.sym, null, A.productionNumber );
+                for(int i=0;i<A.num;++i){
                     stk.Pop();
                     var c = tstk.Pop();
-                    // Add child to beginning of children list
-                    n.children.Insert(0, c);
-                    // Set parent
-                    c.parent = n;
+                    n.prependChild(c);
                 }
 
                 currentState = stk.Peek();
-                stk.Push(ParseTable.table[currentState][A.sym].num);
+                stk.Push( ParseTable.table[currentState][A.sym].num );
                 tstk.Push(n);
             }
         }
+
     }
 }
 }

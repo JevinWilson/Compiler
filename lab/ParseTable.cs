@@ -21,7 +21,7 @@ public static class ParseTable{
         // DFA STATE 1
         // S' :: S • ║ $
         new Dictionary<string,ParseAction>(){
-                {"$" , new ParseAction(PAction.REDUCE, 1, "S'", 7)},
+                {"$",new ParseAction(PAction.REDUCE, 1, "S'", 7)},
         },
         // DFA STATE 2
         // S :: sum • SEMI ║ $
@@ -35,25 +35,25 @@ public static class ParseTable{
         // prod :: prod • MUL factor ║ SEMI PLUS RPAREN MUL
         new Dictionary<string,ParseAction>(){
                 {"MUL" , new ParseAction(PAction.SHIFT, 11, null, -1)},
-                {"SEMI" , new ParseAction(PAction.REDUCE, 1, "sum", 2)},
-                {"PLUS" , new ParseAction(PAction.REDUCE, 1, "sum", 2)},
-                {"RPAREN" , new ParseAction(PAction.REDUCE, 1, "sum", 2)},
+                {"SEMI",new ParseAction(PAction.REDUCE, 1, "sum", 2)},
+                {"PLUS",new ParseAction(PAction.REDUCE, 1, "sum", 2)},
+                {"RPAREN",new ParseAction(PAction.REDUCE, 1, "sum", 2)},
         },
         // DFA STATE 4
         // prod :: factor • ║ SEMI PLUS MUL RPAREN
         new Dictionary<string,ParseAction>(){
-                {"SEMI" , new ParseAction(PAction.REDUCE, 1, "prod", 4)},
-                {"PLUS" , new ParseAction(PAction.REDUCE, 1, "prod", 4)},
-                {"MUL" , new ParseAction(PAction.REDUCE, 1, "prod", 4)},
-                {"RPAREN" , new ParseAction(PAction.REDUCE, 1, "prod", 4)},
+                {"SEMI",new ParseAction(PAction.REDUCE, 1, "prod", 4)},
+                {"PLUS",new ParseAction(PAction.REDUCE, 1, "prod", 4)},
+                {"MUL",new ParseAction(PAction.REDUCE, 1, "prod", 4)},
+                {"RPAREN",new ParseAction(PAction.REDUCE, 1, "prod", 4)},
         },
         // DFA STATE 5
         // factor :: NUM • ║ SEMI PLUS MUL RPAREN
         new Dictionary<string,ParseAction>(){
-                {"SEMI" , new ParseAction(PAction.REDUCE, 1, "factor", 5)},
-                {"PLUS" , new ParseAction(PAction.REDUCE, 1, "factor", 5)},
-                {"MUL" , new ParseAction(PAction.REDUCE, 1, "factor", 5)},
-                {"RPAREN" , new ParseAction(PAction.REDUCE, 1, "factor", 5)},
+                {"SEMI",new ParseAction(PAction.REDUCE, 1, "factor", 5)},
+                {"PLUS",new ParseAction(PAction.REDUCE, 1, "factor", 5)},
+                {"MUL",new ParseAction(PAction.REDUCE, 1, "factor", 5)},
+                {"RPAREN",new ParseAction(PAction.REDUCE, 1, "factor", 5)},
         },
         // DFA STATE 6
         // factor :: LPAREN • sum RPAREN ║ SEMI PLUS MUL RPAREN
@@ -80,10 +80,10 @@ public static class ParseTable{
         // DFA STATE 8
         // factor :: LPAREN sum RPAREN • ║ SEMI PLUS MUL RPAREN
         new Dictionary<string,ParseAction>(){
-                {"SEMI" , new ParseAction(PAction.REDUCE, 3, "factor", 6)},
-                {"PLUS" , new ParseAction(PAction.REDUCE, 3, "factor", 6)},
-                {"MUL" , new ParseAction(PAction.REDUCE, 3, "factor", 6)},
-                {"RPAREN" , new ParseAction(PAction.REDUCE, 3, "factor", 6)},
+                {"SEMI",new ParseAction(PAction.REDUCE, 3, "factor", 6)},
+                {"PLUS",new ParseAction(PAction.REDUCE, 3, "factor", 6)},
+                {"MUL",new ParseAction(PAction.REDUCE, 3, "factor", 6)},
+                {"RPAREN",new ParseAction(PAction.REDUCE, 3, "factor", 6)},
         },
         // DFA STATE 9
         // sum :: sum PLUS • prod ║ SEMI RPAREN PLUS
@@ -102,9 +102,9 @@ public static class ParseTable{
         // prod :: prod • MUL factor ║ SEMI RPAREN MUL PLUS
         new Dictionary<string,ParseAction>(){
                 {"MUL" , new ParseAction(PAction.SHIFT, 11, null, -1)},
-                {"SEMI" , new ParseAction(PAction.REDUCE, 3, "sum", 1)},
-                {"RPAREN" , new ParseAction(PAction.REDUCE, 3, "sum", 1)},
-                {"PLUS" , new ParseAction(PAction.REDUCE, 3, "sum", 1)},
+                {"SEMI",new ParseAction(PAction.REDUCE, 3, "sum", 1)},
+                {"RPAREN",new ParseAction(PAction.REDUCE, 3, "sum", 1)},
+                {"PLUS",new ParseAction(PAction.REDUCE, 3, "sum", 1)},
         },
         // DFA STATE 11
         // prod :: prod MUL • factor ║ SEMI PLUS RPAREN MUL
@@ -118,15 +118,15 @@ public static class ParseTable{
         // DFA STATE 12
         // prod :: prod MUL factor • ║ SEMI PLUS RPAREN MUL
         new Dictionary<string,ParseAction>(){
-                {"SEMI" , new ParseAction(PAction.REDUCE, 3, "prod", 3)},
-                {"PLUS" , new ParseAction(PAction.REDUCE, 3, "prod", 3)},
-                {"RPAREN" , new ParseAction(PAction.REDUCE, 3, "prod", 3)},
-                {"MUL" , new ParseAction(PAction.REDUCE, 3, "prod", 3)},
+                {"SEMI",new ParseAction(PAction.REDUCE, 3, "prod", 3)},
+                {"PLUS",new ParseAction(PAction.REDUCE, 3, "prod", 3)},
+                {"RPAREN",new ParseAction(PAction.REDUCE, 3, "prod", 3)},
+                {"MUL",new ParseAction(PAction.REDUCE, 3, "prod", 3)},
         },
         // DFA STATE 13
         // S :: sum SEMI • ║ $
         new Dictionary<string,ParseAction>(){
-                {"$" , new ParseAction(PAction.REDUCE, 2, "S", 0)},
+                {"$",new ParseAction(PAction.REDUCE, 2, "S", 0)},
         },
     }; //close the table initializer
 } //close the ParseTable class
