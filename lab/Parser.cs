@@ -3,7 +3,7 @@ namespace lab{
 public static class Parser{
 
     public static TreeNode parse(Tokenizer tokenizer){
-        
+
         var stk = new Stack<int>();
         var tstk = new Stack<TreeNode>();
 
@@ -11,7 +11,6 @@ public static class Parser{
 
         Token tok=tokenizer.next();
         while(true){
-            //Console.WriteLine($"Current token: {tok.sym} ({tok.lexeme})");
             int currentState = stk.Peek();
             Dictionary<string,ParseAction> row = ParseTable.table[currentState];
             if( !row.ContainsKey(tok.sym) ){

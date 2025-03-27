@@ -1,0 +1,275 @@
+{
+  "sym": "S",
+  "token": null,
+  "children": [
+    {
+      "sym": "decls",
+      "token": null,
+      "children": [
+        {
+          "sym": "vardecl",
+          "token": null,
+          "children": [
+            {
+              "sym": "VAR",
+              "token": {
+                "sym": "VAR",
+                "lexeme": "var",
+                "line": 1
+              },
+              "children": [],
+              "productionNumber": -1,
+              "varInfo": null,
+              "nodeType": null
+            },
+            {
+              "sym": "ID",
+              "token": {
+                "sym": "ID",
+                "lexeme": "x",
+                "line": 1
+              },
+              "children": [],
+              "productionNumber": -1,
+              "varInfo": null,
+              "nodeType": null
+            },
+            {
+              "sym": "COLON",
+              "token": {
+                "sym": "COLON",
+                "lexeme": ":",
+                "line": 1
+              },
+              "children": [],
+              "productionNumber": -1,
+              "varInfo": null,
+              "nodeType": null
+            },
+            {
+              "sym": "TYPE",
+              "token": {
+                "sym": "TYPE",
+                "lexeme": "int",
+                "line": 1
+              },
+              "children": [],
+              "productionNumber": -1,
+              "varInfo": null,
+              "nodeType": null
+            },
+            {
+              "sym": "EQ",
+              "token": {
+                "sym": "EQ",
+                "lexeme": "=",
+                "line": 1
+              },
+              "children": [],
+              "productionNumber": -1,
+              "varInfo": null,
+              "nodeType": null
+            },
+            {
+              "sym": "expr",
+              "token": null,
+              "children": [
+                {
+                  "sym": "orexp",
+                  "token": null,
+                  "children": [
+                    {
+                      "sym": "andexp",
+                      "token": null,
+                      "children": [
+                        {
+                          "sym": "relexp",
+                          "token": null,
+                          "children": [
+                            {
+                              "sym": "bitexp",
+                              "token": null,
+                              "children": [
+                                {
+                                  "sym": "shiftexp",
+                                  "token": null,
+                                  "children": [
+                                    {
+                                      "sym": "sumexp",
+                                      "token": null,
+                                      "children": [
+                                        {
+                                          "sym": "prodexp",
+                                          "token": null,
+                                          "children": [
+                                            {
+                                              "sym": "powexp",
+                                              "token": null,
+                                              "children": [
+                                                {
+                                                  "sym": "unaryexp",
+                                                  "token": null,
+                                                  "children": [
+                                                    {
+                                                      "sym": "ADDOP",
+                                                      "token": {
+                                                        "sym": "ADDOP",
+                                                        "lexeme": "-",
+                                                        "line": 1
+                                                      },
+                                                      "children": [],
+                                                      "productionNumber": -1,
+                                                      "varInfo": null,
+                                                      "nodeType": null
+                                                    },
+                                                    {
+                                                      "sym": "unaryexp",
+                                                      "token": null,
+                                                      "children": [
+                                                        {
+                                                          "sym": "preincexp",
+                                                          "token": null,
+                                                          "children": [
+                                                            {
+                                                              "sym": "postincexp",
+                                                              "token": null,
+                                                              "children": [
+                                                                {
+                                                                  "sym": "amfexp",
+                                                                  "token": null,
+                                                                  "children": [
+                                                                    {
+                                                                      "sym": "factor",
+                                                                      "token": null,
+                                                                      "children": [
+                                                                        {
+                                                                          "sym": "FNUM",
+                                                                          "token": {
+                                                                            "sym": "FNUM",
+                                                                            "lexeme": "1.2",
+                                                                            "line": 1
+                                                                          },
+                                                                          "children": [],
+                                                                          "productionNumber": -1,
+                                                                          "varInfo": null,
+                                                                          "nodeType": null
+                                                                        }
+                                                                      ],
+                                                                      "productionNumber": 75,
+                                                                      "varInfo": null,
+                                                                      "nodeType": "float"
+                                                                    }
+                                                                  ],
+                                                                  "productionNumber": 71,
+                                                                  "varInfo": null,
+                                                                  "nodeType": "float"
+                                                                }
+                                                              ],
+                                                              "productionNumber": 67,
+                                                              "varInfo": null,
+                                                              "nodeType": "float"
+                                                            }
+                                                          ],
+                                                          "productionNumber": 65,
+                                                          "varInfo": null,
+                                                          "nodeType": "float"
+                                                        }
+                                                      ],
+                                                      "productionNumber": 63,
+                                                      "varInfo": null,
+                                                      "nodeType": "float"
+                                                    }
+                                                  ],
+                                                  "productionNumber": 61,
+                                                  "varInfo": null,
+                                                  "nodeType": "float"
+                                                }
+                                              ],
+                                              "productionNumber": 59,
+                                              "varInfo": null,
+                                              "nodeType": "float"
+                                            }
+                                          ],
+                                          "productionNumber": 57,
+                                          "varInfo": null,
+                                          "nodeType": "float"
+                                        }
+                                      ],
+                                      "productionNumber": 55,
+                                      "varInfo": null,
+                                      "nodeType": "float"
+                                    }
+                                  ],
+                                  "productionNumber": 53,
+                                  "varInfo": null,
+                                  "nodeType": "float"
+                                }
+                              ],
+                              "productionNumber": 51,
+                              "varInfo": null,
+                              "nodeType": "float"
+                            }
+                          ],
+                          "productionNumber": 49,
+                          "varInfo": null,
+                          "nodeType": "float"
+                        }
+                      ],
+                      "productionNumber": 47,
+                      "varInfo": null,
+                      "nodeType": "float"
+                    }
+                  ],
+                  "productionNumber": 45,
+                  "varInfo": null,
+                  "nodeType": "float"
+                }
+              ],
+              "productionNumber": 43,
+              "varInfo": null,
+              "nodeType": "float"
+            }
+          ],
+          "productionNumber": 40,
+          "varInfo": null,
+          "nodeType": null
+        },
+        {
+          "sym": "decls",
+          "token": null,
+          "children": [
+            {
+              "sym": "SEMI",
+              "token": {
+                "sym": "SEMI",
+                "lexeme": "",
+                "line": 1
+              },
+              "children": [],
+              "productionNumber": -1,
+              "varInfo": null,
+              "nodeType": null
+            },
+            {
+              "sym": "decls",
+              "token": null,
+              "children": [],
+              "productionNumber": 5,
+              "varInfo": null,
+              "nodeType": null
+            }
+          ],
+          "productionNumber": 4,
+          "varInfo": null,
+          "nodeType": null
+        }
+      ],
+      "productionNumber": 3,
+      "varInfo": null,
+      "nodeType": null
+    }
+  ],
+  "productionNumber": 0,
+  "varInfo": null,
+  "nodeType": null
+}
