@@ -1,8 +1,0 @@
-class Foo{
-}
-
-class class{
-}
-
-class Baz{
-}

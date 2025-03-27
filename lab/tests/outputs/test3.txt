@@ -1,0 +1,451 @@
+{
+  "returncode": 0,
+  "tree": {
+    "sym": "S",
+    "nodeType": null,
+    "token": null,
+    "children": [
+      {
+        "sym": "decls",
+        "nodeType": null,
+        "token": null,
+        "children": [
+          {
+            "sym": "funcdecl",
+            "nodeType": null,
+            "token": null,
+            "children": [
+              {
+                "sym": "FUNC",
+                "nodeType": null,
+                "token": {
+                  "sym": "FUNC",
+                  "lexeme": "func",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "ID",
+                "nodeType": null,
+                "token": {
+                  "sym": "ID",
+                  "lexeme": "foo",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "LPAREN",
+                "nodeType": null,
+                "token": {
+                  "sym": "LPAREN",
+                  "lexeme": "(",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "optionalPdecls",
+                "nodeType": null,
+                "token": null,
+                "children": []
+              },
+              {
+                "sym": "RPAREN",
+                "nodeType": null,
+                "token": {
+                  "sym": "RPAREN",
+                  "lexeme": ")",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "optionalReturn",
+                "nodeType": null,
+                "token": null,
+                "children": []
+              },
+              {
+                "sym": "LBRACE",
+                "nodeType": null,
+                "token": {
+                  "sym": "LBRACE",
+                  "lexeme": "{",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "stmts",
+                "nodeType": null,
+                "token": null,
+                "children": [
+                  {
+                    "sym": "stmt",
+                    "nodeType": null,
+                    "token": null,
+                    "children": [
+                      {
+                        "sym": "assign",
+                        "nodeType": null,
+                        "token": null,
+                        "children": [
+                          {
+                            "sym": "expr",
+                            "nodeType": null,
+                            "token": null,
+                            "children": [
+                              {
+                                "sym": "orexp",
+                                "nodeType": null,
+                                "token": null,
+                                "children": [
+                                  {
+                                    "sym": "andexp",
+                                    "nodeType": null,
+                                    "token": null,
+                                    "children": [
+                                      {
+                                        "sym": "relexp",
+                                        "nodeType": null,
+                                        "token": null,
+                                        "children": [
+                                          {
+                                            "sym": "bitexp",
+                                            "nodeType": null,
+                                            "token": null,
+                                            "children": [
+                                              {
+                                                "sym": "shiftexp",
+                                                "nodeType": null,
+                                                "token": null,
+                                                "children": [
+                                                  {
+                                                    "sym": "sumexp",
+                                                    "nodeType": null,
+                                                    "token": null,
+                                                    "children": [
+                                                      {
+                                                        "sym": "prodexp",
+                                                        "nodeType": null,
+                                                        "token": null,
+                                                        "children": [
+                                                          {
+                                                            "sym": "powexp",
+                                                            "nodeType": null,
+                                                            "token": null,
+                                                            "children": [
+                                                              {
+                                                                "sym": "unaryexp",
+                                                                "nodeType": null,
+                                                                "token": null,
+                                                                "children": [
+                                                                  {
+                                                                    "sym": "preincexp",
+                                                                    "nodeType": null,
+                                                                    "token": null,
+                                                                    "children": [
+                                                                      {
+                                                                        "sym": "postincexp",
+                                                                        "nodeType": null,
+                                                                        "token": null,
+                                                                        "children": [
+                                                                          {
+                                                                            "sym": "amfexp",
+                                                                            "nodeType": null,
+                                                                            "token": null,
+                                                                            "children": [
+                                                                              {
+                                                                                "sym": "factor",
+                                                                                "nodeType": null,
+                                                                                "token": null,
+                                                                                "children": [
+                                                                                  {
+                                                                                    "sym": "ID",
+                                                                                    "nodeType": null,
+                                                                                    "token": {
+                                                                                      "sym": "ID",
+                                                                                      "lexeme": "x",
+                                                                                      "line": 2
+                                                                                    },
+                                                                                    "children": []
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "sym": "EQ",
+                            "nodeType": null,
+                            "token": {
+                              "sym": "EQ",
+                              "lexeme": "=",
+                              "line": 2
+                            },
+                            "children": []
+                          },
+                          {
+                            "sym": "expr",
+                            "nodeType": "string",
+                            "token": null,
+                            "children": [
+                              {
+                                "sym": "orexp",
+                                "nodeType": "string",
+                                "token": null,
+                                "children": [
+                                  {
+                                    "sym": "andexp",
+                                    "nodeType": "string",
+                                    "token": null,
+                                    "children": [
+                                      {
+                                        "sym": "relexp",
+                                        "nodeType": "string",
+                                        "token": null,
+                                        "children": [
+                                          {
+                                            "sym": "bitexp",
+                                            "nodeType": "string",
+                                            "token": null,
+                                            "children": [
+                                              {
+                                                "sym": "shiftexp",
+                                                "nodeType": "string",
+                                                "token": null,
+                                                "children": [
+                                                  {
+                                                    "sym": "sumexp",
+                                                    "nodeType": "string",
+                                                    "token": null,
+                                                    "children": [
+                                                      {
+                                                        "sym": "sumexp",
+                                                        "nodeType": "string",
+                                                        "token": null,
+                                                        "children": [
+                                                          {
+                                                            "sym": "prodexp",
+                                                            "nodeType": "string",
+                                                            "token": null,
+                                                            "children": [
+                                                              {
+                                                                "sym": "powexp",
+                                                                "nodeType": "string",
+                                                                "token": null,
+                                                                "children": [
+                                                                  {
+                                                                    "sym": "unaryexp",
+                                                                    "nodeType": "string",
+                                                                    "token": null,
+                                                                    "children": [
+                                                                      {
+                                                                        "sym": "preincexp",
+                                                                        "nodeType": "string",
+                                                                        "token": null,
+                                                                        "children": [
+                                                                          {
+                                                                            "sym": "postincexp",
+                                                                            "nodeType": "string",
+                                                                            "token": null,
+                                                                            "children": [
+                                                                              {
+                                                                                "sym": "amfexp",
+                                                                                "nodeType": "string",
+                                                                                "token": null,
+                                                                                "children": [
+                                                                                  {
+                                                                                    "sym": "factor",
+                                                                                    "nodeType": "string",
+                                                                                    "token": null,
+                                                                                    "children": [
+                                                                                      {
+                                                                                        "sym": "STRINGCONST",
+                                                                                        "nodeType": null,
+                                                                                        "token": {
+                                                                                          "sym": "STRINGCONST",
+                                                                                          "lexeme": "\"foo\"",
+                                                                                          "line": 2
+                                                                                        },
+                                                                                        "children": []
+                                                                                      }
+                                                                                    ]
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "sym": "ADDOP",
+                                                        "nodeType": null,
+                                                        "token": {
+                                                          "sym": "ADDOP",
+                                                          "lexeme": "+",
+                                                          "line": 2
+                                                        },
+                                                        "children": []
+                                                      },
+                                                      {
+                                                        "sym": "prodexp",
+                                                        "nodeType": "string",
+                                                        "token": null,
+                                                        "children": [
+                                                          {
+                                                            "sym": "powexp",
+                                                            "nodeType": "string",
+                                                            "token": null,
+                                                            "children": [
+                                                              {
+                                                                "sym": "unaryexp",
+                                                                "nodeType": "string",
+                                                                "token": null,
+                                                                "children": [
+                                                                  {
+                                                                    "sym": "preincexp",
+                                                                    "nodeType": "string",
+                                                                    "token": null,
+                                                                    "children": [
+                                                                      {
+                                                                        "sym": "postincexp",
+                                                                        "nodeType": "string",
+                                                                        "token": null,
+                                                                        "children": [
+                                                                          {
+                                                                            "sym": "amfexp",
+                                                                            "nodeType": "string",
+                                                                            "token": null,
+                                                                            "children": [
+                                                                              {
+                                                                                "sym": "factor",
+                                                                                "nodeType": "string",
+                                                                                "token": null,
+                                                                                "children": [
+                                                                                  {
+                                                                                    "sym": "STRINGCONST",
+                                                                                    "nodeType": null,
+                                                                                    "token": {
+                                                                                      "sym": "STRINGCONST",
+                                                                                      "lexeme": "\"bar\"",
+                                                                                      "line": 2
+                                                                                    },
+                                                                                    "children": []
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "sym": "SEMI",
+                    "nodeType": null,
+                    "token": {
+                      "sym": "SEMI",
+                      "lexeme": "",
+                      "line": 2
+                    },
+                    "children": []
+                  },
+                  {
+                    "sym": "stmts",
+                    "nodeType": null,
+                    "token": null,
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "sym": "RBRACE",
+                "nodeType": null,
+                "token": {
+                  "sym": "RBRACE",
+                  "lexeme": "}",
+                  "line": 3
+                },
+                "children": []
+              },
+              {
+                "sym": "SEMI",
+                "nodeType": null,
+                "token": {
+                  "sym": "SEMI",
+                  "lexeme": "",
+                  "line": 3
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "sym": "decls",
+            "nodeType": null,
+            "token": null,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

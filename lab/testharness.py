@@ -11,12 +11,21 @@ import subprocess
 import json
 import sys
 
+
 def main():
     global EXE
+    stopOnFirstFail=False
 
     base = os.path.abspath(os.path.dirname(__file__))
 
-    print(sys.argv)
+    i=1
+    while i < len(sys.argv):
+        if sys.argv[i] == "--stop":
+            stopOnFirstFail=True
+            sys.argv.pop(i)
+        else:
+            i+=1
+
     if len(sys.argv) > 1:
         EXE=sys.argv[1]
 
@@ -46,7 +55,7 @@ def main():
         except FileNotFoundError:
             pass
 
-        exitcode,output = run(f"{base}/tests/inputs/{f}")
+        exitcode = run(f"{base}/tests/inputs/{f}")
 
         print("Parser finished with",f)
 
@@ -58,12 +67,19 @@ def main():
                 print("Badly formatted: At line",e.lineno," column",e.colno,":",e.msg)
                 return
 
+        if os.path.exists("tree.json"):
+            with open("tree.json") as fp:
+                actual = json.load(fp)
+        else:
+            actual=None
+
+
         if expected["returncode"] == 0:
             if exitcode != 0:
                 print("Parser returned an error, but it should have parsed the file successfully")
                 numfailed+=1
             else:
-                if compare(expected["declarations"],output):
+                if compare(expected["tree"],actual,0):
                     print("OK!")
                     numpassed += 1
                 else:
@@ -74,7 +90,12 @@ def main():
                 numfailed+=1
             else:
                 numpassed += 1
+        #endif
 
+        if stopOnFirstFail and numfailed>0:
+            print("At least one test failed. Stopping.")
+            break
+    #end loop
 
     numtests = numpassed + numfailed
     if numtests == 0 :
@@ -88,43 +109,39 @@ def main():
 
 def run(fname):
     cmd = [EXE,fname]
-    P = subprocess.Popen(cmd,stdout=subprocess.PIPE)
-    o,e = P.communicate()
-    o=o.decode()
-    o=o.strip()
-    if o:
-        print(o)
-    return P.returncode, o
+    P = subprocess.run(cmd)
+    return P.returncode
 
-def compare(expected, output):
-    classes=set()
-    funcs=set()
-    for line in output.split("\n"):
-        if line.startswith("CLASS:"):
-            name = line[6:].strip()
-            classes.add(name)
-        elif line.startswith("FUNC:"):
-            name = line[5:].strip()
-            funcs.add(name)
+def compare(expected, actual, depth):
 
-    ec = set(expected["classes"])
-    ef = set(expected["funcs"])
+    if expected["sym"] != actual["sym"]:
+        print("At tree depth",depth,": Symbol mismatch")
+        print("Expected:",expected["sym"])
+        print("Got:     ",actual["sym"])
+        return False
 
-    ok=True
+    #ignore types for terminals
+    if expected["sym"].upper() != expected["sym"] and expected["nodeType"] != actual["nodeType"]:
+        print("At tree depth",depth,": Type mismatch")
+        print("Expected:",expected["nodeType"])
+        print("Got:     ",actual["nodeType"])
+        return False
 
-    if ec != classes:
-        print("Mismatch for classes:")
-        print("Expected:", sorted(list(ec)))
-        print("Got:     ", sorted(list(classes)))
-        ok=False
+    if len(expected["children"]) != len(actual["children"]):
+        print("At tree depth",depth,": Children length mismatch")
+        ec = [ q["sym"] for q in expected["children"] ]
+        ec = ",".join(ec)
+        ac = [ q["sym"] for q in actual["children"] ]
+        ac = ",".join(ac)
+        print("Expected:",expected["sym"],"with",len(expected["children"]),"children (",ec,")")
+        print("Got:     ",actual["sym"],"with",len(actual["children"]),"children (",ac,")")
+        return False
 
-    if ef != funcs:
-        print("Mismatch for functions:")
-        print("Expected:", sorted(list(ef)))
-        print("Got:     ", sorted(list(funcs)))
-        ok=False
+    for i in range(len(expected["children"])):
+        if not compare( expected["children"][i], actual["children"][i], depth+1):
+            return False
+    return True
 
-    return ok
 
 main()
 input("Press 'enter' to quit")

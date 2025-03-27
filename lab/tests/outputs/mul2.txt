@@ -1,0 +1,274 @@
+{
+  "returncode": 0,
+  "tree": {
+    "sym": "S",
+    "nodeType": null,
+    "token": null,
+    "children": [
+      {
+        "sym": "decls",
+        "nodeType": null,
+        "token": null,
+        "children": [
+          {
+            "sym": "vardecl",
+            "nodeType": null,
+            "token": null,
+            "children": [
+              {
+                "sym": "VAR",
+                "nodeType": null,
+                "token": {
+                  "sym": "VAR",
+                  "lexeme": "var",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "ID",
+                "nodeType": null,
+                "token": {
+                  "sym": "ID",
+                  "lexeme": "x",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "COLON",
+                "nodeType": null,
+                "token": {
+                  "sym": "COLON",
+                  "lexeme": ":",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "TYPE",
+                "nodeType": null,
+                "token": {
+                  "sym": "TYPE",
+                  "lexeme": "int",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "EQ",
+                "nodeType": null,
+                "token": {
+                  "sym": "EQ",
+                  "lexeme": "=",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "expr",
+                "nodeType": "float",
+                "token": null,
+                "children": [
+                  {
+                    "sym": "orexp",
+                    "nodeType": "float",
+                    "token": null,
+                    "children": [
+                      {
+                        "sym": "andexp",
+                        "nodeType": "float",
+                        "token": null,
+                        "children": [
+                          {
+                            "sym": "relexp",
+                            "nodeType": "float",
+                            "token": null,
+                            "children": [
+                              {
+                                "sym": "bitexp",
+                                "nodeType": "float",
+                                "token": null,
+                                "children": [
+                                  {
+                                    "sym": "shiftexp",
+                                    "nodeType": "float",
+                                    "token": null,
+                                    "children": [
+                                      {
+                                        "sym": "sumexp",
+                                        "nodeType": "float",
+                                        "token": null,
+                                        "children": [
+                                          {
+                                            "sym": "prodexp",
+                                            "nodeType": "float",
+                                            "token": null,
+                                            "children": [
+                                              {
+                                                "sym": "prodexp",
+                                                "nodeType": "float",
+                                                "token": null,
+                                                "children": [
+                                                  {
+                                                    "sym": "powexp",
+                                                    "nodeType": "float",
+                                                    "token": null,
+                                                    "children": [
+                                                      {
+                                                        "sym": "unaryexp",
+                                                        "nodeType": "float",
+                                                        "token": null,
+                                                        "children": [
+                                                          {
+                                                            "sym": "preincexp",
+                                                            "nodeType": "float",
+                                                            "token": null,
+                                                            "children": [
+                                                              {
+                                                                "sym": "postincexp",
+                                                                "nodeType": "float",
+                                                                "token": null,
+                                                                "children": [
+                                                                  {
+                                                                    "sym": "amfexp",
+                                                                    "nodeType": "float",
+                                                                    "token": null,
+                                                                    "children": [
+                                                                      {
+                                                                        "sym": "factor",
+                                                                        "nodeType": "float",
+                                                                        "token": null,
+                                                                        "children": [
+                                                                          {
+                                                                            "sym": "FNUM",
+                                                                            "nodeType": null,
+                                                                            "token": {
+                                                                              "sym": "FNUM",
+                                                                              "lexeme": "2.0",
+                                                                              "line": 1
+                                                                            },
+                                                                            "children": []
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "sym": "MULOP",
+                                                "nodeType": null,
+                                                "token": {
+                                                  "sym": "MULOP",
+                                                  "lexeme": "*",
+                                                  "line": 1
+                                                },
+                                                "children": []
+                                              },
+                                              {
+                                                "sym": "powexp",
+                                                "nodeType": "float",
+                                                "token": null,
+                                                "children": [
+                                                  {
+                                                    "sym": "unaryexp",
+                                                    "nodeType": "float",
+                                                    "token": null,
+                                                    "children": [
+                                                      {
+                                                        "sym": "preincexp",
+                                                        "nodeType": "float",
+                                                        "token": null,
+                                                        "children": [
+                                                          {
+                                                            "sym": "postincexp",
+                                                            "nodeType": "float",
+                                                            "token": null,
+                                                            "children": [
+                                                              {
+                                                                "sym": "amfexp",
+                                                                "nodeType": "float",
+                                                                "token": null,
+                                                                "children": [
+                                                                  {
+                                                                    "sym": "factor",
+                                                                    "nodeType": "float",
+                                                                    "token": null,
+                                                                    "children": [
+                                                                      {
+                                                                        "sym": "FNUM",
+                                                                        "nodeType": null,
+                                                                        "token": {
+                                                                          "sym": "FNUM",
+                                                                          "lexeme": "4.2",
+                                                                          "line": 1
+                                                                        },
+                                                                        "children": []
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "sym": "decls",
+            "nodeType": null,
+            "token": null,
+            "children": [
+              {
+                "sym": "SEMI",
+                "nodeType": null,
+                "token": {
+                  "sym": "SEMI",
+                  "lexeme": "",
+                  "line": 1
+                },
+                "children": []
+              },
+              {
+                "sym": "decls",
+                "nodeType": null,
+                "token": null,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
