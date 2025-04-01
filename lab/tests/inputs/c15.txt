@@ -1,0 +1,12 @@
+var a: int
+func foo(b: int){
+    if( true ){
+        if( true ){
+            var c: string
+            if( false ){
+                c = "blah"
+            }
+            c = "x"
+        }
+    }
+}

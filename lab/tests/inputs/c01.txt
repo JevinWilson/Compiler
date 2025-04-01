@@ -1,0 +1,5 @@
+var c: int
+
+func foo(){
+    c = 1
+}

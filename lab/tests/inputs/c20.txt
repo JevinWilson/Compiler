@@ -1,0 +1,7 @@
+var a: int
+func foo(b: int){
+    var a: int;
+    if(true){
+        a=1
+    }
+}

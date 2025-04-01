@@ -1,0 +1,4 @@
+var a: int
+func foo(b: int){
+    var b: int
+}

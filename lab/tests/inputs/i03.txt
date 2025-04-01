@@ -1,0 +1,6 @@
+var a: int
+func foo( b: float){
+    var c: int
+    //type mismatch
+    c = a+b
+}

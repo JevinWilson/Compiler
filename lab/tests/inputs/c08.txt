@@ -1,0 +1,9 @@
+var a: int
+func foo( b: float){
+    var c: int
+    if(true){
+        var d: int
+        var b: int
+        d = a + 1 + b | 3 * c / 2
+    }
+}

@@ -1,0 +1,6 @@
+var a: int
+func foo( b: int){
+    var c: int
+    //d is not declared
+    c = a + b + d
+}

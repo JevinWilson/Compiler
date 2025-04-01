@@ -1,0 +1,10 @@
+var a: int
+func foo(var b: int){
+    var c: int
+    //redeclaration; ok
+    if( true ){
+        var b: int
+        b = 1
+    }
+    c=2
+}

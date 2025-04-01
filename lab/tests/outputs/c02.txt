@@ -1,0 +1,233 @@
+{
+  "returncode": 0,
+  "tree": {
+    "sym": "S",
+    "token": null,
+    "nodeType": null,
+    "varInfo": null,
+    "children": [
+      {
+        "sym": "decls",
+        "token": null,
+        "nodeType": null,
+        "varInfo": null,
+        "children": [
+          {
+            "sym": "funcdecl",
+            "token": null,
+            "nodeType": null,
+            "varInfo": null,
+            "children": [
+              {
+                "sym": "FUNC",
+                "token": {
+                  "sym": "FUNC",
+                  "line": 2,
+                  "lexeme": "func"
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "ID",
+                "token": {
+                  "sym": "ID",
+                  "line": 2,
+                  "lexeme": "foo"
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "LPAREN",
+                "token": {
+                  "sym": "LPAREN",
+                  "line": 2,
+                  "lexeme": "("
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "pdecl",
+                "token": null,
+                "nodeType": null,
+                "varInfo": null,
+                "children": [
+                  {
+                    "sym": "ID",
+                    "token": {
+                      "sym": "ID",
+                      "line": 2,
+                      "lexeme": "c"
+                    },
+                    "nodeType": null,
+                    "varInfo": null,
+                    "children": []
+                  },
+                  {
+                    "sym": "COLON",
+                    "token": {
+                      "sym": "COLON",
+                      "line": 2,
+                      "lexeme": ":"
+                    },
+                    "nodeType": null,
+                    "varInfo": null,
+                    "children": []
+                  },
+                  {
+                    "sym": "TYPE",
+                    "token": {
+                      "sym": "TYPE",
+                      "line": 2,
+                      "lexeme": "int"
+                    },
+                    "nodeType": null,
+                    "varInfo": null,
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "sym": "RPAREN",
+                "token": {
+                  "sym": "RPAREN",
+                  "line": 2,
+                  "lexeme": ")"
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "optionalReturn",
+                "token": null,
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "LBRACE",
+                "token": {
+                  "sym": "LBRACE",
+                  "line": 2,
+                  "lexeme": "{"
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "stmts",
+                "token": null,
+                "nodeType": null,
+                "varInfo": null,
+                "children": [
+                  {
+                    "sym": "assign",
+                    "token": null,
+                    "nodeType": null,
+                    "varInfo": null,
+                    "children": [
+                      {
+                        "sym": "ID",
+                        "token": {
+                          "sym": "ID",
+                          "line": 3,
+                          "lexeme": "c"
+                        },
+                        "nodeType": "int",
+                        "varInfo": {
+                          "type": "int",
+                          "nesting": 1,
+                          "location": {
+                            "storageClass": "parameter",
+                            "index": 0
+                          }
+                        },
+                        "children": []
+                      },
+                      {
+                        "sym": "EQ",
+                        "token": {
+                          "sym": "EQ",
+                          "line": 3,
+                          "lexeme": "="
+                        },
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      },
+                      {
+                        "sym": "NUM",
+                        "token": {
+                          "sym": "NUM",
+                          "line": 3,
+                          "lexeme": "1"
+                        },
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "sym": "SEMI",
+                    "token": {
+                      "sym": "SEMI",
+                      "line": 3,
+                      "lexeme": ""
+                    },
+                    "nodeType": null,
+                    "varInfo": null,
+                    "children": []
+                  },
+                  {
+                    "sym": "stmts",
+                    "token": null,
+                    "nodeType": null,
+                    "varInfo": null,
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "sym": "RBRACE",
+                "token": {
+                  "sym": "RBRACE",
+                  "line": 4,
+                  "lexeme": "}"
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "SEMI",
+                "token": {
+                  "sym": "SEMI",
+                  "line": 4,
+                  "lexeme": ""
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              }
+            ]
+          },
+          {
+            "sym": "decls",
+            "token": null,
+            "nodeType": null,
+            "varInfo": null,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

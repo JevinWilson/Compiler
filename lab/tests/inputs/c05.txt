@@ -1,0 +1,9 @@
+var a: int
+func foo( b: int){
+    var c: int
+    if(true){
+        //local variable
+        var d: int
+        d = a + b * c
+    }
+}

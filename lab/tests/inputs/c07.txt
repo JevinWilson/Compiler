@@ -1,0 +1,9 @@
+var a: float
+func foo( b: float){
+    var c: float
+    if(true){
+        //local variable
+        var d: float
+        d = a + b * c
+    }
+}

@@ -1,0 +1,1255 @@
+{
+  "returncode": 0,
+  "tree": {
+    "sym": "S",
+    "token": null,
+    "nodeType": null,
+    "varInfo": null,
+    "children": [
+      {
+        "sym": "decls",
+        "token": null,
+        "nodeType": null,
+        "varInfo": null,
+        "children": [
+          {
+            "sym": "vardecl",
+            "token": null,
+            "nodeType": null,
+            "varInfo": null,
+            "children": [
+              {
+                "sym": "VAR",
+                "token": {
+                  "sym": "VAR",
+                  "line": 1,
+                  "lexeme": "var"
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "ID",
+                "token": {
+                  "sym": "ID",
+                  "line": 1,
+                  "lexeme": "a"
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "COLON",
+                "token": {
+                  "sym": "COLON",
+                  "line": 1,
+                  "lexeme": ":"
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "TYPE",
+                "token": {
+                  "sym": "TYPE",
+                  "line": 1,
+                  "lexeme": "int"
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              }
+            ]
+          },
+          {
+            "sym": "decls",
+            "token": null,
+            "nodeType": null,
+            "varInfo": null,
+            "children": [
+              {
+                "sym": "SEMI",
+                "token": {
+                  "sym": "SEMI",
+                  "line": 1,
+                  "lexeme": ""
+                },
+                "nodeType": null,
+                "varInfo": null,
+                "children": []
+              },
+              {
+                "sym": "decls",
+                "token": null,
+                "nodeType": null,
+                "varInfo": null,
+                "children": [
+                  {
+                    "sym": "funcdecl",
+                    "token": null,
+                    "nodeType": null,
+                    "varInfo": null,
+                    "children": [
+                      {
+                        "sym": "FUNC",
+                        "token": {
+                          "sym": "FUNC",
+                          "line": 2,
+                          "lexeme": "func"
+                        },
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      },
+                      {
+                        "sym": "ID",
+                        "token": {
+                          "sym": "ID",
+                          "line": 2,
+                          "lexeme": "foo"
+                        },
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      },
+                      {
+                        "sym": "LPAREN",
+                        "token": {
+                          "sym": "LPAREN",
+                          "line": 2,
+                          "lexeme": "("
+                        },
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      },
+                      {
+                        "sym": "pdecl",
+                        "token": null,
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": [
+                          {
+                            "sym": "ID",
+                            "token": {
+                              "sym": "ID",
+                              "line": 2,
+                              "lexeme": "b"
+                            },
+                            "nodeType": null,
+                            "varInfo": null,
+                            "children": []
+                          },
+                          {
+                            "sym": "COLON",
+                            "token": {
+                              "sym": "COLON",
+                              "line": 2,
+                              "lexeme": ":"
+                            },
+                            "nodeType": null,
+                            "varInfo": null,
+                            "children": []
+                          },
+                          {
+                            "sym": "TYPE",
+                            "token": {
+                              "sym": "TYPE",
+                              "line": 2,
+                              "lexeme": "int"
+                            },
+                            "nodeType": null,
+                            "varInfo": null,
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "sym": "RPAREN",
+                        "token": {
+                          "sym": "RPAREN",
+                          "line": 2,
+                          "lexeme": ")"
+                        },
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      },
+                      {
+                        "sym": "optionalReturn",
+                        "token": null,
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      },
+                      {
+                        "sym": "LBRACE",
+                        "token": {
+                          "sym": "LBRACE",
+                          "line": 2,
+                          "lexeme": "{"
+                        },
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      },
+                      {
+                        "sym": "stmts",
+                        "token": null,
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": [
+                          {
+                            "sym": "vardecl",
+                            "token": null,
+                            "nodeType": null,
+                            "varInfo": null,
+                            "children": [
+                              {
+                                "sym": "VAR",
+                                "token": {
+                                  "sym": "VAR",
+                                  "line": 3,
+                                  "lexeme": "var"
+                                },
+                                "nodeType": null,
+                                "varInfo": null,
+                                "children": []
+                              },
+                              {
+                                "sym": "ID",
+                                "token": {
+                                  "sym": "ID",
+                                  "line": 3,
+                                  "lexeme": "c"
+                                },
+                                "nodeType": null,
+                                "varInfo": null,
+                                "children": []
+                              },
+                              {
+                                "sym": "COLON",
+                                "token": {
+                                  "sym": "COLON",
+                                  "line": 3,
+                                  "lexeme": ":"
+                                },
+                                "nodeType": null,
+                                "varInfo": null,
+                                "children": []
+                              },
+                              {
+                                "sym": "TYPE",
+                                "token": {
+                                  "sym": "TYPE",
+                                  "line": 3,
+                                  "lexeme": "int"
+                                },
+                                "nodeType": null,
+                                "varInfo": null,
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "sym": "SEMI",
+                            "token": {
+                              "sym": "SEMI",
+                              "line": 3,
+                              "lexeme": ""
+                            },
+                            "nodeType": null,
+                            "varInfo": null,
+                            "children": []
+                          },
+                          {
+                            "sym": "stmts",
+                            "token": null,
+                            "nodeType": null,
+                            "varInfo": null,
+                            "children": [
+                              {
+                                "sym": "cond",
+                                "token": null,
+                                "nodeType": null,
+                                "varInfo": null,
+                                "children": [
+                                  {
+                                    "sym": "IF",
+                                    "token": {
+                                      "sym": "IF",
+                                      "line": 4,
+                                      "lexeme": "if"
+                                    },
+                                    "nodeType": null,
+                                    "varInfo": null,
+                                    "children": []
+                                  },
+                                  {
+                                    "sym": "LPAREN",
+                                    "token": {
+                                      "sym": "LPAREN",
+                                      "line": 4,
+                                      "lexeme": "("
+                                    },
+                                    "nodeType": null,
+                                    "varInfo": null,
+                                    "children": []
+                                  },
+                                  {
+                                    "sym": "BOOLCONST",
+                                    "token": {
+                                      "sym": "BOOLCONST",
+                                      "line": 4,
+                                      "lexeme": "true"
+                                    },
+                                    "nodeType": null,
+                                    "varInfo": null,
+                                    "children": []
+                                  },
+                                  {
+                                    "sym": "RPAREN",
+                                    "token": {
+                                      "sym": "RPAREN",
+                                      "line": 4,
+                                      "lexeme": ")"
+                                    },
+                                    "nodeType": null,
+                                    "varInfo": null,
+                                    "children": []
+                                  },
+                                  {
+                                    "sym": "braceblock",
+                                    "token": null,
+                                    "nodeType": null,
+                                    "varInfo": null,
+                                    "children": [
+                                      {
+                                        "sym": "LBRACE",
+                                        "token": {
+                                          "sym": "LBRACE",
+                                          "line": 4,
+                                          "lexeme": "{"
+                                        },
+                                        "nodeType": null,
+                                        "varInfo": null,
+                                        "children": []
+                                      },
+                                      {
+                                        "sym": "stmts",
+                                        "token": null,
+                                        "nodeType": null,
+                                        "varInfo": null,
+                                        "children": [
+                                          {
+                                            "sym": "vardecl",
+                                            "token": null,
+                                            "nodeType": null,
+                                            "varInfo": null,
+                                            "children": [
+                                              {
+                                                "sym": "VAR",
+                                                "token": {
+                                                  "sym": "VAR",
+                                                  "line": 5,
+                                                  "lexeme": "var"
+                                                },
+                                                "nodeType": null,
+                                                "varInfo": null,
+                                                "children": []
+                                              },
+                                              {
+                                                "sym": "ID",
+                                                "token": {
+                                                  "sym": "ID",
+                                                  "line": 5,
+                                                  "lexeme": "c"
+                                                },
+                                                "nodeType": null,
+                                                "varInfo": null,
+                                                "children": []
+                                              },
+                                              {
+                                                "sym": "COLON",
+                                                "token": {
+                                                  "sym": "COLON",
+                                                  "line": 5,
+                                                  "lexeme": ":"
+                                                },
+                                                "nodeType": null,
+                                                "varInfo": null,
+                                                "children": []
+                                              },
+                                              {
+                                                "sym": "TYPE",
+                                                "token": {
+                                                  "sym": "TYPE",
+                                                  "line": 5,
+                                                  "lexeme": "float"
+                                                },
+                                                "nodeType": null,
+                                                "varInfo": null,
+                                                "children": []
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "sym": "SEMI",
+                                            "token": {
+                                              "sym": "SEMI",
+                                              "line": 5,
+                                              "lexeme": ""
+                                            },
+                                            "nodeType": null,
+                                            "varInfo": null,
+                                            "children": []
+                                          },
+                                          {
+                                            "sym": "stmts",
+                                            "token": null,
+                                            "nodeType": null,
+                                            "varInfo": null,
+                                            "children": [
+                                              {
+                                                "sym": "assign",
+                                                "token": null,
+                                                "nodeType": null,
+                                                "varInfo": null,
+                                                "children": [
+                                                  {
+                                                    "sym": "ID",
+                                                    "token": {
+                                                      "sym": "ID",
+                                                      "line": 6,
+                                                      "lexeme": "c"
+                                                    },
+                                                    "nodeType": "float",
+                                                    "varInfo": {
+                                                      "type": "float",
+                                                      "nesting": 2,
+                                                      "location": {
+                                                        "storageClass": "local",
+                                                        "index": 1
+                                                      }
+                                                    },
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "sym": "EQ",
+                                                    "token": {
+                                                      "sym": "EQ",
+                                                      "line": 6,
+                                                      "lexeme": "="
+                                                    },
+                                                    "nodeType": null,
+                                                    "varInfo": null,
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "sym": "FNUM",
+                                                    "token": {
+                                                      "sym": "FNUM",
+                                                      "line": 6,
+                                                      "lexeme": "1.0"
+                                                    },
+                                                    "nodeType": null,
+                                                    "varInfo": null,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "sym": "SEMI",
+                                                "token": {
+                                                  "sym": "SEMI",
+                                                  "line": 6,
+                                                  "lexeme": ""
+                                                },
+                                                "nodeType": null,
+                                                "varInfo": null,
+                                                "children": []
+                                              },
+                                              {
+                                                "sym": "stmts",
+                                                "token": null,
+                                                "nodeType": null,
+                                                "varInfo": null,
+                                                "children": [
+                                                  {
+                                                    "sym": "cond",
+                                                    "token": null,
+                                                    "nodeType": null,
+                                                    "varInfo": null,
+                                                    "children": [
+                                                      {
+                                                        "sym": "IF",
+                                                        "token": {
+                                                          "sym": "IF",
+                                                          "line": 7,
+                                                          "lexeme": "if"
+                                                        },
+                                                        "nodeType": null,
+                                                        "varInfo": null,
+                                                        "children": []
+                                                      },
+                                                      {
+                                                        "sym": "LPAREN",
+                                                        "token": {
+                                                          "sym": "LPAREN",
+                                                          "line": 7,
+                                                          "lexeme": "("
+                                                        },
+                                                        "nodeType": null,
+                                                        "varInfo": null,
+                                                        "children": []
+                                                      },
+                                                      {
+                                                        "sym": "BOOLCONST",
+                                                        "token": {
+                                                          "sym": "BOOLCONST",
+                                                          "line": 7,
+                                                          "lexeme": "true"
+                                                        },
+                                                        "nodeType": null,
+                                                        "varInfo": null,
+                                                        "children": []
+                                                      },
+                                                      {
+                                                        "sym": "RPAREN",
+                                                        "token": {
+                                                          "sym": "RPAREN",
+                                                          "line": 7,
+                                                          "lexeme": ")"
+                                                        },
+                                                        "nodeType": null,
+                                                        "varInfo": null,
+                                                        "children": []
+                                                      },
+                                                      {
+                                                        "sym": "braceblock",
+                                                        "token": null,
+                                                        "nodeType": null,
+                                                        "varInfo": null,
+                                                        "children": [
+                                                          {
+                                                            "sym": "LBRACE",
+                                                            "token": {
+                                                              "sym": "LBRACE",
+                                                              "line": 7,
+                                                              "lexeme": "{"
+                                                            },
+                                                            "nodeType": null,
+                                                            "varInfo": null,
+                                                            "children": []
+                                                          },
+                                                          {
+                                                            "sym": "stmts",
+                                                            "token": null,
+                                                            "nodeType": null,
+                                                            "varInfo": null,
+                                                            "children": [
+                                                              {
+                                                                "sym": "vardecl",
+                                                                "token": null,
+                                                                "nodeType": null,
+                                                                "varInfo": null,
+                                                                "children": [
+                                                                  {
+                                                                    "sym": "VAR",
+                                                                    "token": {
+                                                                      "sym": "VAR",
+                                                                      "line": 8,
+                                                                      "lexeme": "var"
+                                                                    },
+                                                                    "nodeType": null,
+                                                                    "varInfo": null,
+                                                                    "children": []
+                                                                  },
+                                                                  {
+                                                                    "sym": "ID",
+                                                                    "token": {
+                                                                      "sym": "ID",
+                                                                      "line": 8,
+                                                                      "lexeme": "c"
+                                                                    },
+                                                                    "nodeType": null,
+                                                                    "varInfo": null,
+                                                                    "children": []
+                                                                  },
+                                                                  {
+                                                                    "sym": "COLON",
+                                                                    "token": {
+                                                                      "sym": "COLON",
+                                                                      "line": 8,
+                                                                      "lexeme": ":"
+                                                                    },
+                                                                    "nodeType": null,
+                                                                    "varInfo": null,
+                                                                    "children": []
+                                                                  },
+                                                                  {
+                                                                    "sym": "TYPE",
+                                                                    "token": {
+                                                                      "sym": "TYPE",
+                                                                      "line": 8,
+                                                                      "lexeme": "bool"
+                                                                    },
+                                                                    "nodeType": null,
+                                                                    "varInfo": null,
+                                                                    "children": []
+                                                                  }
+                                                                ]
+                                                              },
+                                                              {
+                                                                "sym": "SEMI",
+                                                                "token": {
+                                                                  "sym": "SEMI",
+                                                                  "line": 8,
+                                                                  "lexeme": ""
+                                                                },
+                                                                "nodeType": null,
+                                                                "varInfo": null,
+                                                                "children": []
+                                                              },
+                                                              {
+                                                                "sym": "stmts",
+                                                                "token": null,
+                                                                "nodeType": null,
+                                                                "varInfo": null,
+                                                                "children": [
+                                                                  {
+                                                                    "sym": "assign",
+                                                                    "token": null,
+                                                                    "nodeType": null,
+                                                                    "varInfo": null,
+                                                                    "children": [
+                                                                      {
+                                                                        "sym": "ID",
+                                                                        "token": {
+                                                                          "sym": "ID",
+                                                                          "line": 9,
+                                                                          "lexeme": "c"
+                                                                        },
+                                                                        "nodeType": "bool",
+                                                                        "varInfo": {
+                                                                          "type": "bool",
+                                                                          "nesting": 3,
+                                                                          "location": {
+                                                                            "storageClass": "local",
+                                                                            "index": 2
+                                                                          }
+                                                                        },
+                                                                        "children": []
+                                                                      },
+                                                                      {
+                                                                        "sym": "EQ",
+                                                                        "token": {
+                                                                          "sym": "EQ",
+                                                                          "line": 9,
+                                                                          "lexeme": "="
+                                                                        },
+                                                                        "nodeType": null,
+                                                                        "varInfo": null,
+                                                                        "children": []
+                                                                      },
+                                                                      {
+                                                                        "sym": "BOOLCONST",
+                                                                        "token": {
+                                                                          "sym": "BOOLCONST",
+                                                                          "line": 9,
+                                                                          "lexeme": "true"
+                                                                        },
+                                                                        "nodeType": null,
+                                                                        "varInfo": null,
+                                                                        "children": []
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  {
+                                                                    "sym": "SEMI",
+                                                                    "token": {
+                                                                      "sym": "SEMI",
+                                                                      "line": 9,
+                                                                      "lexeme": ""
+                                                                    },
+                                                                    "nodeType": null,
+                                                                    "varInfo": null,
+                                                                    "children": []
+                                                                  },
+                                                                  {
+                                                                    "sym": "stmts",
+                                                                    "token": null,
+                                                                    "nodeType": null,
+                                                                    "varInfo": null,
+                                                                    "children": [
+                                                                      {
+                                                                        "sym": "cond",
+                                                                        "token": null,
+                                                                        "nodeType": null,
+                                                                        "varInfo": null,
+                                                                        "children": [
+                                                                          {
+                                                                            "sym": "IF",
+                                                                            "token": {
+                                                                              "sym": "IF",
+                                                                              "line": 10,
+                                                                              "lexeme": "if"
+                                                                            },
+                                                                            "nodeType": null,
+                                                                            "varInfo": null,
+                                                                            "children": []
+                                                                          },
+                                                                          {
+                                                                            "sym": "LPAREN",
+                                                                            "token": {
+                                                                              "sym": "LPAREN",
+                                                                              "line": 10,
+                                                                              "lexeme": "("
+                                                                            },
+                                                                            "nodeType": null,
+                                                                            "varInfo": null,
+                                                                            "children": []
+                                                                          },
+                                                                          {
+                                                                            "sym": "BOOLCONST",
+                                                                            "token": {
+                                                                              "sym": "BOOLCONST",
+                                                                              "line": 10,
+                                                                              "lexeme": "false"
+                                                                            },
+                                                                            "nodeType": null,
+                                                                            "varInfo": null,
+                                                                            "children": []
+                                                                          },
+                                                                          {
+                                                                            "sym": "RPAREN",
+                                                                            "token": {
+                                                                              "sym": "RPAREN",
+                                                                              "line": 10,
+                                                                              "lexeme": ")"
+                                                                            },
+                                                                            "nodeType": null,
+                                                                            "varInfo": null,
+                                                                            "children": []
+                                                                          },
+                                                                          {
+                                                                            "sym": "braceblock",
+                                                                            "token": null,
+                                                                            "nodeType": null,
+                                                                            "varInfo": null,
+                                                                            "children": [
+                                                                              {
+                                                                                "sym": "LBRACE",
+                                                                                "token": {
+                                                                                  "sym": "LBRACE",
+                                                                                  "line": 10,
+                                                                                  "lexeme": "{"
+                                                                                },
+                                                                                "nodeType": null,
+                                                                                "varInfo": null,
+                                                                                "children": []
+                                                                              },
+                                                                              {
+                                                                                "sym": "stmts",
+                                                                                "token": null,
+                                                                                "nodeType": null,
+                                                                                "varInfo": null,
+                                                                                "children": [
+                                                                                  {
+                                                                                    "sym": "vardecl",
+                                                                                    "token": null,
+                                                                                    "nodeType": null,
+                                                                                    "varInfo": null,
+                                                                                    "children": [
+                                                                                      {
+                                                                                        "sym": "VAR",
+                                                                                        "token": {
+                                                                                          "sym": "VAR",
+                                                                                          "line": 11,
+                                                                                          "lexeme": "var"
+                                                                                        },
+                                                                                        "nodeType": null,
+                                                                                        "varInfo": null,
+                                                                                        "children": []
+                                                                                      },
+                                                                                      {
+                                                                                        "sym": "ID",
+                                                                                        "token": {
+                                                                                          "sym": "ID",
+                                                                                          "line": 11,
+                                                                                          "lexeme": "c"
+                                                                                        },
+                                                                                        "nodeType": null,
+                                                                                        "varInfo": null,
+                                                                                        "children": []
+                                                                                      },
+                                                                                      {
+                                                                                        "sym": "COLON",
+                                                                                        "token": {
+                                                                                          "sym": "COLON",
+                                                                                          "line": 11,
+                                                                                          "lexeme": ":"
+                                                                                        },
+                                                                                        "nodeType": null,
+                                                                                        "varInfo": null,
+                                                                                        "children": []
+                                                                                      },
+                                                                                      {
+                                                                                        "sym": "TYPE",
+                                                                                        "token": {
+                                                                                          "sym": "TYPE",
+                                                                                          "line": 11,
+                                                                                          "lexeme": "string"
+                                                                                        },
+                                                                                        "nodeType": null,
+                                                                                        "varInfo": null,
+                                                                                        "children": []
+                                                                                      }
+                                                                                    ]
+                                                                                  },
+                                                                                  {
+                                                                                    "sym": "SEMI",
+                                                                                    "token": {
+                                                                                      "sym": "SEMI",
+                                                                                      "line": 11,
+                                                                                      "lexeme": ""
+                                                                                    },
+                                                                                    "nodeType": null,
+                                                                                    "varInfo": null,
+                                                                                    "children": []
+                                                                                  },
+                                                                                  {
+                                                                                    "sym": "stmts",
+                                                                                    "token": null,
+                                                                                    "nodeType": null,
+                                                                                    "varInfo": null,
+                                                                                    "children": [
+                                                                                      {
+                                                                                        "sym": "assign",
+                                                                                        "token": null,
+                                                                                        "nodeType": null,
+                                                                                        "varInfo": null,
+                                                                                        "children": [
+                                                                                          {
+                                                                                            "sym": "ID",
+                                                                                            "token": {
+                                                                                              "sym": "ID",
+                                                                                              "line": 12,
+                                                                                              "lexeme": "c"
+                                                                                            },
+                                                                                            "nodeType": "string",
+                                                                                            "varInfo": {
+                                                                                              "type": "string",
+                                                                                              "nesting": 4,
+                                                                                              "location": {
+                                                                                                "storageClass": "local",
+                                                                                                "index": 3
+                                                                                              }
+                                                                                            },
+                                                                                            "children": []
+                                                                                          },
+                                                                                          {
+                                                                                            "sym": "EQ",
+                                                                                            "token": {
+                                                                                              "sym": "EQ",
+                                                                                              "line": 12,
+                                                                                              "lexeme": "="
+                                                                                            },
+                                                                                            "nodeType": null,
+                                                                                            "varInfo": null,
+                                                                                            "children": []
+                                                                                          },
+                                                                                          {
+                                                                                            "sym": "STRINGCONST",
+                                                                                            "token": {
+                                                                                              "sym": "STRINGCONST",
+                                                                                              "line": 12,
+                                                                                              "lexeme": "\"blah\""
+                                                                                            },
+                                                                                            "nodeType": null,
+                                                                                            "varInfo": null,
+                                                                                            "children": []
+                                                                                          }
+                                                                                        ]
+                                                                                      },
+                                                                                      {
+                                                                                        "sym": "SEMI",
+                                                                                        "token": {
+                                                                                          "sym": "SEMI",
+                                                                                          "line": 12,
+                                                                                          "lexeme": ""
+                                                                                        },
+                                                                                        "nodeType": null,
+                                                                                        "varInfo": null,
+                                                                                        "children": []
+                                                                                      },
+                                                                                      {
+                                                                                        "sym": "stmts",
+                                                                                        "token": null,
+                                                                                        "nodeType": null,
+                                                                                        "varInfo": null,
+                                                                                        "children": []
+                                                                                      }
+                                                                                    ]
+                                                                                  }
+                                                                                ]
+                                                                              },
+                                                                              {
+                                                                                "sym": "RBRACE",
+                                                                                "token": {
+                                                                                  "sym": "RBRACE",
+                                                                                  "line": 13,
+                                                                                  "lexeme": "}"
+                                                                                },
+                                                                                "nodeType": null,
+                                                                                "varInfo": null,
+                                                                                "children": []
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      },
+                                                                      {
+                                                                        "sym": "SEMI",
+                                                                        "token": {
+                                                                          "sym": "SEMI",
+                                                                          "line": 13,
+                                                                          "lexeme": ""
+                                                                        },
+                                                                        "nodeType": null,
+                                                                        "varInfo": null,
+                                                                        "children": []
+                                                                      },
+                                                                      {
+                                                                        "sym": "stmts",
+                                                                        "token": null,
+                                                                        "nodeType": null,
+                                                                        "varInfo": null,
+                                                                        "children": [
+                                                                          {
+                                                                            "sym": "assign",
+                                                                            "token": null,
+                                                                            "nodeType": null,
+                                                                            "varInfo": null,
+                                                                            "children": [
+                                                                              {
+                                                                                "sym": "ID",
+                                                                                "token": {
+                                                                                  "sym": "ID",
+                                                                                  "line": 14,
+                                                                                  "lexeme": "c"
+                                                                                },
+                                                                                "nodeType": "bool",
+                                                                                "varInfo": {
+                                                                                  "type": "bool",
+                                                                                  "nesting": 3,
+                                                                                  "location": {
+                                                                                    "storageClass": "local",
+                                                                                    "index": 2
+                                                                                  }
+                                                                                },
+                                                                                "children": []
+                                                                              },
+                                                                              {
+                                                                                "sym": "EQ",
+                                                                                "token": {
+                                                                                  "sym": "EQ",
+                                                                                  "line": 14,
+                                                                                  "lexeme": "="
+                                                                                },
+                                                                                "nodeType": null,
+                                                                                "varInfo": null,
+                                                                                "children": []
+                                                                              },
+                                                                              {
+                                                                                "sym": "BOOLCONST",
+                                                                                "token": {
+                                                                                  "sym": "BOOLCONST",
+                                                                                  "line": 14,
+                                                                                  "lexeme": "false"
+                                                                                },
+                                                                                "nodeType": null,
+                                                                                "varInfo": null,
+                                                                                "children": []
+                                                                              }
+                                                                            ]
+                                                                          },
+                                                                          {
+                                                                            "sym": "SEMI",
+                                                                            "token": {
+                                                                              "sym": "SEMI",
+                                                                              "line": 14,
+                                                                              "lexeme": ""
+                                                                            },
+                                                                            "nodeType": null,
+                                                                            "varInfo": null,
+                                                                            "children": []
+                                                                          },
+                                                                          {
+                                                                            "sym": "stmts",
+                                                                            "token": null,
+                                                                            "nodeType": null,
+                                                                            "varInfo": null,
+                                                                            "children": []
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "sym": "RBRACE",
+                                                            "token": {
+                                                              "sym": "RBRACE",
+                                                              "line": 15,
+                                                              "lexeme": "}"
+                                                            },
+                                                            "nodeType": null,
+                                                            "varInfo": null,
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "sym": "SEMI",
+                                                    "token": {
+                                                      "sym": "SEMI",
+                                                      "line": 15,
+                                                      "lexeme": ""
+                                                    },
+                                                    "nodeType": null,
+                                                    "varInfo": null,
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "sym": "stmts",
+                                                    "token": null,
+                                                    "nodeType": null,
+                                                    "varInfo": null,
+                                                    "children": [
+                                                      {
+                                                        "sym": "assign",
+                                                        "token": null,
+                                                        "nodeType": null,
+                                                        "varInfo": null,
+                                                        "children": [
+                                                          {
+                                                            "sym": "ID",
+                                                            "token": {
+                                                              "sym": "ID",
+                                                              "line": 16,
+                                                              "lexeme": "c"
+                                                            },
+                                                            "nodeType": "float",
+                                                            "varInfo": {
+                                                              "type": "float",
+                                                              "nesting": 2,
+                                                              "location": {
+                                                                "storageClass": "local",
+                                                                "index": 1
+                                                              }
+                                                            },
+                                                            "children": []
+                                                          },
+                                                          {
+                                                            "sym": "EQ",
+                                                            "token": {
+                                                              "sym": "EQ",
+                                                              "line": 16,
+                                                              "lexeme": "="
+                                                            },
+                                                            "nodeType": null,
+                                                            "varInfo": null,
+                                                            "children": []
+                                                          },
+                                                          {
+                                                            "sym": "FNUM",
+                                                            "token": {
+                                                              "sym": "FNUM",
+                                                              "line": 16,
+                                                              "lexeme": "2.0"
+                                                            },
+                                                            "nodeType": null,
+                                                            "varInfo": null,
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "sym": "SEMI",
+                                                        "token": {
+                                                          "sym": "SEMI",
+                                                          "line": 16,
+                                                          "lexeme": ""
+                                                        },
+                                                        "nodeType": null,
+                                                        "varInfo": null,
+                                                        "children": []
+                                                      },
+                                                      {
+                                                        "sym": "stmts",
+                                                        "token": null,
+                                                        "nodeType": null,
+                                                        "varInfo": null,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "sym": "RBRACE",
+                                        "token": {
+                                          "sym": "RBRACE",
+                                          "line": 17,
+                                          "lexeme": "}"
+                                        },
+                                        "nodeType": null,
+                                        "varInfo": null,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "sym": "SEMI",
+                                "token": {
+                                  "sym": "SEMI",
+                                  "line": 17,
+                                  "lexeme": ""
+                                },
+                                "nodeType": null,
+                                "varInfo": null,
+                                "children": []
+                              },
+                              {
+                                "sym": "stmts",
+                                "token": null,
+                                "nodeType": null,
+                                "varInfo": null,
+                                "children": [
+                                  {
+                                    "sym": "assign",
+                                    "token": null,
+                                    "nodeType": null,
+                                    "varInfo": null,
+                                    "children": [
+                                      {
+                                        "sym": "ID",
+                                        "token": {
+                                          "sym": "ID",
+                                          "line": 18,
+                                          "lexeme": "c"
+                                        },
+                                        "nodeType": "int",
+                                        "varInfo": {
+                                          "type": "int",
+                                          "nesting": 1,
+                                          "location": {
+                                            "storageClass": "local",
+                                            "index": 0
+                                          }
+                                        },
+                                        "children": []
+                                      },
+                                      {
+                                        "sym": "EQ",
+                                        "token": {
+                                          "sym": "EQ",
+                                          "line": 18,
+                                          "lexeme": "="
+                                        },
+                                        "nodeType": null,
+                                        "varInfo": null,
+                                        "children": []
+                                      },
+                                      {
+                                        "sym": "NUM",
+                                        "token": {
+                                          "sym": "NUM",
+                                          "line": 18,
+                                          "lexeme": "2"
+                                        },
+                                        "nodeType": null,
+                                        "varInfo": null,
+                                        "children": []
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "sym": "SEMI",
+                                    "token": {
+                                      "sym": "SEMI",
+                                      "line": 18,
+                                      "lexeme": ""
+                                    },
+                                    "nodeType": null,
+                                    "varInfo": null,
+                                    "children": []
+                                  },
+                                  {
+                                    "sym": "stmts",
+                                    "token": null,
+                                    "nodeType": null,
+                                    "varInfo": null,
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "sym": "RBRACE",
+                        "token": {
+                          "sym": "RBRACE",
+                          "line": 19,
+                          "lexeme": "}"
+                        },
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      },
+                      {
+                        "sym": "SEMI",
+                        "token": {
+                          "sym": "SEMI",
+                          "line": 19,
+                          "lexeme": ""
+                        },
+                        "nodeType": null,
+                        "varInfo": null,
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "sym": "decls",
+                    "token": null,
+                    "nodeType": null,
+                    "varInfo": null,
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

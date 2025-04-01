@@ -1,0 +1,19 @@
+var a: int
+func foo(b: int){
+    var c: int
+    if( true ){
+        var c: float
+        c = 1.0
+        if( true ){
+            var c: bool
+            c = true
+            if( false ){
+                var c: string
+                c = "blah"
+            }
+            c="boom"
+        }
+        c=2.0
+    }
+    c=2
+}

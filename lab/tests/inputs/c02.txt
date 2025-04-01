@@ -1,0 +1,4 @@
+
+func foo( c: int){
+    c = 1
+}

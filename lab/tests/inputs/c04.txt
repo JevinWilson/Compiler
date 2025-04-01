@@ -1,0 +1,9 @@
+
+//block-scoped declaration
+
+func foo(){
+    if(true){
+        var c: int
+        c = 1
+    }
+}

@@ -1,0 +1,9 @@
+var a: int
+func foo(b: int){
+    var c: int
+    if( true ){
+        var c: float
+        c = 1
+    }
+    c=2
+}
