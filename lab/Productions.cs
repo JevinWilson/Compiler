@@ -1,3 +1,4 @@
+
 namespace lab{
 
 public class Productions{
@@ -5,7 +6,11 @@ public class Productions{
         Grammar.defineProductions( new PSpec[] {
             new("S :: decls"),
             new("decls :: funcdecl decls | classdecl decls | vardecl decls | SEMI decls | lambda"),
-            new("funcdecl :: FUNC ID LPAREN optionalPdecls RPAREN optionalReturn LBRACE stmts RBRACE SEMI"),
+            new("funcdecl :: FUNC ID LPAREN optionalPdecls RPAREN optionalReturn LBRACE stmts RBRACE SEMI",
+                collectFunctionNames: (n) => {
+                    string funcName = n.children[1].token.lexeme;
+                    Console.WriteLine($"FUNC: {funcName}");
+            }),
             new("braceblock :: LBRACE stmts RBRACE"),
             new("optionalReturn :: lambda | COLON TYPE"),
             new("optionalSemi :: lambda | SEMI"),
@@ -18,6 +23,8 @@ public class Productions{
                     Console.WriteLine($"CLASS: {className}");
                     //assuming no nested classes; no need to walk
                     //children of n
+                    //This also means we won't pick up member
+                    //functions of the class.
                 }
             ),
             new("memberdecls :: lambda | SEMI memberdecls | membervardecl memberdecls | memberfuncdecl memberdecls"),

@@ -1,45 +1,78 @@
-﻿namespace lab {
-public class CompilersAreGreat {
+﻿using System.Collections.Immutable;
+
+namespace lab{
+
+public class CompilersAreGreat{
     private const int V = 3;
-    public static void Main(string[] args) {
-        // Initialize grammar
+
+    public static void Main(string[] args){
+
+        //initialize our grammar
         Terminals.makeThem();
         Productions.makeThem();
         ProductionsExpr.makeThem();
 
-        if (args.Length == 1 && args[0] == "-g") {
+        if( args.Length == 1 && args[0] == "-g" ){
             Grammar.check();
             Grammar.computeNullableAndFirst();
-            DFA.makeDFA();
+            DFA.makeDFA(); //time consuming
+            DFA.dump("dfa.txt");
             TableWriter.create();
+            // foreach( var q in DFA.allStates ){
+            //     Console.WriteLine(q);
+            // }
             return;
         }
 
-        // TEST SETUP - Add this block right before parsing
-        SymbolTable.Clear();
-        SymbolTable.declareGlobal(new Token("ID", "x", 0), NodeType.Int);
-        // You can add other test variables here if needed
-        // SymbolTable.declareGlobal(new Token("ID", "y", 0), NodeType.Float);
-        // SymbolTable.declareGlobal(new Token("ID", "z", 0), NodeType.String);
+        TreeNode root=null;
 
-        string inp = File.ReadAllText(args[0]);
-        var tokens = new List<Token>();
-        var T = new Tokenizer(inp);
-        TreeNode root = Parser.parse(T);
+        for(int i=0;i<args.Length;++i){
+            if( args[i] == "-t" ){
+                i++;
+                if( i >= args.Length ){
+                    Console.WriteLine("-t requires an argument");
+                    Environment.Exit(1);
+                }
+                string treefile = args[i];
+                using(var r = new StreamReader(treefile)){
+                    string data = r.ReadToEnd();
+                    var dopts = new System.Text.Json.JsonSerializerOptions();
+                    dopts.IncludeFields=true;
+                    dopts.WriteIndented=true;
+                    dopts.MaxDepth=1000000;
+                    root = System.Text.Json.JsonSerializer.Deserialize<TreeNode>(data,dopts);
+                    root.setParents();
+                }
+            }
+        }
 
+        if( root == null){
+            string inp = File.ReadAllText(args[0]);
+            var tokens = new List<Token>();
+            var T = new Tokenizer(inp);
+            root = Parser.parse(T);
+        }
+        
         root.collectClassNames();
+        root.collectFunctionNames();
         root.setNodeTypes();
 
-        // Debug output
-        var opts = new System.Text.Json.JsonSerializerOptions {
-            IncludeFields = true,
-            WriteIndented = true,
-            MaxDepth = 1000000
-        };
-        string J = System.Text.Json.JsonSerializer.Serialize(root, opts);
-        using (var w = new StreamWriter("tree.json")) {
+        //root.removeUnitProductions();     
+
+        //Console.WriteLine("The tree:");
+        //root.print();
+        
+        //debug output: Write the tree in JSON format
+        var opts = new System.Text.Json.JsonSerializerOptions();
+        opts.IncludeFields=true;
+        opts.WriteIndented=true;
+        opts.MaxDepth=1000000;
+        string J = System.Text.Json.JsonSerializer.Serialize(root,opts);
+        using(var w = new StreamWriter("tree.json")){
             w.WriteLine(J);
+            //root.toJson(w);
         }
     }
-}
-}
+} //class
+
+} //namespace

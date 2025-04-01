@@ -7,26 +7,6 @@ namespace lab{
 
 public abstract class NodeType {
     public readonly string friendlyName;
-
-    // public void toJson(StreamWriter w){
-    //     w.WriteLine($"\"{friendlyName}\"");
-    // }
-    // public static NodeType fromJson(StreamReader r){
-    //     string s = Utils.expectJsonPlainString(r);
-    //     if( s == null )
-    //         return null;
-    //     switch(s){
-    //         case "int":
-    //             return NodeType.Int;
-    //         case "float":
-    //             return NodeType.Float;
-    //         case "string":
-    //             return NodeType.String;
-    //         default:
-    //             throw new Exception($"Unknown NodeType: {s}");
-    //     }
-    // }
-
     public NodeType(string n){
         this.friendlyName=n;
     }
@@ -76,10 +56,6 @@ public abstract class NodeType {
     }
 }
 
-public class BoolNodeType : NodeType {
-    public BoolNodeType(): base("bool") {}
-}
-
 public class IntNodeType : NodeType {
     public IntNodeType() : base("int") {}
 }
@@ -88,23 +64,18 @@ public class FloatNodeType : NodeType {
     public FloatNodeType() : base("float") {}
 }
 
+
+public class BoolNodeType : NodeType {
+    public BoolNodeType() : base("bool") {}
+}
+
 public class StringNodeType : NodeType {
     public StringNodeType() : base("string") {}
 }
 
-public class FunctionNodeType: NodeType {
-    public FunctionNodeType(): base("func") {}
-
-    public override bool Equals(Object o){
-        throw new Exception("TBD");
-    }
-
-    public override int GetHashCode()
-    {
-        throw new Exception("TBD");
-    }
+public class VoidNodeType : NodeType {
+    public VoidNodeType() : base("void") {}
 }
-
 
 
 public class NodeTypeJsonConverter : JsonConverter<NodeType> {
@@ -115,14 +86,7 @@ public class NodeTypeJsonConverter : JsonConverter<NodeType> {
                                    Type toConvert,
                                    JsonSerializerOptions opts)
     {
-        string s = r.GetString();
-        switch(s){
-            case "int": return NodeType.Int;
-            case "float": return NodeType.Float;
-            case "string": return NodeType.String;
-            case "bool": return NodeType.Bool;
-            default: throw new Exception("Unknown node type "+s);
-        }
+        throw new Exception("Not implemented");
     }
     public override void Write( Utf8JsonWriter w,
         NodeType typ, JsonSerializerOptions opts )

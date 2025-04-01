@@ -3,7 +3,7 @@ namespace lab{
 public static class Parser{
 
     public static TreeNode parse(Tokenizer tokenizer){
-
+        
         var stk = new Stack<int>();
         var tstk = new Stack<TreeNode>();
 
@@ -18,7 +18,8 @@ public static class Parser{
                 Console.WriteLine($"Unexpected token {tok.sym} ({tok.lexeme})");
                 Console.WriteLine("I expected to see one of:");
                 foreach(string sym in row.Keys){
-                    Console.Write($"{sym} ");
+                    if( Grammar.isTerminal(sym) )
+                        Console.Write($"{sym} ");
                 }
                 Console.WriteLine();
                 Environment.Exit(1);
