@@ -27,13 +27,24 @@ namespace lab{
         public static void leaveLocalScope(){
             nestingLevel--;
             //...fixme...
-            //destroy locals
-            throw new Exception();
+            // fixed
+            removeVariablesFromTableWithNestingLevelGreaterThanThreshold(nestingLevel);
+            restoreShadowedVariables();
         }
 
         static void removeVariablesFromTableWithNestingLevelGreaterThanThreshold(int v){
             //delete anything from table where 
             //table thing's nestinglevel > v
+            // fixed
+            List<string> toRemove = new();
+            foreach(var t in table.Keys) {
+                if(table[t].nestingLevel > v) {
+                    toRemove.Add(t);
+                }
+                foreach(var e in toRemove) {
+                    table.Remove(e);
+                }
+            }
         }
 
         static void restoreShadowedVariables(){
@@ -49,7 +60,13 @@ namespace lab{
             //look in table
             //find thing
             //if not found, signal error
-            //else return data    
+            //else return data  
+            if(table.ContainsKey(id.lexeme)) {
+                return table[id.lexeme];
+            } else {
+                Environment.Exit(1);
+            }
+            return null;
         }
 
         public static void declareGlobal(Token token, NodeType type){
@@ -82,12 +99,31 @@ namespace lab{
             numLocals++;
         }
         public static void declareParameter(Token token, NodeType type){ 
-            //...
-            throw new Exception("FINISH ME"); 
+            string variableName = token.lexeme;
+            if( table.ContainsKey(variableName)){
+                VarInfo vi = table[variableName];
+                if( vi.nestingLevel == nestingLevel ){
+                    Utils.error(token, "Redeclaration of variable");
+                } else if( vi.nestingLevel > nestingLevel ){
+                    throw new Exception("ICE");
+                } else {
+                    //vi.nestingLevel must be < nestingLevel
+                    shadowed.Peek().Add( table[variableName] );
+                }
+            }
+            table[variableName] = new VarInfo(token, 
+                    nestingLevel, 
+                    type, 
+                    new ParameterLocation(numLocals)
+            ); 
         }
 
         public static bool currentlyInGlobalScope(){
-            throw new Exception("Finish me");
+            if(nestingLevel == 0) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

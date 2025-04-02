@@ -54,7 +54,7 @@ public class CompilersAreGreat{
         }
         
         root.collectClassNames();
-        root.collectFunctionNames();
+        //root.collectFunctionNames();
         root.setNodeTypes();
 
         //root.removeUnitProductions();     
