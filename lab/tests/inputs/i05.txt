@@ -1,7 +1,0 @@
-var a: int
-func foo( b: int){
-    var c: int
-    //redeclaration of parameter
-    var b: int
-    c = 1
-}

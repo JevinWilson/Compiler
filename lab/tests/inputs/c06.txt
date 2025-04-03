@@ -1,6 +1,0 @@
-var a: int
-func foo( b: int){
-    var d: int
-    var c: int
-    d = d | a + b * c
-}

@@ -8,17 +8,17 @@ public class PSpec {
     public delegate void WalkCallbackType(TreeNode n);
 
     public WalkCallbackType collectClassNames;
-    //public WalkCallbackType collectFunctionNames;
+    public WalkCallbackType collectFunctionNames;
     public WalkCallbackType setNodeTypes;
 
     public PSpec(string p,
                  WalkCallbackType collectClassNames=null,
-                 //WalkCallbackType collectFunctionNames=null,
+                 WalkCallbackType collectFunctionNames=null,
                  WalkCallbackType setNodeTypes=null
     ){
         this.spec=p;
         this.collectClassNames = collectClassNames ?? defaultCollectClassNames;
-        //this.collectFunctionNames = collectFunctionNames ?? defaultCollectFunctionNames;
+        this.collectFunctionNames = collectFunctionNames ?? defaultCollectFunctionNames;
         this.setNodeTypes = setNodeTypes ?? defaultSetNodeTypes;
     }
 
@@ -28,11 +28,11 @@ public class PSpec {
         }
     }
 
-    /*void defaultCollectFunctionNames(TreeNode n){
+    void defaultCollectFunctionNames(TreeNode n){
         foreach(TreeNode c in n.children){
             c.collectFunctionNames();
         }
-    }*/
+    }
 
     public static void defaultSetNodeTypes(TreeNode n){
         foreach(TreeNode c in n.children){

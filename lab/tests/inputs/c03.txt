@@ -1,5 +1,0 @@
-
-func foo(){
-    var c: int
-    c = 1
-}
