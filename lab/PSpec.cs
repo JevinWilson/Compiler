@@ -10,16 +10,19 @@ public class PSpec {
     public WalkCallbackType collectClassNames;
     public WalkCallbackType collectFunctionNames;
     public WalkCallbackType setNodeTypes;
+    public WalkCallbackType generateCode:
 
     public PSpec(string p,
                  WalkCallbackType collectClassNames=null,
                  WalkCallbackType collectFunctionNames=null,
-                 WalkCallbackType setNodeTypes=null
+                 WalkCallbackType setNodeTypes=null,
+                 WalkCallbackType generateCode=null
     ){
         this.spec=p;
         this.collectClassNames = collectClassNames ?? defaultCollectClassNames;
         this.collectFunctionNames = collectFunctionNames ?? defaultCollectFunctionNames;
         this.setNodeTypes = setNodeTypes ?? defaultSetNodeTypes;
+        this.generateCode = generateCode ?? defaultGenerateCode;
     }
 
     void defaultCollectClassNames(TreeNode n){
@@ -42,6 +45,12 @@ public class PSpec {
             n.children[0].nodeType != null &&
             n.nodeType == null){
                 n.nodeType = n.children[0].nodeType;
+        }
+    }
+
+    public static void defaultGenerateCode(TreeNode n){
+        foreach(TreeNode c in n.children){
+            c.generateCode();
         }
     }
 
