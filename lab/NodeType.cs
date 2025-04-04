@@ -42,15 +42,18 @@ public abstract class NodeType {
     public static readonly StringNodeType String = new ();
     public static readonly VoidNodeType Void = new ();
 
-    public static NodeType typeFromToken(Token t){
+    public static NodeType tokenToNodeType(Token t){
+        if( t.sym != "TYPE" )
+            throw new Exception("ICE");
         switch(t.lexeme){
             case "int": return NodeType.Int;
+            case "string": return NodeType.String;
             case "float": return NodeType.Float;
             case "bool": return NodeType.Bool;
-            case "string": return NodeType.String;
-            default:
-                throw new Exception("Internal compiler error: type from token "+t);
+            case "void": return NodeType.Void;
+            default: throw new Exception("ICE");
         }
+
     }
 }
 
@@ -76,7 +79,15 @@ public class VoidNodeType : NodeType {
     public VoidNodeType() : base("void") {}
 }
 
-
+public class FunctionNodeType : NodeType {
+    public FunctionNodeType() : base("func") {}
+        public override bool Equals(Object o) {
+            throw new Exception("TBD");
+        }
+        public override int GetHashCode() {
+            throw new Exception("TBD");
+        }
+}
 public class NodeTypeJsonConverter : JsonConverter<NodeType> {
 
     public NodeTypeJsonConverter(){}

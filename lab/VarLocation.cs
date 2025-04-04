@@ -1,17 +1,21 @@
 namespace lab{
     
 public abstract class VarLocation{
-    public abstract void toJson(StreamWriter w);
+    //public abstract void toJson(StreamWriter w);
 }
 
 
 public class GlobalLocation : VarLocation{
+    public Label lbl;
+    public GlobalLocation(Label lbl) {
+        this.lbl = lbl;
+    }
     public override string ToString(){
-        return "global";
+        return $"global {lbl}";
     }
-    public override void toJson(StreamWriter w){
-        w.Write("{ \"storageClass\": \"global\" }");
-    }
+    //public override void toJson(StreamWriter w){
+    //    w.Write("{ \"storageClass\": \"global\" }");
+    //}
 }
 
 public class LocalLocation : VarLocation{
@@ -24,9 +28,9 @@ public class LocalLocation : VarLocation{
         return $"local #{this.num}";
     }
 
-    public override void toJson(StreamWriter w){
-        w.Write($"{{ \"storageClass\": \"local\", \"index\": {this.num} }}");
-    }
+    //public override void toJson(StreamWriter w){
+    //    w.Write($"{{ \"storageClass\": \"local\", \"index\": {this.num} }}");
+    //}
 
 }
 
@@ -40,9 +44,9 @@ public class ParameterLocation : VarLocation {
         return $"param #{this.num}";
     }
 
-    public override void toJson(StreamWriter w){
-        w.Write($"{{ \"storageClass\": \"parameter\", \"index\": {this.num} }}");
-    }
+    //public override void toJson(StreamWriter w){
+    //    w.Write($"{{ \"storageClass\": \"parameter\", \"index\": {this.num} }}");
+    //}
 }
 
 } //namespace lab

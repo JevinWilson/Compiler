@@ -22,10 +22,14 @@ public static class Asm{
         VarInfo vi  = SymbolTable.lookup("main");
         if( vi.type as FunctionNodeType == null ){
             //error: main was declared but as a variable
+            Console.WriteLine("error: main was declared but as a variable");
+            Environment.Exit(3);
         }
         GlobalLocation loc = vi.location as GlobalLocation;
         if( loc == null ){
             //error! print a nice message
+            Console.WriteLine("error: no main function declared");
+            Environment.Exit(3);
         }
         w.WriteLine($"    call {loc.lbl.value}  /* {loc.lbl.comment} */");
 
