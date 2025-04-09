@@ -1,18 +1,15 @@
 namespace lab{
 
     public class OpDivF: Opcode {
-        FloatRegister numerator;
-        FloatRegister denominator;
+        FloatRegister op1;
+        FloatRegister op2;
         public OpDivF( FloatRegister n, FloatRegister d){
-            this.numerator=n;
-            this.denominator=d;
-            if( this.numerator != Register.xmm0 ){
-                throw new Exception();  //x86 weirdness
-            }
+            this.op1=n;
+            this.op2=d;
         }
 
         public override void output(StreamWriter w){
-            w.WriteLine($"    divsd {this.denominator}, {this.numerator}");
+            w.WriteLine($"     divsd {op2}, {op1}");
         }
     }
 

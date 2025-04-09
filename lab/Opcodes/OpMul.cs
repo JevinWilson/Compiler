@@ -1,15 +1,18 @@
 namespace lab{
 
     public class OpMul: Opcode {
-        IntRegister rax;
-        IntRegister rbx;
-        public OpMul( IntRegister r1, IntRegister r2){
-            this.rax=r1;
-            this.rbx=r2;
+        IntRegister multiplier;
+        IntRegister multiplicand;
+        public OpMul( IntRegister m1, IntRegister m2){
+            this.multiplier=m1;
+            this.multiplicand=m2;
+            if( this.multiplier != Register.rax ){
+                throw new Exception();  //x86 weirdness
+            }
         }
 
         public override void output(StreamWriter w){
-            w.WriteLine($"    mul {this.rbx}");
+            w.WriteLine($"    imul {this.multiplicand}");
         }
     }
 

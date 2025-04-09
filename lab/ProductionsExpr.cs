@@ -3,6 +3,49 @@ namespace lab{
 
 public class ProductionsExpr{
 
+    static void binaryOp( TreeNode n, Opcode op, IntRegister whatPush=null){
+        if(whatPush == null )
+            whatPush = Register.rax;
+        Asm.add(new OpComment($"Binary operation {n.children[1].sym} at line {n.children[1].token.line}"));
+        n.children[0].generateCode();
+        n.children[2].generateCode();
+        Asm.add(new OpPop(Register.rcx, null));
+        Asm.add(new OpPop(Register.rax, null));
+        Asm.add( op );
+        Asm.add( new OpPush( whatPush, StorageClass.PRIMITIVE));
+        Asm.add(new OpComment($"End of binary operation {n.children[1].sym} at line {n.children[1].token.line}"));
+    }
+
+    static void binaryOpF( TreeNode n, Opcode op){
+        Asm.add(new OpComment($"Binary operation {n.children[1].sym} at line {n.children[1].token.line}"));
+        n.children[0].generateCode();
+        n.children[2].generateCode();
+        Asm.add(new OpPopF(Register.xmm1, null));
+        Asm.add(new OpPopF(Register.xmm0, null));
+        Asm.add( op );
+        Asm.add( new OpPushF( Register.xmm0, StorageClass.PRIMITIVE));
+        Asm.add(new OpComment($"End of binary operation {n.children[1].sym} at line {n.children[1].token.line}"));
+    }
+
+    static void unaryOp( TreeNode n, Opcode op){
+        Asm.add(new OpComment($"unary operation {n.children[0].sym} at line {n.children[0].token.line}"));
+        n.children[1].generateCode();
+        Asm.add(new OpPop(Register.rax, null));
+        Asm.add( op );
+        Asm.add( new OpPush( Register.rax, StorageClass.PRIMITIVE ));
+        Asm.add(new OpComment($"End of unary operation {n.children[0].sym} at line {n.children[0].token.line}"));
+    }
+
+    static void unaryOpF( TreeNode n, Opcode op){
+        Asm.add(new OpComment($"unary operation {n.children[0].sym} at line {n.children[0].token.line}"));
+        n.children[1].generateCode();
+        Asm.add(new OpPopF(Register.xmm0, null));
+        Asm.add( op );
+        Asm.add( new OpPushF( Register.xmm0, StorageClass.PRIMITIVE ));
+        Asm.add(new OpComment($"End of unary operation {n.children[0].sym} at line {n.children[0].token.line}"));
+    }
+
+
     static void unary(TreeNode n, NodeType[] operandTypes, NodeType resultType){
         foreach(var c in n.children)
             c.setNodeTypes();
@@ -46,19 +89,12 @@ public class ProductionsExpr{
         Grammar.defineProductions( new PSpec[] {
 
             //convenience: Starts the whole expression hierarchy
-            new("expr :: orexp",
-                setNodeTypes: (n) => {
-                    foreach(var c in n.children){
-                        c.setNodeTypes();
-                    }
-                    n.nodeType = n["orexp"].nodeType;
-                }
-            ),
+            new("expr :: orexp"),
 
             //boolean OR
             new("orexp :: orexp OROP andexp",
                 setNodeTypes: (n) => {
-                    Utils.typeCheck(n,NodeType.Bool,NodeType.Bool);
+                    binary(n,NodeType.Bool,NodeType.Bool);
                 }
             ),
             new("orexp :: andexp"),
@@ -66,7 +102,7 @@ public class ProductionsExpr{
             //boolean AND
             new("andexp :: andexp ANDOP relexp",
                 setNodeTypes: (n) => {
-                    Utils.typeCheck(n,NodeType.Bool,NodeType.Bool);
+                    binary(n,NodeType.Bool,NodeType.Bool);
                 }
             ),
             new("andexp :: relexp"),
@@ -74,12 +110,9 @@ public class ProductionsExpr{
             //relational: x>y
             new("relexp :: bitexp RELOP bitexp",
                 setNodeTypes: (n) => {
-                    Utils.typeCheck(
-                        n,
-                        NodeType.Bool,
-                        NodeType.Int,
-                        NodeType.Float,
-                        NodeType.String
+                    binary(n,
+                        new NodeType[]{NodeType.Int,NodeType.Float,NodeType.String},
+                        NodeType.Bool
                     );
                 }),
             new("relexp :: bitexp"),
@@ -87,53 +120,29 @@ public class ProductionsExpr{
             //bitwise: or, and, xor
             new("bitexp :: bitexp BITOP shiftexp",
                 setNodeTypes: (n) => {
-                    Utils.typeCheck(n,NodeType.Int,NodeType.Int);
+                    binary(n,NodeType.Int,NodeType.Int);
                 },
                 generateCode: (n) => {
-                    n["bitexp"].generateCode();
-                    n["shiftexp"].generateCode();
-
-                    Asm.add(new OpPop(Register.rcx, null));
-                    Asm.add(new OpPop(Register.rax, null));
-
-                    if(n["BITOP"].token.lexeme == "|") {
-                        Asm.add(new OpOr(Register.rax, Register.rcx));
+                    switch( n["BITOP"].token.lexeme){
+                        case "&":  binaryOp( n,new OpAnd(Register.rax,Register.rcx)); break;
+                        case "|":  binaryOp( n,new OpOr(Register.rax,Register.rcx)); break;
+                        case "^":  binaryOp( n, new OpXor(Register.rax,Register.rcx)); break;
                     }
-                    if(n["BITOP"].token.lexeme == "&") {
-                        Asm.add(new OpAnd(Register.rax, Register.rcx));
-                    }
-                    if(n["BITOP"].token.lexeme == "^") {
-                        Asm.add(new OpXor(Register.rax, Register.rcx));
-                    }
-
-                    Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
                 }
             ),
             new("bitexp :: shiftexp"),
 
             new("shiftexp :: shiftexp SHIFTOP sumexp",
                 setNodeTypes: (n) => {
-                    Utils.typeCheck(n,NodeType.Int,NodeType.Int);
+                    binary(n,NodeType.Int,NodeType.Int);
                 },
                 generateCode: (n) => {
-
-                    //ex: 4 << 2
- 
-                     //ex: 4
-                     n["shiftexp"].generateCode();
- 
-                     //ex: 2
-                     n["sumexp"].generateCode();
-     
-                     Asm.add(new OpPop(Register.rcx,null));      //ex: 2
-                     Asm.add(new OpPop(Register.rax,null));      //ex: 4
-                     if( n["SHIFTOP"].token.lexeme == "<<" ){
-                         Asm.add(new OpShl(Register.rax, Register.rcx));
-                     }
-                     if( n["SHIFTOP"].token.lexeme == ">>" ){
-                         Asm.add(new OpShr(Register.rax, Register.rcx));
-                     }
-                     Asm.add( new OpPush( Register.rax, StorageClass.PRIMITIVE));
+                    switch(n["SHIFTOP"].token.lexeme){
+                        case "<<":
+                            binaryOp( n, new OpShl(Register.rax, Register.rcx)); break;
+                        case ">>":
+                            binaryOp( n, new OpShr(Register.rax, Register.rcx)); break;
+                    }
                 }
             ),
             new("shiftexp :: sumexp"),
@@ -144,55 +153,29 @@ public class ProductionsExpr{
                     foreach(var c in n.children){
                         c.setNodeTypes();
                     }
-                    var type1 = n["sumexp"].nodeType;
-                    var type2 = n["prodexp"].nodeType;
-                    var addop = n["ADDOP"].token;
-                    if( type1 != type2) {
-                        Utils.error(addop,$"type mismatch: {type1} and {type2}");
-                    }
-                    if( type1 != NodeType.Int && type1 != NodeType.Float && type1 != NodeType.String) {
-                        n.print();
-                        Utils.error(addop,$"Bad type for operation: {type1}");
-                    }
-                    if( type1 == NodeType.String && n["ADDOP"].token.lexeme != "+") {
-                        Utils.error(addop, $"Can't suptract strings");
-                    }
-                    n.nodeType = type1;
+                    binary( n, 
+                        new NodeType[]{NodeType.Int, NodeType.Float, NodeType.String},
+                        null
+                    );
+                    if( n.children[0].nodeType == NodeType.String && n["ADDOP"].token.lexeme != "+" )
+                        Utils.error(n.children[0].token,"Cannot subtract strings");
                 },
                 generateCode: (n) => {
-                    if(n.nodeType == NodeType.Int) {
-                        n["sumexp"].generateCode();
-                        n["prodexp"].generateCode();
-
-                        Asm.add(new OpPop(Register.rcx, null));
-                        Asm.add(new OpPop(Register.rax, null));
-
-                        if(n["ADDOP"].token.lexeme == "+") {
-                            Asm.add(new OpAdd(Register.rax, Register.rbx));
+                    if( n.nodeType == NodeType.Int){
+                        switch(n["ADDOP"].token.lexeme){
+                            case "+": binaryOp( n, new OpAdd( Register.rax, Register.rcx)); break;
+                            case "-": binaryOp( n, new OpSub( Register.rax, Register.rcx)); break;
+                            default: throw new Exception();
                         }
-
-                        if(n["ADDOP"].token.lexeme == "-") {
-                            Asm.add(new OpSub(Register.rax, Register.rbx));
-                        }
-                        Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
-
-                        if(n["ADDOP"].token.lexeme != "+" && n["ADDOP"].token.lexeme != "-") {
-                            throw new Exception("ICE");
+                    } else if(n.nodeType == NodeType.Float){
+                        switch(n["ADDOP"].token.lexeme){
+                            case "+": binaryOpF( n, new OpAddF( Register.xmm0, Register.xmm1)); break;
+                            case "-": binaryOpF( n, new OpSubF( Register.xmm0, Register.xmm1)); break;
+                            default: throw new Exception();
                         }
                     } else {
-                        n["sumexp"].generateCode();
-                        n["prodexp"].generateCode();
+                        throw new NotImplementedException();
 
-                        Asm.add(new OpPopF(Register.xmm1, null));
-                        Asm.add(new OpPopF(Register.xmm0, null));
-
-                        if(n["ADDOP"].token.lexeme == "+") {
-                            Asm.add(new OpAddF(Register.xmm0, Register.xmm1));
-                        }
-                        if(n["ADDOP"].token.lexeme == "-") {
-                            Asm.add(new OpSubF(Register.xmm0, Register.xmm1));
-                        }
-                        Asm.add(new OpPushF(Register.xmm0, StorageClass.PRIMITIVE));
                     }
                 }
             ),
@@ -201,50 +184,28 @@ public class ProductionsExpr{
             //multiplication, division, modulo
             new("prodexp :: prodexp MULOP powexp",
                 setNodeTypes: (n) => {
-                    Utils.typeCheck(
-                        n,
-                        null,
-                        NodeType.Int,
-                        NodeType.Float
+                    binary(n,
+                        new NodeType[]{NodeType.Int, NodeType.Float},
+                        null
                     );
                 },
                 generateCode: (n) => {
-                    if(n.nodeType == NodeType.Int) {
-                        n["prodexp"].generateCode();
-                        n["powexp"].generateCode();
-
-                        Asm.add(new OpPop(Register.rbx, null));
-                        Asm.add(new OpPop(Register.rax, null));
-
-                        if(n["MULOP"].token.lexeme == "*") {
-                            Asm.add(new OpMul(Register.rax, Register.rbx));
-                            Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
+                    if( n.nodeType == NodeType.Int){
+                        switch(n["MULOP"].token.lexeme){
+                            case "*": binaryOp( n, new OpMul( Register.rax, Register.rcx)); break;
+                            case "/": binaryOp( n, new OpDiv( Register.rax, Register.rcx)); break;
+                            case "%": binaryOp( n, new OpDiv( Register.rax, Register.rcx), Register.rdx); break;
+                            default: throw new Exception();
                         }
-
-                        if(n["MULOP"].token.lexeme == "/") {
-                            Asm.add(new OpDiv(Register.rax, Register.rbx));
-                            Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
+                    } else if( n.nodeType == NodeType.Float){
+                        switch(n["MULOP"].token.lexeme){
+                            case "*": binaryOpF( n, new OpMulF( Register.xmm0, Register.xmm1)); break;
+                            case "/": binaryOpF( n, new OpDivF( Register.xmm0, Register.xmm1)); break;
+                            case "%": Utils.error(n["MULOP"].token, "Modulo is not allowed on floats"); break;
+                            default: throw new Exception();
                         }
-
-                        if(n["MULOP"].token.lexeme == "%") {
-                            Asm.add(new OpDiv(Register.rax, Register.rbx));
-                            Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
-                        }
-                    } else if (n.nodeType == NodeType.Float) {
-                        n["prodexp"].generateCode();
-                        n["powexp"].generateCode();
-
-                        Asm.add(new OpPopF(Register.xmm1, null));
-                        Asm.add(new OpPopF(Register.xmm0, null));
-
-                        if(n["MULOP"].token.lexeme == "*") {
-                            Asm.add(new OpMulF(Register.xmm0, Register.xmm1));
-                            Asm.add(new OpPushF(Register.xmm0, StorageClass.PRIMITIVE));
-                        }
-                        if(n["MULOP"].token.lexeme == "/") {
-                            Asm.add(new OpDivF(Register.xmm0, Register.xmm1));
-                            Asm.add(new OpPushF(Register.xmm0, StorageClass.PRIMITIVE));
-                        }
+                    } else {
+                        throw new NotImplementedException();
                     }
                 }
             ),
@@ -257,71 +218,37 @@ public class ProductionsExpr{
             //bitwise not, negation, unary plus
             new("unaryexp :: BITNOTOP unaryexp",
                 setNodeTypes: (n) => {
-                    foreach(var c in n.children){
-                        c.setNodeTypes();
-                    }
-                    
-                    var type1 = n["unaryexp"].nodeType;
-                    var bitnotop = n["BITNOTOP"].token;
-                    if (type1 != NodeType.Int) {
-                        Utils.error(bitnotop, $"Bad type for operation: {type1}");
-                    }
-                    n.nodeType = type1;
+                    unary(n,NodeType.Int,NodeType.Int);
                 },
                 generateCode: (n) => {
-                    n["unaryexp"].generateCode();
-                    Asm.add(new OpPop(Register.rax, null));
-                    Asm.add(new OpNot(Register.rax));
-                    Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
+                    unaryOp(n, new OpNot(Register.rax));
                 }
             ),
             new("unaryexp :: ADDOP unaryexp",
                 setNodeTypes: (n) => {
-                    foreach(var c in n.children){
-                        c.setNodeTypes();
-                    }
-                    var type1 = n["unaryexp"].nodeType;
-                    var addop = n["ADDOP"].token;
-                    if (type1 != NodeType.Int && type1 != NodeType.Float) {
-                        Utils.error(addop, $"Bad type for operation: {type1}");
-                    }
-                    n.nodeType = type1;
+                    unary(n,new NodeType[]{NodeType.Int,NodeType.Float},null);
                 },
                 generateCode: (n) => {
-                    if(n.nodeType == NodeType.Int) {
-                        if(n["ADDOP"].token.lexeme == "+") {
-                            n["unaryexp"].generateCode();
+                    if( n.nodeType == NodeType.Int){
+                        switch(n["ADDOP"].token.lexeme){
+                            case "+": n.children[1].generateCode(); break;
+                            case "-": unaryOp(n, new OpNeg(Register.rax)); break;
+                            default: throw new Exception();
                         }
-                        if(n["ADDOP"].token.lexeme == "-") {
-                            n["unaryexp"].generateCode();
-                            Asm.add(new OpPop(Register.rax, null));
-                            Asm.add(new OpNeg(Register.rax));
-                            Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
+                    } else if( n.nodeType == NodeType.Float ){
+                        switch(n["ADDOP"].token.lexeme){
+                            case "+": n.children[1].generateCode(); break;
+                            case "-": unaryOpF(n, new OpNegF(Register.xmm0,Register.xmm1)); break;
+                            default: throw new Exception();
                         }
                     } else {
-                        if(n["ADDOP"].token.lexeme == "+") {
-                            n["unaryexp"].generateCode();
-                        }
-                        if(n["ADDOP"].token.lexeme == "-") {
-                            n["unaryexp"].generateCode();
-                            //Asm.add(new OpMov((long)0x8000000000000000, Register.rbx));
-                            Asm.add(new OpXor(Register.rbx, Register.rax));
-                            Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
-                        }
+                        throw new NotImplementedException();
                     }
                 }
             ),
             new("unaryexp :: NOTOP unaryexp",
                 setNodeTypes: (n) => {
-                    foreach(var c in n.children){
-                        c.setNodeTypes();
-                    }
-                    var type1 = n["unaryexp"].nodeType;
-                    var notop = n["NOTOP"].token;
-                    if (type1 != NodeType.Bool) {
-                        Utils.error(notop, $"Bad type for operation: {type1}");
-                    }
-                    n.nodeType = type1;
+                    unary(n,NodeType.Bool,NodeType.Bool);
                 }
             ),
             new("unaryexp :: preincexp"),
@@ -346,15 +273,15 @@ public class ProductionsExpr{
                     n.nodeType = NodeType.Int;
                 },
                 generateCode: (n) => {
-                    string s = n["NUM"].token.lexeme;
-                    long v = Int64.Parse(s);
-                    Asm.add(new OpMov(v, Register.rax) );
-                    Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE) );
+                    long v = Int64.Parse(n["NUM"].token.lexeme);
+                    Asm.add(new OpMov(v,Register.rax,""));
+                    Asm.add(new OpPush(Register.rax,StorageClass.PRIMITIVE));
                 }
             ),
             new("factor :: LPAREN expr RPAREN",
                 setNodeTypes: (n) => {
-                    n["expr"].setNodeTypes();
+                    foreach(var c in n.children )
+                        c.setNodeTypes();
                     n.nodeType = n["expr"].nodeType;
                 }
             ),
@@ -372,20 +299,28 @@ public class ProductionsExpr{
                 },
                 generateCode: (n) => {
                     string s = n["FNUM"].token.lexeme;
-                    double v = Double.Parse(s);
-                    long iv = BitConverter.DoubleToInt64Bits(v);
-                    Asm.add(new OpMov(iv, Register.rax));
-                    Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
+                    double value = Double.Parse(s);
+                    long ivalue = BitConverter.DoubleToInt64Bits(value);
+                    Asm.add( new OpMov(ivalue, Register.rax, comment: $"{s}"));
+                    Asm.add( new OpPush(Register.rax, StorageClass.PRIMITIVE));
                 }
             ),
+
             new("factor :: STRINGCONST",
                 setNodeTypes: (n) => {
                     n.nodeType = NodeType.String;
+                },
+                generateCode: (n) => {
+                    throw new NotImplementedException();
                 }
+
             ),
             new("factor :: BOOLCONST",
                 setNodeTypes: (n) => {
                     n.nodeType = NodeType.Bool;
+                },
+                generateCode: (n) => {
+                    throw new NotImplementedException();
                 }
             ),
 

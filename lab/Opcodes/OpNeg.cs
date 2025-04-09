@@ -1,13 +1,13 @@
 namespace lab{
 
     public class OpNeg: Opcode {
-        IntRegister rax;
-        public OpNeg( IntRegister r1){
-            this.rax=r1;
+        IntRegister reg;
+        public OpNeg( IntRegister reg){
+            this.reg=reg;
         }
 
         public override void output(StreamWriter w){
-            w.WriteLine($"    neg {this.rax}");
+            w.WriteLine($"    neg {reg}");
         }
     }
 

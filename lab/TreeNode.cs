@@ -5,7 +5,7 @@ namespace lab{
 public class TreeNode{
     public string sym;  //terminal name or nonterminal
                         //"NUM", "cond"
-    public Token token = null; //only meaningful for terminals
+    public Token token; //only meaningful for terminals
 
     public List<TreeNode> children = new();
 
@@ -44,7 +44,8 @@ public class TreeNode{
         this.productionNumber = prodNum;
     }
 
-    public TreeNode(string sym, int prodNum) : this(sym, null, prodNum){}
+    //nonterminal node
+    public TreeNode(string sym, int prodNum) : this(sym,null,prodNum){}
 
     //terminal node
     public TreeNode(Token tok) : this( tok.sym, tok, -1 ){}
@@ -59,40 +60,47 @@ public class TreeNode{
         this.children.Insert(0,n);
     }
 
-    public void toJson(StreamWriter w){
-        w.WriteLine("{");
-        w.WriteLine( $"\t\"sym\" : \"{this.sym}\",");
-        w.Write( $"\t\"token\" : ");
-        if(this.token == null){
-            w.Write("null");
-        }
-        else{
+    
+
+    public void toJson(StreamWriter w, string prefix=""){
+        string prefix0=prefix;
+        prefix += "  ";
+        w.WriteLine(prefix0+"{");
+        w.WriteLine( prefix+$"\"sym\" : \"{this.sym}\",");
+        w.Write( prefix+$"\"token\" : ");
+        if( this.token != null )
             this.token.toJson(w);
-        }
+        else
+            w.Write("null");
         w.WriteLine(",");
-        w.WriteLine( $"\t\"productionNumber\" : {this.productionNumber},");
-        if(this.nodeType == null){
-            w.WriteLine($"\t\"nodeType\" : null,");
-        }
-        else{
-            w.WriteLine( $"\t\"nodeType\" : \"{this.nodeType}\",");
-        }
-        w.WriteLine( "\t\t\"children\" : [");
-        for(int i=0;i<this.children.Count;i++){
-            this.children[i].toJson(w);
-            if( i != this.children.Count-1)
-                w.WriteLine(",");
-        }
-        w.WriteLine("\t\t\t\t\t],");
-        if(this.varInfo == null){
-            w.WriteLine($"\t\"varInfo\" : null");
-        }
-        else{
-            w.WriteLine($"\t\"varInfo\" : ");
+
+        // w.WriteLine(prefix+$"\"productionNumber\" : \"{this.productionNumber}\",");
+
+        //node type string
+        string nts = ( this.nodeType == null ? "null" : $"\"{this.nodeType}\"" );
+
+        w.WriteLine(prefix+$"\"nodeType\": {nts},");
+
+        w.Write(prefix+$"\"varInfo\": ");
+        if( this.varInfo == null )
+            w.Write("null");
+        else
             this.varInfo.toJson(w);
+        w.WriteLine(",");
+
+        if( this.children.Count == 0 ){
+            w.WriteLine( prefix+"\"children\": []");
+        } else {
+            w.WriteLine( prefix+"\"children\": [");
+            string prefix2=prefix+"  ";
+            for(int i=0;i<this.children.Count;i++){
+                this.children[i].toJson(w,prefix2);
+                if( i != this.children.Count-1)
+                    w.WriteLine(prefix2+",");
+            }
+            w.WriteLine(prefix+"]");
         }
-        
-        w.WriteLine("}");
+        w.WriteLine(prefix0+"}");
     }
 
     public void print(string prefix=""){
@@ -157,16 +165,16 @@ public class TreeNode{
                 return;
             }
         }
-        throw new Exception();
+        throw new Exception("No such child");
     }
 
     public void collectClassNames(){
         this.production?.pspec.collectClassNames(this);
     }
 
-    //public void collectFunctionNames(){
-    //    this.production?.pspec.collectFunctionNames(this);
-    //}
+    public void collectFunctionNames(){
+        this.production?.pspec.collectFunctionNames(this);
+    }
 
     public void setNodeTypes(){
         this.production?.pspec.setNodeTypes(this);
@@ -175,6 +183,7 @@ public class TreeNode{
     public void generateCode(){
         this.production?.pspec.generateCode(this);
     }
+
 
 } //end TreeNode
 

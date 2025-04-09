@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 namespace lab{
     
 
+
 public abstract class NodeType {
     public readonly string friendlyName;
     public NodeType(string n){
@@ -40,7 +41,7 @@ public abstract class NodeType {
     public static readonly FloatNodeType Float = new ();
     public static readonly BoolNodeType Bool = new ();
     public static readonly StringNodeType String = new ();
-    public static readonly VoidNodeType Void = new ();
+    // public static readonly VoidNodeType Void = new ();
 
     public static NodeType tokenToNodeType(Token t){
         if( t.sym != "TYPE" )
@@ -48,46 +49,48 @@ public abstract class NodeType {
         switch(t.lexeme){
             case "int": return NodeType.Int;
             case "string": return NodeType.String;
-            case "float": return NodeType.Float;
-            case "bool": return NodeType.Bool;
-            case "void": return NodeType.Void;
+            //TODO: Finish me
             default: throw new Exception("ICE");
         }
 
     }
 }
 
+public class BoolNodeType : NodeType {
+    public BoolNodeType(): base("bool") {}
+}
+
 public class IntNodeType : NodeType {
     public IntNodeType() : base("int") {}
 }
-
 
 public class FloatNodeType : NodeType {
     public FloatNodeType() : base("float") {}
 }
 
 
-public class BoolNodeType : NodeType {
-    public BoolNodeType() : base("bool") {}
-}
-
 public class StringNodeType : NodeType {
     public StringNodeType() : base("string") {}
+}
+
+public class FunctionNodeType: NodeType {
+    public FunctionNodeType(): base("func") {}
+
+    public override bool Equals(Object o){
+        throw new Exception("TBD");
+    }
+
+    public override int GetHashCode()
+    {
+        throw new Exception("TBD");
+    }
 }
 
 public class VoidNodeType : NodeType {
     public VoidNodeType() : base("void") {}
 }
 
-public class FunctionNodeType : NodeType {
-    public FunctionNodeType() : base("func") {}
-        public override bool Equals(Object o) {
-            throw new Exception("TBD");
-        }
-        public override int GetHashCode() {
-            throw new Exception("TBD");
-        }
-}
+
 public class NodeTypeJsonConverter : JsonConverter<NodeType> {
 
     public NodeTypeJsonConverter(){}
@@ -96,7 +99,14 @@ public class NodeTypeJsonConverter : JsonConverter<NodeType> {
                                    Type toConvert,
                                    JsonSerializerOptions opts)
     {
-        throw new Exception("Not implemented");
+        string s = r.GetString();
+        switch(s){
+            case "int": return NodeType.Int;
+            case "float": return NodeType.Float;
+            case "string": return NodeType.String;
+            case "bool": return NodeType.Bool;
+            default: throw new Exception("Unknown node type "+s);
+        }
     }
     public override void Write( Utf8JsonWriter w,
         NodeType typ, JsonSerializerOptions opts )
@@ -104,4 +114,5 @@ public class NodeTypeJsonConverter : JsonConverter<NodeType> {
         w.WriteStringValue(typ.friendlyName);
     }
 }
+
 } //namespace

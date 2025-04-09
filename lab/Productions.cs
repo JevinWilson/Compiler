@@ -7,45 +7,29 @@ public class Productions{
             new("S :: decls"),
             new("decls :: funcdecl decls | classdecl decls | vardecl decls | SEMI decls | lambda"),
             new("funcdecl :: FUNC ID LPAREN optionalPdecls RPAREN optionalReturn LBRACE stmts RBRACE SEMI",
-                collectClassNames: (n) => {
-                    if(n.parent.sym == "memberfuncdecl"){}
-                    else {
-                        Console.WriteLine($"FUNCTION: {n.children[1].token.lexeme}");
-                    }
+                collectFunctionNames: (n) => {
+                    string funcName = n.children[1].token.lexeme;
+                    SymbolTable.declareGlobal(n["ID"].token, new FunctionNodeType());
                 },
                 setNodeTypes: (n) => {
-
-                    SymbolTable.declareGlobal(n["ID"].token, new FunctionNodeType() );
-
                     SymbolTable.enterFunctionScope();
-
-                    foreach(TreeNode c in n.children){
-                        c.setNodeTypes();
-                    }
+                    n["optionalPdecls"].setNodeTypes();
+                    n["stmts"].setNodeTypes();
 
                     SymbolTable.leaveFunctionScope();
-                    
                 },
                 generateCode: (n) => {
-                    VarInfo vi = SymbolTable.lookup( n["ID"].token );
-                    var loc = (vi.location as GlobalLocation);
-                    Asm.add( new OpLabel( loc.lbl ) );
+                    var loc = SymbolTable.lookup(n["ID"].token).location as GlobalLocation;
+                    Asm.add(new OpLabel( loc.lbl ));
                     n["stmts"].generateCode();
-                    Asm.add(new OpRet());
-                }       
+                }
             ),
             new("braceblock :: LBRACE stmts RBRACE",
                 setNodeTypes: (n) => {
-       
                     SymbolTable.enterLocalScope();
-
-                    foreach(TreeNode c in n.children){
+                    foreach(var c in n.children)
                         c.setNodeTypes();
-                    }
-
                     SymbolTable.leaveLocalScope();
-             
-
                 }
             ),
             new("optionalReturn :: lambda | COLON TYPE"),
@@ -54,18 +38,16 @@ public class Productions{
             new("pdecls :: pdecl | pdecl COMMA pdecls"),
             new("pdecl :: ID COLON TYPE",
                 setNodeTypes: (n) => {
-                    var type = NodeType.tokenToNodeType(n["TYPE"].token);
-                    if(SymbolTable.currentlyInGlobalScope()) {
-                        SymbolTable.declareGlobal(n["ID"].token,type);
-                    } else {
-                        SymbolTable.declareParameter(n["ID"].token,type);
-                    }
+                    SymbolTable.declareParameter(
+                        n["ID"].token,
+                        NodeType.tokenToNodeType(n["TYPE"].token)
+                    );
                 }
             ),
             new("classdecl :: CLASS ID LBRACE memberdecls RBRACE SEMI",
                 collectClassNames: (TreeNode n) => {
                     string className = n.children[1].token.lexeme;
-                    Console.WriteLine($"CLASS: {className}");
+                    //Console.WriteLine($"CLASS: {className}");
                     //assuming no nested classes; no need to walk
                     //children of n
                 }
@@ -80,56 +62,42 @@ public class Productions{
             new("stmt :: assign | cond | loop | vardecl | return"),
             new("assign :: expr EQ expr",
                 setNodeTypes: (n) => {
-                    var type1 = n.children[0];
-                    var type2 = n.children[2];
-                    var equals = n.children[1].token;
-                    type1.setNodeTypes();
-                    type2.setNodeTypes();
-                    if(type1.nodeType != type2.nodeType){
-                        Utils.error(equals, $"Node type mismatch! ({n.children[0].nodeType} and {n.children[2].nodeType})");
+                    n.children[0].setNodeTypes();
+                    n.children[2].setNodeTypes();
+                    if( n.children[0].nodeType != n.children[2].nodeType){
+                        Utils.error(n["EQ"].token,$"Type mismatch in assign: {n.children[0].nodeType} vs {n.children[2].nodeType}");
                     }
+                },
+                generateCode: (n) => {
+                    throw new NotImplementedException();
                 }
             ),
             new("cond :: IF LPAREN expr RPAREN braceblock"),
             new("cond :: IF LPAREN expr RPAREN braceblock ELSE braceblock"),
             new("loop :: WHILE LPAREN expr RPAREN braceblock"),
             new("loop :: REPEAT braceblock UNTIL LPAREN expr RPAREN"),
-            
-            
             new("return :: RETURN expr",
                 generateCode: (n) => {
-
-                    Asm.add(new OpComment( 
-                            $"Return at line {n.children[0].token.line}"));
-                    n["expr"].generateCode();   //leaves value on top of stack
-
-                    //ABI says return values come back in rax
-                    Asm.add( new OpPop(Register.rax,null));
+                    n["expr"].generateCode();
+                    Asm.add(new OpPop(Register.rax, null));
+                    Asm.add( new OpRet());
+                }),
+            new("return :: RETURN",
+                generateCode: (n) => {
                     Asm.add( new OpRet());
                 }
             ),
-            new("return :: RETURN",
-                generateCode: (n) => {
-                    Asm.add( new OpRet() );
-                }
-            ),
-
-
             new("vardecl :: VAR ID COLON TYPE",
-                setNodeTypes:(n) => {
-                    var t = NodeType.tokenToNodeType(n["TYPE"].token) ;
-                    if( SymbolTable.currentlyInGlobalScope()){
-                        SymbolTable.declareGlobal( n["ID"].token, t);
-                    } else {
-                        SymbolTable.declareLocal( n.children[1].token, t );
-                    }
+                setNodeTypes: (n) => {
+                    var tok = n["ID"].token;
+                    var typ = NodeType.tokenToNodeType(n["TYPE"].token);
+                    if( SymbolTable.currentlyInGlobalScope() )
+                        SymbolTable.declareGlobal(tok,typ);
+                    else
+                        SymbolTable.declareLocal(tok,typ);
                 }
             ),
-            new("vardecl :: VAR ID COLON TYPE EQ expr",
-                setNodeTypes:(n)=>{
-                    throw new Exception("FINISH ME");
-                }
-            ),
+            new("vardecl :: VAR ID COLON TYPE EQ expr"),
             new("vardecl :: VAR ID COLON ID"),  //for user-defined types
             new("vardecl :: VAR ID COLON ID EQ expr"),  //for user-defined types
 

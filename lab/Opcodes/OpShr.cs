@@ -7,7 +7,7 @@ namespace lab{
             this.value=value;
             this.count=count;
             if( this.count != Register.rcx ){
-                throw new Exception();  //x86 weirdness
+                throw new Exception("must be rcx");  //x86 weirdness
             }
         }
 

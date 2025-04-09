@@ -1,15 +1,24 @@
 namespace lab{
 
     public class OpAdd: Opcode {
-        IntRegister rax;
-        IntRegister rbx;
-        public OpAdd( IntRegister r1, IntRegister r2){
-            this.rax=r1;
-            this.rbx=r2;
+        IntRegister op1;
+        int op2Constant;
+        IntRegister op2=null;
+
+        public OpAdd( IntRegister op1, int op2){
+            this.op1=op1;
+            this.op2Constant = op2;
+        }
+        public OpAdd( IntRegister op1, IntRegister op2){
+            this.op1=op1;
+            this.op2 = op2;
         }
 
         public override void output(StreamWriter w){
-            w.WriteLine($"    add {this.rbx}, {this.rax}");
+            if( op2 == null )
+                w.WriteLine($"    add ${this.op2Constant}, {this.op1}");
+            else
+                w.WriteLine($"    add {this.op2}, {this.op1}");
         }
     }
 
