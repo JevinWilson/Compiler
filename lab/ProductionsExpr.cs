@@ -110,11 +110,63 @@ public class ProductionsExpr{
             //relational: x>y
             new("relexp :: bitexp RELOP bitexp",
                 setNodeTypes: (n) => {
-                    binary(n,
-                        new NodeType[]{NodeType.Int,NodeType.Float,NodeType.String},
-                        NodeType.Bool
-                    );
-                }),
+                    foreach(var c in n.children)
+                        c.setNodeTypes();
+                    var t1 = n.children[0].nodeType; 
+                    var t2 = n.children[2].nodeType;
+                    var relop = n["RELOP"].token;
+                    if(t1 != t2)
+                        Utils.error(relop, $"Type mismatch for {relop.sym} ({t1} and {t2})");
+                    if(t1 != NodeType.Int && t1 != NodeType.Float && t1 != NodeType.String && t1 != NodeType.Bool)
+                        Utils.error(relop,$"Bad type for relop ({t1})");
+                    n.nodeType = NodeType.Bool;
+                },
+                generateCode: (n) => {
+                    n.children[0].generateCode();
+                    n.children[2].generateCode();
+
+                    var ntype = n["bitexp"].nodeType;
+                    if (ntype == NodeType.Int) {
+                        Asm.add(new OpPop(Register.rbx, null));  // RHS
+                        Asm.add(new OpPop(Register.rax, null));  // LHS
+
+                        string cmp;
+                        switch (n["RELOP"].token.lexeme) {
+                            case ">": cmp = "g"; break;   
+                            case "<": cmp = "l"; break;   
+                            case ">=": cmp = "ge"; break; 
+                            case "<=": cmp = "le"; break;
+                            case "==": cmp = "e"; break; 
+                            case "!=": cmp = "ne"; break; 
+                            default: Environment.Exit(0);
+                            return;
+                        }
+
+                        Asm.add(new OpCmp(Register.rax, Register.rbx)); 
+                        Asm.add(new OpSetCC(cmp, Register.rax));      
+                        Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE)); 
+                    } else if( ntype == NodeType.String) {
+                        //TBD later
+                        throw new Exception();
+                    }
+                    else if( ntype == NodeType.Bool ) {
+                        Asm.add( new OpPop( Register.rbx, null ));  // right operand
+                        Asm.add( new OpPop( Register.rax, null ));  // left operand
+
+                        string cmp;
+                        switch(n["RELOP"].token.lexeme ){
+                            case "==": cmp = "e"; break;
+                            case "!=": cmp = "ne"; break;
+                            default: Environment.Exit(1);
+                            return;
+                        }
+
+                        Asm.add( new OpCmp( Register.rax, Register.rbx ));
+                        Asm.add( new OpSetCC( cmp, Register.rax ));
+                        Asm.add( new OpPush( Register.rax, StorageClass.PRIMITIVE ));
+                    }
+                }
+            ),
             new("relexp :: bitexp"),
 
             //bitwise: or, and, xor
@@ -320,7 +372,17 @@ public class ProductionsExpr{
                     n.nodeType = NodeType.Bool;
                 },
                 generateCode: (n) => {
-                    throw new NotImplementedException();
+                    var value =  n["BOOLCONST"].token.lexeme;
+                    if(value == "true")
+                    {
+                        Asm.add(new OpMov(1, Register.rax));
+                        Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
+                    }
+                    else
+                    {
+                        Asm.add(new OpMov(0, Register.rax));
+                        Asm.add(new OpPush(Register.rax, StorageClass.PRIMITIVE));
+                    }
                 }
             ),
 
