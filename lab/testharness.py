@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 
 
-EXE = r"C:\Users\jaw06\Desktop\Compiler\lab\bin\Debug\net8.0\lab.exe"
+EXE = r"c:\users\bob\lab.exe"
 
+
+TIMEOUT=2
+
+
+CRASH="crash"
+HANG="hang"
 
 
 import os
@@ -12,6 +18,25 @@ import json
 import sys
 
 
+def past(status):
+    if type(status) == int:
+        return f"returned {status}"
+    elif status == CRASH:
+        return "crashed"
+    elif status == HANG:
+        return "hung"
+    else:
+        return f"{status}"  #we shouldn't get here?
+def present(status):
+    if type(status) == int:
+        return f"return {status}"
+    elif status == CRASH:
+        return "crash"
+    elif status == HANG:
+        return "hang"
+    else:
+        return f"{status}"  #we shouldn't get here?
+
 def main():
     global EXE
     stopOnFirstFail=False
@@ -19,11 +44,20 @@ def main():
     base = os.path.abspath(os.path.dirname(__file__))
 
     verbose=True
+    keepgoing=True
+    skip=0
 
     i=1
     while i < len(sys.argv):
         if sys.argv[i] == '-q':
             verbose=False
+            del sys.argv[i]
+        elif sys.argv[i] == '-k':
+            keepgoing=False
+            del sys.argv[i]
+        elif sys.argv[i] == '-s':
+            del sys.argv[i]
+            skip=int(sys.argv[i])
             del sys.argv[i]
         else:
             i+=1
@@ -44,19 +78,36 @@ def main():
 
     alltests.sort()
 
-    stats = {
-        "boolean": [0,0],
-        "float": [0,0],
-        "int": [0,0]
-    }
+    #first=pass, second=fail
+    stats = [0,0]
+    GOOD=0
+    BAD=1
+
+    def good(msg):
+        stats[GOOD]+=1
+        print("OK: ",msg)
+    def bad(msg):
+        stats[BAD]+=1
+        print("BAD:",msg)
+        if not keepgoing:
+            sys.exit(1)
 
 
     for dirpath,f in alltests:
+
+        if skip > 0:
+            print("Skipping",f,"...")
+            skip-=1
+            continue
+
         print("Testing",f,"...")
 
         kind = f.split("-")[0]
 
-        compilerstatus, exestatus = run(f"{base}/tests/{f}",verbose)
+        compilerstatus, exestatus, exeerror = run(f"{base}/tests/{f}",verbose)
+
+        if exeerror != None:
+            exestatus = exeerror
 
         expfile = f.replace(".txt",".expected.txt")
         expfile = os.path.join(dirpath,expfile)
@@ -66,49 +117,60 @@ def main():
 
         if expected == "invalid":
             if compilerstatus == 0:
-                print("Compiler accepted invalid input [BAD]")
-                stats[kind][1]+=1
+                bad("Compiler accepted invalid input")
             else:
-                print("Compiler rejected invalid input [OK]")
-                stats[kind][0] += 1
+                good("Compiler rejected invalid input")
         else:
-            if expected == "True":
-                expected = 1
-            elif expected == "False":
-                expected = 0
+            if expected == CRASH:
+                verb=""
+            elif expected == HANG:
+                verb=""
             else:
-                assert 0
+                expected = int(expected)
+                verb="return "
+
             if compilerstatus != 0:
-                print("Compiler rejected valid input [BAD]")
-                stats[kind][1] += 1
+                bad("Compiler rejected valid input")
             else:
-                if exestatus != expected:
-                    print(f"Executable returned {exestatus} but it should have returned {expected} [BAD]")
-                    stats[kind][1] += 1
+                if exestatus == expected:
+                    good(f"Executable {past(exestatus)}, which was expected")
                 else:
-                    print("OK!")
-                    stats[kind][0] += 1
-
-
+                    bad(f"Executable {past(exestatus)}, but we expected it to {present(expected)}")
     #end loop
 
-    for kind in stats:
-        lbl=f"{kind} inputs:"
-        print(f"{lbl:20s}{stats[kind][0]} passed     {stats[kind][1]} failed")
+    print(f"{stats[GOOD]} passed     {stats[BAD]} failed")
 
 
     return
 
 def run(fname,verbose):
+    #returns a tuple: compiler status, executable status, exe error
+    #   cstatus     estatus     eerror  meaning
+    #   0           0..255      None    Compiled OK; executable returned 0...255
+    #   != 0        None        None    Did not compile; executable not run
+    #   0           None        CRASH   Compiled OK; executable crashed
+    #   0           None        HANG    Compiled OK; executable hung
+
     cmd = [EXE,fname]
     P = subprocess.run(cmd, stdout=None if verbose else subprocess.DEVNULL,
                             stderr=None if verbose else subprocess.DEVNULL)
     compilerstatus =  P.returncode
     if compilerstatus != 0:
-        return compilerstatus,None
-    P = subprocess.run( [os.path.join(".","out.exe")] )
+        return compilerstatus,None,None
+    try:
+        P = subprocess.run( [os.path.join(".","out.exe")], timeout=TIMEOUT )
+    except subprocess.TimeoutExpired:
+        return compilerstatus,None,HANG
+
     exestatus = P.returncode
-    return compilerstatus,exestatus
+    if exestatus < 0:
+        #posix: Signal; simulate a Windows error
+        exestatus = 0x40000000
+    exestatus &= 0xffffffff
+    if exestatus >= 0x40000000 and exestatus <= 0xfffffc00:
+        return compilerstatus,None,CRASH
+
+    return compilerstatus,exestatus,None
 
 main()
 #input("Press 'enter' to quit")

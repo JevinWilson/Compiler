@@ -1,0 +1,6 @@
+func main(){
+    if( true )    {
+        return 100
+    }
+    return 101
+}

@@ -1,0 +1,6 @@
+func main(){
+    while( false ){
+        return 102
+    }
+    return 100
+}

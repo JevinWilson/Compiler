@@ -1,0 +1,6 @@
+func main(){
+    while( 3>4 ){
+        return 102
+    }
+    return 100
+}

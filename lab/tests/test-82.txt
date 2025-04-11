@@ -1,0 +1,5 @@
+func main(){
+    repeat{
+    } until( true )
+    return 100
+}

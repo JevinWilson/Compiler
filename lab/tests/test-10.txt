@@ -1,0 +1,3 @@
+func main(){
+    return true and false
+}

@@ -1,0 +1,3 @@
+func main(){
+    return 1%0<4%2 or 9%3<8%2
+}
