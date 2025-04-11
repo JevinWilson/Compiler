@@ -7,10 +7,20 @@ _start:
     sub $32,%rsp
     call ExitProcess
 lbl0:      /* main */
-    movq $10, %rax    /*  */
+lbl3:      /* top of while loop at line 2 */
+    jmp lbl1  /* end of test comparison at line 5 */
+    /* Return at line 4 */
+    movq $102, %rax    /*  */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
-    movq $5, %rax    /*  */
+    add $8, %rsp   /* discard storage class */
+    pop %rax  /* value */
+    ret
+lbl1:      /* end of test comparison at line 5 */
+    movq $3, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    movq $4, %rax    /*  */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
     add $8, %rsp   /* discard storage class */
@@ -22,10 +32,17 @@ lbl0:      /* main */
     movzx %al, %rax
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
+    add $8, %rsp   /* discard storage class */
+    pop %rax  /* value */
+    test %rax, %rax
+    jz lbl3  /* top of while loop at line 2 */
+lbl2:      /* end of while loop at line lbl1 */
+    /* Return at line 6 */
     movq $100, %rax    /*  */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
     add $8, %rsp   /* discard storage class */
     pop %rax  /* value */
+    ret
     ret
 .section .data
