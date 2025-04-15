@@ -47,7 +47,6 @@ public class Terminals{
             new("TYPE",             @"\b(int|float|string|bool)\b"),
             new("UNTIL",            @"\buntil\b"),
             new("VAR",              @"\bvar\b"),
-            new("VOID",             @"\bvoid\b"),
             new("WHILE",            @"\bwhile\b"),
             new("ID",               @"(?!\d)\w+" )
         });
