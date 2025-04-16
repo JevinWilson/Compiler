@@ -4,7 +4,6 @@ namespace lab{
         IntRegister value;
         IntRegister sclass;
         bool onlyPopOne;
-
         public OpPop( IntRegister value, IntRegister sclass){
             this.value=value;
             this.sclass=sclass;
@@ -13,11 +12,12 @@ namespace lab{
 
         public OpPop( IntRegister value, StorageClass c){
             if( c != StorageClass.NO_STORAGE_CLASS )
-                throw new Exception("Bad storage class");
+                throw new Exception();
             this.value = value;
             this.sclass = null;
             onlyPopOne=true;
         }
+
         public override void output(StreamWriter w){
             if( onlyPopOne == false ){
                 if( this.sclass == null ){
@@ -29,6 +29,4 @@ namespace lab{
             w.WriteLine($"    pop {this.value}  /* value */");
         }
     }
-
-
 }

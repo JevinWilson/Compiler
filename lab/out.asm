@@ -11,7 +11,7 @@ lbl0:      /* main */
     movq %rsp, %rbp    /*  */
     /* num loc * 16 = 64 */
     sub $64, %rsp
-    lea $-16(%rbp), %rax  /* x */
+    lea -16(%rbp), %rax  /* x */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
     movq $1, %rax    /*  */
@@ -23,7 +23,7 @@ lbl0:      /* main */
     pop %rcx  /* value */
     movq %rbx, 0(%rcx)    /*  */
     movq %rax, 8(%rcx)    /*  */
-    lea $-32(%rbp), %rax  /* y */
+    lea -32(%rbp), %rax  /* y */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
     movq $2, %rax    /*  */
@@ -42,7 +42,7 @@ lbl0:      /* main */
     pop %rax  /* value */
     test %rax, %rax
     jz lbl1  /* end of if starting at line 7 */
-    lea $-64(%rbp), %rax  /* x */
+    lea -64(%rbp), %rax  /* x */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
     movq $4, %rax    /*  */
@@ -54,10 +54,10 @@ lbl0:      /* main */
     pop %rcx  /* value */
     movq %rbx, 0(%rcx)    /*  */
     movq %rax, 8(%rcx)    /*  */
-    lea $-48(%rbp), %rax  /* z */
+    lea -48(%rbp), %rax  /* z */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
-    lea $-64(%rbp), %rax  /* x */
+    lea -64(%rbp), %rax  /* x */
     movq 0(%rax), %rbx    /*  */
     movq 8(%rax), %rax    /*  */
     push %rax  /* value */
@@ -69,15 +69,15 @@ lbl0:      /* main */
     movq %rbx, 0(%rcx)    /*  */
     movq %rax, 8(%rcx)    /*  */
 lbl1:      /* end of if starting at line 7 */
-    lea $-48(%rbp), %rax  /* z */
+    lea -48(%rbp), %rax  /* z */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
-    lea $-16(%rbp), %rax  /* x */
+    lea -16(%rbp), %rax  /* x */
     movq 0(%rax), %rbx    /*  */
     movq 8(%rax), %rax    /*  */
     push %rax  /* value */
     push %rbx  /* storage class */
-    lea $-32(%rbp), %rax  /* y */
+    lea -32(%rbp), %rax  /* y */
     movq 0(%rax), %rbx    /*  */
     movq 8(%rax), %rax    /*  */
     push %rax  /* value */
@@ -89,7 +89,7 @@ lbl1:      /* end of if starting at line 7 */
     add %rbx, %rax
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
-    lea $-48(%rbp), %rax  /* z */
+    lea -48(%rbp), %rax  /* z */
     movq 0(%rax), %rbx    /*  */
     movq 8(%rax), %rax    /*  */
     push %rax  /* value */
@@ -108,7 +108,7 @@ lbl1:      /* end of if starting at line 7 */
     movq %rbx, 0(%rcx)    /*  */
     movq %rax, 8(%rcx)    /*  */
     /* Return at line 13 */
-    lea $-48(%rbp), %rax  /* z */
+    lea -48(%rbp), %rax  /* z */
     movq 0(%rax), %rbx    /*  */
     movq 8(%rax), %rax    /*  */
     push %rax  /* value */

@@ -101,7 +101,7 @@ namespace lab{
             if( table.ContainsKey(varname)){
                 VarInfo vi = table[varname];
                 if( vi.nesting == nesting ){
-                    Utils.error(token, "Redeclaration of variable");
+                    Utils.error(token, "Redeclare variable");
                 } else if( vi.nesting > nesting ){
                     throw new Exception("ICE");
                 } else {

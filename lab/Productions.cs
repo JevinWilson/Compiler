@@ -12,7 +12,6 @@ namespace lab{
                         SymbolTable.declareGlobal( n["ID"].token, new FunctionNodeType() );
                     },   
                     setNodeTypes: (n) => {
-                        //SymbolTable.declareGlobal(n["ID"].token, new FunctionNodeType() );
                         SymbolTable.enterFunctionScope();
                         foreach( TreeNode c in n.children){
                             c.setNodeTypes();
@@ -116,7 +115,6 @@ namespace lab{
                         //discard storage class (storage class of an
                         //address is 0)
                         Asm.add( new OpPop( Register.rcx, null));
-
                         //Write data + storage to memory
                         //Storage class first, then data
                         Asm.add( new OpMov( src: Register.rbx, Register.rcx, 0));
@@ -251,7 +249,6 @@ namespace lab{
                                 $"Return at line {n.children[0].token.line}"));
                         n["expr"].generateCode();   //leaves value on top of stack
 
-                        //ABI says return values come back in rax
                         Asm.add( new OpPop(Register.rax,null));
                         Utils.epilogue(n["RETURN"].token);
                     }

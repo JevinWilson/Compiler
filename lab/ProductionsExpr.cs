@@ -23,7 +23,6 @@ public class ProductionsExpr{
                     Utils.typeCheck(n, NodeType.Bool, NodeType.Bool);
                 },
                 generateCode: (n) => {
-
                     //this is going to leave the result
                     //on top of the stack
                     n["orexp"].generateCode();
@@ -308,7 +307,7 @@ public class ProductionsExpr{
                             Asm.add(new OpPushF( Register.xmm0, StorageClass.PRIMITIVE ));
                         }
                         if( n["MULOP"].token.lexeme == "%"){
-                            Utils.error(n["MULOP"].token, "Cannot do modulo on floats");
+                            Utils.error(n["MULOP"].token, "Can't do modulo on floats");
                         }
                         
                     }
@@ -330,7 +329,7 @@ public class ProductionsExpr{
                     var t1 = n["unaryexp"].nodeType;
                     var bitnotop = n["BITNOTOP"].token;
                     if(t1 != NodeType.Int){
-                        Utils.error(bitnotop,$"Type must be an Int! ({t1})");
+                        Utils.error(bitnotop,$"Type must be an Int ({t1})");
                     }
                     n.nodeType = t1;
                 },
@@ -349,7 +348,7 @@ public class ProductionsExpr{
                     var t1 = n["unaryexp"].nodeType;
                     var addop = n["ADDOP"].token;
                     if(t1 != NodeType.Int && t1 != NodeType.Float){
-                        Utils.error(addop,$"Type must be an Int or Float! ({t1})");
+                        Utils.error(addop,$"Type must be an Int or Float ({t1})");
                     }
                     n.nodeType = t1;
                 },

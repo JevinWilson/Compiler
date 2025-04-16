@@ -28,7 +28,7 @@ namespace lab{
             GlobalLocation loc = vi.location as GlobalLocation;
             if( loc == null ){
                 //error! print a nice message
-                Console.WriteLine("You must declare a main function");
+                Console.WriteLine("must declare a main function");
                 Environment.Exit(3);
             }
             w.WriteLine($"    call {loc.lbl.value}  /* {loc.lbl.comment} */");

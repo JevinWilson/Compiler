@@ -4,12 +4,10 @@ namespace lab{
         IntRegister reg;
         IntRegister sclassR=null;
         StorageClass sclass;
-
         public OpPush( IntRegister reg, StorageClass sclass){
             this.reg=reg;
             this.sclass=sclass;
         }
-
         public OpPush( IntRegister reg, IntRegister sclass){
             this.reg=reg;
             this.sclassR=sclass;
@@ -25,6 +23,4 @@ namespace lab{
             }
         }
     }
-
-
 }
