@@ -3,48 +3,77 @@ namespace lab{
 public static class SymbolTable{
 
     public static Dictionary<string,VarInfo> table = new();
-    static Stack<List<VarInfo>> shadowed = new();
+    public static Stack<List<VarInfo>> shadowed = new();
     static Stack< HashSet<String> > locals = new();
-    static int numLocals = 0;
-    static int numParameters=0;
+    public static int numLocals = 0;
+    public static int nesting = 0;
+
+
+    //static int numParameters=0;
 
     public static void enterFunctionScope(){ 
-        numParameters = 0;
+        //numParameters = 0;
         numLocals = 0;
+        nesting++;
         shadowed.Push( new() );
         locals.Push( new() );
     }
     public static void leaveFunctionScope(){
-        foreach(string s in locals.Peek() )
-            table.Remove(s);
-        locals.Pop();
-        foreach(var vi in shadowed.Pop() )
-            table[vi.token.lexeme] = vi;
+        numLocals = 0;
+        nesting--;
+        removeVariablesFromTableWithNestingLevelGreaterThanThreshold(nesting);
+        restoreShadowedVariables();
     }
 
     public static void enterLocalScope(){
+        nesting++;
         shadowed.Push( new() );
-        locals.Push( new() );
     }
     public static void leaveLocalScope(){
-        foreach( string name in locals.Peek() )
-            table.Remove(name);
-        locals.Pop();
-        foreach( var vi in shadowed.Pop() )
-            table[vi.token.lexeme] = vi;
+        nesting--;
+        removeVariablesFromTableWithNestingLevelGreaterThanThreshold(nesting);
+        restoreShadowedVariables();
+    }
+
+    static void removeVariablesFromTableWithNestingLevelGreaterThanThreshold(int v){
+        //delete anything from table where 
+        //table thing's nestinglevel > v
+        List<string> badList = new();
+        foreach(var t in table.Keys){
+            if(table[t].nesting > v)
+                badList.Add(t);
+        }
+        foreach(var e in badList){
+            table.Remove(e);
+        }
     }
 
     public static VarInfo lookup(Token id){
-        string name = id.lexeme;
-        if( !table.ContainsKey(name) )
-            Utils.error(id,$"Use of undeclared variable {name}");
-        return table[name];
+        if( table.ContainsKey(id.lexeme) )
+            return table[id.lexeme];
+        else{
+            Console.WriteLine($"No such lexeme {id.lexeme}");
+            Environment.Exit(23);
+        }
+        return null;
+    }
+
+    static void restoreShadowedVariables(){
+        foreach(VarInfo vi in shadowed.Peek()){
+            string varname = vi.token.lexeme;
+            table[varname] = vi;
+        }
+        shadowed.Pop();
     }
 
     public static VarInfo lookup(string name){
         if( !table.ContainsKey(name) )
-            Utils.error($"Use of undeclared variable {name}");
-        return table[name];
+            return table[name];
+        else {
+            Console.WriteLine($"Not found {name}");
+            Environment.Exit(1);
+        }
+        return null;
     }
 
     public static void declareGlobal(Token token, NodeType type){ 
@@ -71,16 +100,27 @@ public static class SymbolTable{
             var info = table[name];
             if( info.nesting == locals.Count )
                 Utils.error(token,$"Redeclaration of parameter {name}");
-            shadowed.Peek().Add(table[name]);
+            else if(info.nesting > locals.Count) {
+                throw new Exception("ICE");
+            } else {
+                shadowed.Peek().Add(table[name]);
+            }
         }
         //locals.Count is the nesting level
-        table[name] = new VarInfo(token,locals.Count,type,new ParameterLocation(numParameters));
-        locals.Peek().Add(name);
-        numParameters++;
+        table[name] = new VarInfo(
+            token,
+            nesting,
+            type,
+            new ParameterLocation(numLocals,name)
+
+        );
     }
 
     public static bool currentlyInGlobalScope(){ 
-        return locals.Count == 0;
+        if(nesting == 0)
+            return true;
+        else
+            return false;
     }
 }
 

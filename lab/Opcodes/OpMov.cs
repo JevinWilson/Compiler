@@ -14,13 +14,10 @@ namespace lab{
         FloatRegister destFloatReg=null;
         bool destIndirect=false;
 
-        string comment = "";
-
         //move immediate (constant) to an int register
-        public OpMov( long src, IntRegister dest, string comment){
+        public OpMov( long src, IntRegister dest){
             this.immediate=src;
             this.destIntReg=dest;
-            this.comment=comment;
         }
 
 
@@ -59,11 +56,13 @@ namespace lab{
         }
 
         //mov constant to register
-        public OpMov( ulong src, IntRegister dest) : this((long)src, dest,""){}
+        public OpMov( ulong src, IntRegister dest) : this((long)src, dest){}
 
         public override void output(StreamWriter w){
+            string opcode = "movq";
+
             string src,dest;
-            string comment = this.comment;
+            string comment = "";
             if( srcIndirect ){
                 src = $"{immediate}({srcIntReg})";
             } else {
@@ -72,8 +71,9 @@ namespace lab{
                 } else if( srcFloatReg != null ) {
                     src = srcFloatReg.ToString();
                 } else if( srcLabel != null ) {
+                    opcode = "movabs";
                     src = "$"+srcLabel.value;   //want the address the label is pointing to
-                    comment += " "+srcLabel.comment;
+                    comment = srcLabel.comment;
                 }
                 else
                     src = $"${immediate}";
@@ -89,7 +89,7 @@ namespace lab{
                     dest = destFloatReg.ToString();
             }
 
-            w.WriteLine($"    movq {src}, {dest}    /* {comment} */");
+            w.WriteLine($"    {opcode} {src}, {dest}    /* {comment} */");
         }
     }
 

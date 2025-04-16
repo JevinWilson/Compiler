@@ -1,3 +1,4 @@
+
 using System.Text.Json.Serialization;
 
 namespace lab{
@@ -11,17 +12,22 @@ public class TreeNode{
 
     public int productionNumber;
 
-    [JsonIgnore]
+    [JsonIgnore()]
     public TreeNode parent = null;
+
+    //only meaningful for tree nodes that are ID's and
+    //which are variables
+    public VarInfo varInfo = null;
+    public int numLocals = -1;
+
+
+    //only meaningful for loop nodes; otherwise they are null
+    public Label entry=null;
+    public Label exit=null;
+    public Label test=null;
 
     [JsonConverter(typeof(NodeTypeJsonConverter))]
     public NodeType nodeType = null;
-
-    public VarInfo varInfo = null;
-
-    //for loop nodes
-    public Label loopTest;
-    public Label loopExit;
 
     public TreeNode this[string childSym] {
         get {
@@ -33,6 +39,7 @@ public class TreeNode{
             throw new Exception("No such child");
         }
     }
+
 
     Production production {
         get {
@@ -60,52 +67,68 @@ public class TreeNode{
     }
 
     public void prependChild(TreeNode n){
-        n.parent = this;
         this.children.Insert(0,n);
+        n.parent=this;
     }
 
-    
+    //public void setParents(){
+    //    foreach(var c in this.children){
+    //        c.parent=this;
+    //        c.setParents();
+    //    }
+    //}
 
-    public void toJson(StreamWriter w, string prefix=""){
-        string prefix0=prefix;
-        prefix += "  ";
-        w.WriteLine(prefix0+"{");
-        w.WriteLine( prefix+$"\"sym\" : \"{this.sym}\",");
-        w.Write( prefix+$"\"token\" : ");
-        if( this.token != null )
-            this.token.toJson(w);
-        else
+    public void toJson(StreamWriter w){
+        w.WriteLine("{");
+        w.WriteLine( $"\t\"sym\" : \"{this.sym}\",");
+        w.Write( $"\t\"token\" : ");
+        if(this.token == null){
             w.Write("null");
-        w.WriteLine(",");
-
-        // w.WriteLine(prefix+$"\"productionNumber\" : \"{this.productionNumber}\",");
-
-        //node type string
-        string nts = ( this.nodeType == null ? "null" : $"\"{this.nodeType}\"" );
-
-        w.WriteLine(prefix+$"\"nodeType\": {nts},");
-
-        w.Write(prefix+$"\"varInfo\": ");
-        if( this.varInfo == null )
-            w.Write("null");
-        else
-            this.varInfo.toJson(w);
-        w.WriteLine(",");
-
-        if( this.children.Count == 0 ){
-            w.WriteLine( prefix+"\"children\": []");
-        } else {
-            w.WriteLine( prefix+"\"children\": [");
-            string prefix2=prefix+"  ";
-            for(int i=0;i<this.children.Count;i++){
-                this.children[i].toJson(w,prefix2);
-                if( i != this.children.Count-1)
-                    w.WriteLine(prefix2+",");
-            }
-            w.WriteLine(prefix+"]");
         }
-        w.WriteLine(prefix0+"}");
+        else{
+            this.token.toJson(w);
+        }
+        w.WriteLine(",");
+        w.WriteLine( $"\t\"productionNumber\" : {this.productionNumber},");
+        if(this.nodeType == null){
+            w.WriteLine($"\t\"nodeType\" : null,");
+        }
+        else{
+            w.WriteLine( $"\t\"nodeType\" : \"{this.nodeType}\",");
+        }
+        w.WriteLine( "\t\t\"children\" : [");
+        for(int i=0;i<this.children.Count;i++){
+            this.children[i].toJson(w);
+            if( i != this.children.Count-1)
+                w.WriteLine(",");
+        }
+        w.WriteLine("\t\t\t\t\t],");
+        if(this.varInfo == null){
+            w.WriteLine($"\t\"varInfo\" : null");
+        }
+        else{
+            w.WriteLine($"\t\"varInfo\" : ");
+            this.varInfo.toJson(w);
+        }
+        
+        w.WriteLine("}");
     }
+
+
+    // public static TreeNode fromJson(StreamReader r){
+    //     //this function only works with data that was produced with toJson() above.
+    //     TreeNode t = new TreeNode("",-1);
+    //     Utils.expectJsonOpenBrace(r);
+    //     t.sym = Utils.expectJsonString(r,"sym");
+    //     t.token = Utils.expectJsonToken(r,"token");
+    //     t.productionNumber = Utils.expectJsonInt(r,"productionNumber");
+    //     t.varInfo = Utils.expectJsonVarInfo(r,"varInfo");
+    //     t.nodeType = Utils.expectJsonNodeType(r,"nodeType");
+    //     t.children = Utils.expectJsonListOfTreeNode(r,"children");
+    //     Utils.expectJsonCloseBrace(r);
+    //     return t;
+    // }
+
 
     public void print(string prefix=""){
         
@@ -140,18 +163,22 @@ public class TreeNode{
     }
 
     public override string ToString(){
-        string s = $"{this.sym}";
+        string tmp=this.sym;
+        
         if( this.token != null )
-            s += $" ({this.token.lexeme})";
+            tmp += $" ({this.token.lexeme})";
+
         if( this.nodeType != null )
-            s += $" {this.nodeType}";
+            tmp += " nodeType="+this.nodeType.ToString();
+
         if( this.varInfo != null )
-            s += $" varInfo[{this.varInfo}]";
-        return s;
+            tmp += " varInfo="+this.varInfo;
+
+        return tmp;
     }
 
-
     public void removeUnitProductions(){
+
         for(int i=0;i<this.children.Count;++i)
             this.children[i].removeUnitProductions();
 
@@ -161,6 +188,7 @@ public class TreeNode{
     }
 
     public void replaceChild( TreeNode n, TreeNode c){
+        //replace child n with c
         for(int i=0;i<this.children.Count;++i){
             if( this.children[i] == n ){
                 this.children[i] = c;
@@ -169,15 +197,37 @@ public class TreeNode{
                 return;
             }
         }
-        throw new Exception("No such child");
+        throw new Exception();
+    }
+
+    public Token firstToken() {
+        if(this.token != null) {
+            return this.token;
+        }
+        foreach(var c in this.children) {
+            Token t = c.firstToken();
+            if(t != null) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public Token lastToken() {
+        if(this.token != null) {
+            return this.token;
+        }
+        for(int i = this.children.Count - 1; i >= 0; i--) {
+            Token t = this.children[i].lastToken();
+            if(t != null) {
+                return t;
+            }
+        }
+        return null;
     }
 
     public void collectClassNames(){
         this.production?.pspec.collectClassNames(this);
-    }
-
-    public void collectFunctionNames(){
-        this.production?.pspec.collectFunctionNames(this);
     }
 
     public void setNodeTypes(){
@@ -188,16 +238,15 @@ public class TreeNode{
         this.production?.pspec.generateCode(this);
     }
 
-    public Token firstToken(){
-        if( this.token != null )
-            return this.token;
-        else {
-            foreach(var c in children){
-                var t = c.firstToken();
-                if(t != null )
-                    return t;
-            }
-            return null;
+    public void collectFunctionNames(){
+        this.production?.pspec.collectFunctionNames(this);
+    }
+
+    public void pushAddressToStack(){
+        if(this.production != null) {
+            this.production?.pspec.pushAddressToStack(this);
+        } else {
+            Utils.error(this.firstToken(), "Can't get address");
         }
     }
 
