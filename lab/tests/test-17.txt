@@ -1,3 +1,0 @@
-func main(){
-    return true or 15%3<2%0
-}

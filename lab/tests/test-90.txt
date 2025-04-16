@@ -1,7 +1,0 @@
-func main(){
-    repeat{
-        continue
-        return 102
-    } until(3>4)
-    return 100
-}

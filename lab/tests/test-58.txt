@@ -1,8 +1,0 @@
-func main(){
-    if( 5 ) {
-        return 100
-    } else {
-        return 101
-    }
-    return 102
-}

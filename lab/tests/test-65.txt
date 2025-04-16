@@ -1,6 +1,0 @@
-func main(){
-    if( 3>4 ) {
-        return 100
-    }
-    return 101
-}

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-EXE = r"C:\Users\jaw06\Desktop\Compiler\lab\bin\Debug\net8.0\lab.exe"
+EXE = r"c:\users\bob\lab.exe"
 
 
 TIMEOUT=2

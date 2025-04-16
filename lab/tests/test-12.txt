@@ -1,3 +1,0 @@
-func main(){
-    return true and 9%3<8%2
-}

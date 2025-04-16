@@ -1,5 +1,0 @@
-func main(){
-    while( false ){
-    }
-    return 100
-}

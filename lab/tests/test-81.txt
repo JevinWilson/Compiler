@@ -1,5 +1,0 @@
-func main(){
-    repeat{
-    } until( false )
-    return 100
-}

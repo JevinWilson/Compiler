@@ -1,3 +1,0 @@
-func main(){
-    return false or 10%2<12%3
-}

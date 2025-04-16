@@ -1,7 +1,0 @@
-func main(){
-    while( 3>4 ){
-        continue
-        return 100
-    }
-    return 100
-}
