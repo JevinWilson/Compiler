@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
 
-EXE = r"C:\Users\jaw06\Desktop\Compiler\lab\bin\Debug\net8.0\lab.exe"
+EXE = r"c:\users\bob\lab.exe"
 
 
 TIMEOUT=2
 
-
+INVALID="invalid"
 CRASH="crash"
 HANG="hang"
-
+RETURN="return"
 
 import os
 import os.path
@@ -18,18 +18,18 @@ import json
 import sys
 
 
-def past(status):
-    if type(status) == int:
-        return f"returned {status}"
+def past(status,code):
+    if status == RETURN:
+        return f"returned {code}"
     elif status == CRASH:
         return "crashed"
     elif status == HANG:
         return "hung"
     else:
         return f"{status}"  #we shouldn't get here?
-def present(status):
-    if type(status) == int:
-        return f"return {status}"
+def present(status,code):
+    if status == RETURN:
+        return f"return {code}"
     elif status == CRASH:
         return "crash"
     elif status == HANG:
@@ -73,7 +73,7 @@ def main():
     alltests=[]
     for dirpath,dirs,files in os.walk(f"{base}/tests"):
         for f in files:
-            if f.endswith(".txt") and "expected" not in f:
+            if f.endswith(".txt") and "results" not in f:
                 alltests.append( (dirpath,f) )
 
     alltests.sort()
@@ -102,40 +102,45 @@ def main():
 
         print("Testing",f,"...")
 
-        kind = f.split("-")[0]
-
-        compilerstatus, exestatus, exeerror = run(f"{base}/tests/{f}",verbose)
-
-        if exeerror != None:
-            exestatus = exeerror
-
-        expfile = f.replace(".txt",".expected.txt")
+        expfile = f.replace(".txt",".results.txt")
         expfile = os.path.join(dirpath,expfile)
 
         with open(expfile) as fp:
-            expected = fp.read().strip()
+            expected = json.loads(fp.read().strip())
+            try:
+                v = int(expected["returns"])
+                expected["returns"]=v
+            except ValueError:
+                pass
 
-        if expected == "invalid":
+            if type(expected["returns"]) == int:
+                expected["returntype"] = RETURN
+            else:
+                assert expected["returns"] in [INVALID,HANG,CRASH],f"{expected}"
+                expected["returntype"] = expected["returns"]
+
+        compilerstatus, exestatus, exereturntype, exestdout, exestderr = run(f"{base}/tests/{f}",expected.get("input"),verbose)
+
+
+        if expected["returns"] == INVALID:
             if compilerstatus == 0:
                 bad("Compiler accepted invalid input")
             else:
                 good("Compiler rejected invalid input")
         else:
-            if expected == CRASH:
-                verb=""
-            elif expected == HANG:
-                verb=""
-            else:
-                expected = int(expected)
-                verb="return "
-
             if compilerstatus != 0:
                 bad("Compiler rejected valid input")
             else:
-                if exestatus == expected:
-                    good(f"Executable {past(exestatus)}, which was expected")
+                if exereturntype != expected["returntype"]:
+                    bad(f"Bad return type: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expected["returntype"],expected["returns"])}")
                 else:
-                    bad(f"Executable {past(exestatus)}, but we expected it to {present(expected)}")
+                    if expected["returntype"] == RETURN and exestatus != expected["returns"]:
+                        bad(f"Bad return value: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expected["returntype"],expected["returns"])}")
+                    else:
+                        if expected.get("output") and exestdout != expected["output"]:
+                            bad(f"Executable printed incorrect output")
+                        else:
+                            good("OK!")
     #end loop
 
     print(f"{stats[GOOD]} passed     {stats[BAD]} failed")
@@ -143,11 +148,11 @@ def main():
 
     return
 
-def run(fname,verbose):
+def run(fname,input,verbose):
     #returns a tuple: compiler status, executable status, exe error
     #   cstatus     estatus     eerror  meaning
-    #   0           0..255      None    Compiled OK; executable returned 0...255
     #   != 0        None        None    Did not compile; executable not run
+    #   0           0..255      None    Compiled OK; executable returned 0...255
     #   0           None        CRASH   Compiled OK; executable crashed
     #   0           None        HANG    Compiled OK; executable hung
 
@@ -156,11 +161,17 @@ def run(fname,verbose):
                             stderr=None if verbose else subprocess.DEVNULL)
     compilerstatus =  P.returncode
     if compilerstatus != 0:
-        return compilerstatus,None,None
+        return compilerstatus,None,None,b"",b""
+
+    if input:
+        input=input.encode()
     try:
-        P = subprocess.run( [os.path.join(".","out.exe")], timeout=TIMEOUT )
+        P = subprocess.run( [os.path.join(".","out.exe")],
+            timeout=TIMEOUT,
+            input=input,
+            capture_output=True )
     except subprocess.TimeoutExpired:
-        return compilerstatus,None,HANG
+        return compilerstatus,None,HANG,P.stdout,P.stderr
 
     exestatus = P.returncode
     if exestatus < 0:
@@ -168,9 +179,9 @@ def run(fname,verbose):
         exestatus = 0x40000000
     exestatus &= 0xffffffff
     if exestatus >= 0x40000000 and exestatus <= 0xfffffc00:
-        return compilerstatus,None,CRASH
+        return compilerstatus,None,CRASH,P.stdout,P.stderr
 
-    return compilerstatus,exestatus,None
+    return compilerstatus,exestatus,RETURN,P.stdout.decode(errors="replace"),P.stderr
 
 main()
 #input("Press 'enter' to quit")
