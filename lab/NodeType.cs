@@ -43,7 +43,7 @@ public abstract class NodeType {
     public static readonly StringNodeType String = new ();
     public static readonly VoidNodeType Void = new ();
 
-    public static NodeType tokenToNodeType(Token t){
+    public static NodeType typeFromToken(Token t){
         if( t.sym != "TYPE" )
             throw new Exception("ICE");
         switch(t.lexeme){
@@ -52,7 +52,7 @@ public abstract class NodeType {
             case "bool" : return NodeType.Bool;
             case "string" : return NodeType.String;
             case "void" : return NodeType.Void;
-            default: throw new Exception("ICE");
+            default: throw new Exception("Internal compiler error: type from token "+t);
         }
 
     }
@@ -76,9 +76,18 @@ public class StringNodeType : NodeType {
 }
 
 public class FunctionNodeType: NodeType {
-    public FunctionNodeType(): base("func") {}
+    public NodeType returnType;
+    public List<NodeType> paramTypes;
+    public FunctionNodeType(NodeType returnType, List<NodeType> paramTypes): base("func") {
+        this.returnType = returnType;
+        this.paramTypes = paramTypes;
+    }
 
     public override bool Equals(Object o){
+        var f2 = o as FunctionNodeType;
+        if( f2 == null )
+            return false;
+            
         throw new Exception("TBD");
     }
 

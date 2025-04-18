@@ -9,7 +9,7 @@ namespace lab{
                     collectFunctionNames: (n) => {
                         string funcName = n.children[1].token.lexeme;
                         Console.WriteLine($"FUNC: {funcName}");
-                        SymbolTable.declareGlobal( n["ID"].token, new FunctionNodeType() );
+                        SymbolTable.declareGlobal( n["ID"].token, new FunctionNodeType(null, null) );
                     },   
                     setNodeTypes: (n) => {
                         SymbolTable.enterFunctionScope();
@@ -49,7 +49,7 @@ namespace lab{
                 new("pdecls :: pdecl | pdecl COMMA pdecls"),
                 new("pdecl :: ID COLON TYPE",
                     setNodeTypes: (n) => {
-                        var t = NodeType.tokenToNodeType(n["TYPE"].token);
+                        var t = NodeType.typeFromToken(n["TYPE"].token);
                         if( SymbolTable.currentlyInGlobalScope()){
                             SymbolTable.declareGlobal( n["ID"].token, t);
                         }
@@ -74,6 +74,14 @@ namespace lab{
                 new("stmts :: SEMI"),
                 new("stmts :: lambda"),
                 new("stmt :: assign | cond | loop | vardecl | return | break | continue"),
+                new("stmt :: expr",
+                    generateCode: (n) => {
+                        n["expr"].generateCode();
+                        if( n["expr"].nodeType != NodeType.Void ){
+                            Asm.add( new OpAdd(Register.rsp,16));
+                        }
+                    }
+                ),
                 new("break :: BREAK",
                     generateCode: (n) => {
                         TreeNode p = n;
@@ -261,7 +269,7 @@ namespace lab{
 
                 new("vardecl :: VAR ID COLON TYPE",
                     setNodeTypes: (n) => {
-                        var t = NodeType.tokenToNodeType(n["TYPE"].token);
+                        var t = NodeType.typeFromToken(n["TYPE"].token);
                         if( SymbolTable.currentlyInGlobalScope()){
                             SymbolTable.declareGlobal( n["ID"].token, t);
                         }
@@ -274,7 +282,7 @@ namespace lab{
                     setNodeTypes: (n) => {
                         n["expr"].setNodeTypes();
                         var e = n["expr"].nodeType;
-                        var t = NodeType.tokenToNodeType(n["TYPE"].token);
+                        var t = NodeType.typeFromToken(n["TYPE"].token);
                         var eq = n["EQ"].token;
 
                         if(e != t){

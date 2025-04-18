@@ -13,7 +13,7 @@ namespace lab{
                 c.setNodeTypes();
             }
             if(n.children[0].nodeType != n.children[2].nodeType){
-                Utils.error(n.children[1].token, $"Node type mismatch! ({n.children[0].nodeType} and {n.children[2].nodeType})");
+                Utils.error(n.children[1].token, $"Node type mismatch!! ({n.children[0].nodeType} and {n.children[2].nodeType})");
             }
             if(!allowedInputs.Contains(n.children[0].nodeType)){
                 Utils.error(n.children[1].token, $"Type {n.children[0].nodeType} is not in the allowed types! ({String.Join<NodeType>(',',allowedInputs)})");
@@ -30,6 +30,15 @@ namespace lab{
             Asm.add( new OpComment( $"Popping register {Register.rbp}..." ));
             Asm.add( new OpPop( Register.rbp, StorageClass.NO_STORAGE_CLASS));
             Asm.add( new OpRet());
+        }
+
+        public delegate bool WalkCallback(TreeNode n);
+        public static void walk(TreeNode root, WalkCallback f){
+            if( false == f(root) )
+                return;
+            foreach(var c in root.children){
+                walk(c,f);
+            }
         }
 
     }

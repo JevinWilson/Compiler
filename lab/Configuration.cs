@@ -17,13 +17,14 @@ namespace Configuration{
                           "-m", "i386:x86-64",
                           "-d", "kernel32.def",
                           "-l", "kernel32.lib"
-            }
+            },
+            new string[]{@"C:\Program Files\LLVM\bin\clang.exe","-g","-c","runtime.c"}
         };
 
         //Command to link everything together
         public static readonly string[] linker = new string[]{
             @"C:\Program Files\LLVM\bin\lld-link.exe", "/debug",
-            "/entry:_start", "/subsystem:console", "/out:out.exe", "{}", "kernel32.lib"
+            "/entry:_start", "/subsystem:console", "/out:out.exe", "{}", "kernel32.lib", "runtime.o"
         };
 
 

@@ -138,18 +138,18 @@ namespace lab{
         }
 
         public override string ToString(){
-            string tmp=this.sym;
+            string s = $"{this.sym}";
         
             if( this.token != null )
-                tmp += $" ({this.token.lexeme})";
+                s += $" ({this.token.lexeme})";
 
             if( this.nodeType != null )
-                tmp += " "+this.nodeType.ToString();
+                s += $" {this.nodeType}";
 
             if( this.varInfo != null )
-                tmp += " "+this.varInfo;
+                s += $" varInfo[{this.varInfo}]";
 
-            return tmp;
+            return s;
         }
 
         public void removeUnitProductions(){

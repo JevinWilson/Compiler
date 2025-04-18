@@ -3,6 +3,9 @@ using System.Net.Mail;
 namespace lab{
 
 public static class TableWriter{
+    public static List< Tuple<string, int> > badList = new();
+    public static string reduceConflict = null;
+    public static int reduceConflictState = -1;
 
     public static void create(TextWriter wr){
         //create a file called ParseTable.cs which has the parse table
@@ -33,7 +36,7 @@ public static class TableWriter{
                 var reduce = new HashSet<string>();
                 foreach( LRItem I in q.label.items){
                     if( I.dposAtEnd() ){
-                        // w.WriteLine($"            // {I}");
+                        w.WriteLine($"            // {I}");
                         foreach( string lookahead in I.lookahead){
                             if( q.transitions.Keys.Contains(lookahead)){
                                 Console.WriteLine("Shift-Reduce conflict in state "+i+" on symbol "+lookahead);

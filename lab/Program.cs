@@ -30,23 +30,34 @@ public class CompilersAreGreat{
         var T = new Tokenizer(inp);
         TreeNode root = Parser.parse(T);
 
-
+        SymbolTable.populateBuiltins();
+        
         root.collectClassNames();
         root.collectFunctionNames();
         root.setNodeTypes();
+
         root.generateCode();
 
         using(var w = new StreamWriter("out.asm")){
             Asm.output(w);
         }
-
         Run.compile("out.asm");
 
-        //root.removeUnitProductions();
+
+        //root.removeUnitProductions();     
+
+        //Console.WriteLine("The tree:");
         //root.print();
-        //using(var w = new StreamWriter("tree.json")){
-        //    root.toJson(w);
-        //}
+        
+        //debug output: Write the tree in JSON format
+        var opts = new System.Text.Json.JsonSerializerOptions();
+        opts.IncludeFields=true;
+        opts.WriteIndented=true;
+        opts.MaxDepth=1000000;
+        string J = System.Text.Json.JsonSerializer.Serialize(root,opts);
+        using(var w = new StreamWriter("tree.json")){
+            root.toJson(w);
+        }
     }
 } //class
 
