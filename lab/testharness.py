@@ -132,10 +132,10 @@ def main():
                 bad("Compiler rejected valid input")
             else:
                 if exereturntype != expected["returntype"]:
-                    bad(f"Bad return type: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expected["returntype"],expected["returns"])}")
+                    bad(f"Bad return type: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expected['returntype'],expected['returns'])}")
                 else:
                     if expected["returntype"] == RETURN and exestatus != expected["returns"]:
-                        bad(f"Bad return value: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expected["returntype"],expected["returns"])}")
+                        bad(f"Bad return value: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expected['returntype'],expected['returns'])}")
                     else:
                         if expected.get("output") and exestdout != expected["output"]:
                             bad(f"Executable printed incorrect output")

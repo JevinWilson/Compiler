@@ -1,0 +1,840 @@
+{
+	"sym" : "S",
+	"token" : null,
+	"productionNumber" : 0,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "decls",
+	"token" : null,
+	"productionNumber" : 1,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "funcdecl",
+	"token" : null,
+	"productionNumber" : 6,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "FUNC",
+	"token" : { "sym": "FUNC" , "line" : 1, "lexeme" : "func"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "ID",
+	"token" : { "sym": "ID" , "line" : 1, "lexeme" : "main"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "LPAREN",
+	"token" : { "sym": "LPAREN" , "line" : 1, "lexeme" : "("  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "optionalPdecls",
+	"token" : null,
+	"productionNumber" : 12,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "RPAREN",
+	"token" : { "sym": "RPAREN" , "line" : 1, "lexeme" : ")"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "optionalReturn",
+	"token" : null,
+	"productionNumber" : 9,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "COLON",
+	"token" : { "sym": "COLON" , "line" : 1, "lexeme" : ":"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "TYPE",
+	"token" : { "sym": "TYPE" , "line" : 1, "lexeme" : "int"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "LBRACE",
+	"token" : { "sym": "LBRACE" , "line" : 1, "lexeme" : "{"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "stmts",
+	"token" : null,
+	"productionNumber" : 24,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "stmt",
+	"token" : null,
+	"productionNumber" : 34,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "expr",
+	"token" : null,
+	"productionNumber" : 48,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "orexp",
+	"token" : null,
+	"productionNumber" : 50,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "andexp",
+	"token" : null,
+	"productionNumber" : 52,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "relexp",
+	"token" : null,
+	"productionNumber" : 54,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "bitexp",
+	"token" : null,
+	"productionNumber" : 56,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "shiftexp",
+	"token" : null,
+	"productionNumber" : 58,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "sumexp",
+	"token" : null,
+	"productionNumber" : 60,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "prodexp",
+	"token" : null,
+	"productionNumber" : 62,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "powexp",
+	"token" : null,
+	"productionNumber" : 64,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "unaryexp",
+	"token" : null,
+	"productionNumber" : 68,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "preincexp",
+	"token" : null,
+	"productionNumber" : 70,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "postincexp",
+	"token" : null,
+	"productionNumber" : 72,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "amfexp",
+	"token" : null,
+	"productionNumber" : 75,
+	"nodeType" : "bool",
+		"children" : [
+{
+	"sym" : "amfexp",
+	"token" : null,
+	"productionNumber" : 76,
+	"nodeType" : "func",
+		"children" : [
+{
+	"sym" : "factor",
+	"token" : null,
+	"productionNumber" : 79,
+	"nodeType" : "func",
+		"children" : [
+{
+	"sym" : "ID",
+	"token" : { "sym": "ID" , "line" : 2, "lexeme" : "putv"  },
+	"productionNumber" : -1,
+	"nodeType" : "func",
+		"children" : [
+					],
+	"varInfo" : 
+{"type": "func", "nesting": 0, "location": {"storageClass": "global putv"}}}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "LPAREN",
+	"token" : { "sym": "LPAREN" , "line" : 2, "lexeme" : "("  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "calllist",
+	"token" : null,
+	"productionNumber" : 84,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "calllist2",
+	"token" : null,
+	"productionNumber" : 86,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "calllist2",
+	"token" : null,
+	"productionNumber" : 85,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "expr",
+	"token" : null,
+	"productionNumber" : 48,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "orexp",
+	"token" : null,
+	"productionNumber" : 50,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "andexp",
+	"token" : null,
+	"productionNumber" : 52,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "relexp",
+	"token" : null,
+	"productionNumber" : 54,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "bitexp",
+	"token" : null,
+	"productionNumber" : 56,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "shiftexp",
+	"token" : null,
+	"productionNumber" : 58,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "sumexp",
+	"token" : null,
+	"productionNumber" : 60,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "prodexp",
+	"token" : null,
+	"productionNumber" : 62,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "powexp",
+	"token" : null,
+	"productionNumber" : 64,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "unaryexp",
+	"token" : null,
+	"productionNumber" : 68,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "preincexp",
+	"token" : null,
+	"productionNumber" : 70,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "postincexp",
+	"token" : null,
+	"productionNumber" : 72,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "amfexp",
+	"token" : null,
+	"productionNumber" : 76,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "factor",
+	"token" : null,
+	"productionNumber" : 77,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "NUM",
+	"token" : { "sym": "NUM" , "line" : 2, "lexeme" : "123456789"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "COMMA",
+	"token" : { "sym": "COMMA" , "line" : 2, "lexeme" : ","  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "expr",
+	"token" : null,
+	"productionNumber" : 48,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "orexp",
+	"token" : null,
+	"productionNumber" : 50,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "andexp",
+	"token" : null,
+	"productionNumber" : 52,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "relexp",
+	"token" : null,
+	"productionNumber" : 54,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "bitexp",
+	"token" : null,
+	"productionNumber" : 56,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "shiftexp",
+	"token" : null,
+	"productionNumber" : 58,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "sumexp",
+	"token" : null,
+	"productionNumber" : 60,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "prodexp",
+	"token" : null,
+	"productionNumber" : 62,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "powexp",
+	"token" : null,
+	"productionNumber" : 64,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "unaryexp",
+	"token" : null,
+	"productionNumber" : 68,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "preincexp",
+	"token" : null,
+	"productionNumber" : 70,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "postincexp",
+	"token" : null,
+	"productionNumber" : 72,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "amfexp",
+	"token" : null,
+	"productionNumber" : 76,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "factor",
+	"token" : null,
+	"productionNumber" : 77,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "NUM",
+	"token" : { "sym": "NUM" , "line" : 2, "lexeme" : "2"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "RPAREN",
+	"token" : { "sym": "RPAREN" , "line" : 2, "lexeme" : ")"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "SEMI",
+	"token" : { "sym": "SEMI" , "line" : 2, "lexeme" : ""  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "stmts",
+	"token" : null,
+	"productionNumber" : 24,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "stmt",
+	"token" : null,
+	"productionNumber" : 31,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "return",
+	"token" : null,
+	"productionNumber" : 42,
+	"nodeType" : null,
+		"children" : [
+{
+	"sym" : "RETURN",
+	"token" : { "sym": "RETURN" , "line" : 3, "lexeme" : "return"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "expr",
+	"token" : null,
+	"productionNumber" : 48,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "orexp",
+	"token" : null,
+	"productionNumber" : 50,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "andexp",
+	"token" : null,
+	"productionNumber" : 52,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "relexp",
+	"token" : null,
+	"productionNumber" : 54,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "bitexp",
+	"token" : null,
+	"productionNumber" : 56,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "shiftexp",
+	"token" : null,
+	"productionNumber" : 58,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "sumexp",
+	"token" : null,
+	"productionNumber" : 60,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "prodexp",
+	"token" : null,
+	"productionNumber" : 62,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "powexp",
+	"token" : null,
+	"productionNumber" : 64,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "unaryexp",
+	"token" : null,
+	"productionNumber" : 68,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "preincexp",
+	"token" : null,
+	"productionNumber" : 70,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "postincexp",
+	"token" : null,
+	"productionNumber" : 72,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "amfexp",
+	"token" : null,
+	"productionNumber" : 76,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "factor",
+	"token" : null,
+	"productionNumber" : 77,
+	"nodeType" : "int",
+		"children" : [
+{
+	"sym" : "NUM",
+	"token" : { "sym": "NUM" , "line" : 3, "lexeme" : "126"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "SEMI",
+	"token" : { "sym": "SEMI" , "line" : 3, "lexeme" : ""  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "stmts",
+	"token" : null,
+	"productionNumber" : 26,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "RBRACE",
+	"token" : { "sym": "RBRACE" , "line" : 4, "lexeme" : "}"  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "SEMI",
+	"token" : { "sym": "SEMI" , "line" : 4, "lexeme" : ""  },
+	"productionNumber" : -1,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+,
+{
+	"sym" : "decls",
+	"token" : null,
+	"productionNumber" : 5,
+	"nodeType" : null,
+		"children" : [
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
+					],
+	"varInfo" : null
+}
