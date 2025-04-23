@@ -1,3 +1,6 @@
+
+using System.Security.Cryptography.X509Certificates;
+
 namespace lab{
     public class Productions{
         public static void makeThem(){
@@ -8,29 +11,34 @@ namespace lab{
                 new("funcdecl :: FUNC ID LPAREN optionalPdecls RPAREN optionalReturn LBRACE stmts RBRACE SEMI",
                     collectFunctionNames: (n) => {
                         foreach(var c in n.children){
-                             c.collectFunctionNames();
+                            c.collectFunctionNames();
                         }
 
                         string funcName = n.children[1].token.lexeme;
                         NodeType returnType = n["optionalReturn"].nodeType;
+
                         List<NodeType> argTypes = new();
 
-                        Utils.walk(n["optionalPdecls"], (c) => {
-                            if(c.sym == "TYPE") {
+                        Utils.walk( n["optionalPdecls"], (c) => {
+                            //c is a tree node
+                            if(c.sym == "TYPE" ){
                                 argTypes.Add(NodeType.typeFromToken(c.token));
                             }
                             return true;
                         });
 
-                        var ftype = new FunctionNodeType(returnType, argTypes, false);
+                        var ftype = new FunctionNodeType(
+                            returnType,argTypes,false
+                        );
                         n.nodeType = ftype;
                         Console.WriteLine($"FUNC: {funcName}");
                         SymbolTable.declareGlobal(n["ID"].token, ftype);
                         foreach(var c in n.children ){
                             c.collectFunctionNames();
                         }
-                    },   
+                    },
                     setNodeTypes: (n) => {
+                        //SymbolTable.declareGlobal(n["ID"].token, new FunctionNodeType() );
                         SymbolTable.enterFunctionScope();
                         foreach( TreeNode c in n.children){
                             c.setNodeTypes();
@@ -81,13 +89,13 @@ namespace lab{
                     }
                 ),
                 new("optionalReturn :: lambda | COLON TYPE",
-                    collectFunctionNames: (n) => {
-                        if( n.children.Count == 0 )
-                            n.nodeType = NodeType.Void;
-                        else
-                            n.nodeType = NodeType.typeFromToken(n["TYPE"].token);
-                    } 
-                ),
+                collectFunctionNames: (n) => {
+                    if( n.children.Count == 0 )
+                        n.nodeType = NodeType.Void;
+                    else
+                        n.nodeType = NodeType.typeFromToken(n["TYPE"].token);
+                } 
+            ),
                 new("optionalSemi :: lambda | SEMI"),
                 new("optionalPdecls :: lambda | pdecls"),
                 new("pdecls :: pdecl | pdecl COMMA pdecls"),
@@ -136,6 +144,7 @@ namespace lab{
                 new("stmt :: expr",
                     generateCode: (n) => {
                         n["expr"].generateCode();
+                        //if result is not void, must discard values
                         if( n["expr"].nodeType != NodeType.Void ){
                             Asm.add( new OpAdd(Register.rsp,16));
                         }
@@ -148,22 +157,22 @@ namespace lab{
                 ),
                 new("break :: BREAK",
                     generateCode: (n) => {
-                        TreeNode p = n;
-                        while(p != null && p.sym != "loop" )
-                            p = p.parent;
-                        if( p == null )
+                        TreeNode loop = n;
+                        while(loop != null && loop.sym != "loop" )
+                            loop = loop.parent;
+                        if( loop == null )
                             Utils.error(n["BREAK"].token, "break outside of a loop");
-                        Asm.add( new OpJmp( p.exit ) );
+                        Asm.add( new OpJmp( loop.exit ) );
                     }
                 ),
                 new("continue :: CONTINUE",
                     generateCode: (n) => {
-                        TreeNode p = n;
-                        while(p != null && p.sym != "loop" )
-                            p = p.parent;
-                        if( p == null )
+                        TreeNode loop = n;
+                        while(loop != null && loop.sym != "loop" )
+                            loop = loop.parent;
+                        if( loop == null )
                             Utils.error(n["CONTINUE"].token, "break outside of a loop");
-                        Asm.add( new OpJmp( p.test ) );
+                        Asm.add( new OpJmp( loop.test ) );
                     }
                 ),
                 new("assign :: expr EQ expr",
@@ -187,6 +196,7 @@ namespace lab{
                         //discard storage class (storage class of an
                         //address is 0)
                         Asm.add( new OpPop( Register.rcx, null));
+
                         //Write data + storage to memory
                         //Storage class first, then data
                         Asm.add( new OpMov( src: Register.rbx, Register.rcx, 0));
@@ -331,7 +341,7 @@ namespace lab{
                         while( p.sym != "funcdecl" ){
                             p=p.parent;
                         }
-                        
+                        //funcdecl :: FUNC ID LPAREN optionalPdecls RPAREN optionalReturn LBRACE stmts RBRACE SEMI
                         var retType = p["optionalReturn"].nodeType;
                         var gotType = n["expr"].nodeType ;
                         if( gotType != retType ){
@@ -342,13 +352,12 @@ namespace lab{
 
                     },
                     generateCode: (n) => {
+
                         Asm.add(new OpComment( 
-                            $"Return at line {n.children[0].token.line}")
-                        );
+                                $"Return at line {n.children[0].token.line}"));
                         n["expr"].generateCode();   //leaves value on top of stack
 
                         //ABI says return values come back in rax
-                        Asm.add( new OpPop(Register.rax,null));
                         //our code expects storage class to come back
                         //in rbx
                         Asm.add( new OpPop(Register.rax,Register.rbx));
@@ -389,7 +398,7 @@ namespace lab{
                         var eq = n["EQ"].token;
 
                         if(e != t){
-                            Utils.error(eq, $"Type mismatched ({e} and {t})");
+                            Utils.error(eq, $"Type mismatch! ({e} and {t})");
                         }
                         if( SymbolTable.currentlyInGlobalScope() ){
                             SymbolTable.declareGlobal( n["ID"].token, t);
@@ -402,6 +411,8 @@ namespace lab{
                 new("vardecl :: VAR ID COLON ID"),  //for user-defined types
                 new("vardecl :: VAR ID COLON ID EQ expr"),  //for user-defined type
                 });
-        }//end makeThem()
-    } //end class Productions
+        }
+        
+    } //end Productions
+
 } //namespace

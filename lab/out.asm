@@ -31,8 +31,6 @@ lbl0:      /* main */
     movq $123, %rax    /*  */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
-    add $8, %rsp   /* discard storage class */
-    pop %rax  /* value */
     pop %rbx  /* storage class */
     pop %rax  /* value */
     /* Epilogue at line 3 */
