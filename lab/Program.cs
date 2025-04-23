@@ -36,6 +36,7 @@ public class CompilersAreGreat{
         root.collectFunctionNames();
         root.setNodeTypes();
 
+        root.returnCheck();
         root.generateCode();
 
         using(var w = new StreamWriter("out.asm")){

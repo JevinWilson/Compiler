@@ -7,9 +7,28 @@ namespace lab{
                 new("decls :: funcdecl decls | classdecl decls | vardecl decls | SEMI decls | lambda"),
                 new("funcdecl :: FUNC ID LPAREN optionalPdecls RPAREN optionalReturn LBRACE stmts RBRACE SEMI",
                     collectFunctionNames: (n) => {
+                        foreach(var c in n.children){
+                             c.collectFunctionNames();
+                        }
+
                         string funcName = n.children[1].token.lexeme;
+                        NodeType returnType = n["optionalReturn"].nodeType;
+                        List<NodeType> argTypes = new();
+
+                        Utils.walk(n["optionalPdecls"], (c) => {
+                            if(c.sym == "TYPE") {
+                                argTypes.Add(NodeType.typeFromToken(c.token));
+                            }
+                            return true;
+                        });
+
+                        var ftype = new FunctionNodeType(returnType, argTypes, false);
+                        n.nodeType = ftype;
                         Console.WriteLine($"FUNC: {funcName}");
-                        SymbolTable.declareGlobal( n["ID"].token, new FunctionNodeType(null, null) );
+                        SymbolTable.declareGlobal(n["ID"].token, ftype);
+                        foreach(var c in n.children ){
+                            c.collectFunctionNames();
+                        }
                     },   
                     setNodeTypes: (n) => {
                         SymbolTable.enterFunctionScope();
@@ -18,6 +37,19 @@ namespace lab{
                         }
                         n.numLocals = SymbolTable.numLocals;
                         SymbolTable.leaveFunctionScope();
+                    },
+                    returnCheck: (n) => {
+                        foreach(var c in n.children){
+                            c.returnCheck();
+                        }
+                        var ftype = n.nodeType as FunctionNodeType;
+                        if( ftype.returnType != NodeType.Void ){
+                            if( n["stmts"].returns == false ){
+                                Utils.error(n["FUNC"].token,
+                                    "Non-void function might not return"
+                                );
+                            }
+                        }
                     },
                     generateCode: (n) => {
                         VarInfo vi = SymbolTable.lookup(n["ID"].token); //lookup the function that we're in
@@ -41,9 +73,21 @@ namespace lab{
                             c.setNodeTypes();
                         }
                         SymbolTable.leaveLocalScope();
+                    },
+                    returnCheck: (n) => {
+                        n["stmts"].returnCheck();
+                        if (n["stmts"].returns)
+                            n.returns = true;
                     }
                 ),
-                new("optionalReturn :: lambda | COLON TYPE"),
+                new("optionalReturn :: lambda | COLON TYPE",
+                    collectFunctionNames: (n) => {
+                        if( n.children.Count == 0 )
+                            n.nodeType = NodeType.Void;
+                        else
+                            n.nodeType = NodeType.typeFromToken(n["TYPE"].token);
+                    } 
+                ),
                 new("optionalSemi :: lambda | SEMI"),
                 new("optionalPdecls :: lambda | pdecls"),
                 new("pdecls :: pdecl | pdecl COMMA pdecls"),
@@ -70,16 +114,36 @@ namespace lab{
                 new("membervardecl :: VAR ID COLON TYPE SEMI"),
                 new("memberfuncdecl :: funcdecl"),
 
-                new("stmts :: stmt SEMI stmts"),
+                new("stmts :: stmt SEMI stmts",
+                    returnCheck: (n) => {
+                        n["stmt"].returnCheck();
+                        n.children[2].returnCheck();
+                        if(n["stmt"].returns)
+                            n.returns = true;
+                        if(n.children[2].returns)
+                            n.returns = true;
+                    }
+                ),
                 new("stmts :: SEMI"),
                 new("stmts :: lambda"),
-                new("stmt :: assign | cond | loop | vardecl | return | break | continue"),
+                new("stmt :: assign | cond | loop | vardecl | return | break | continue",
+                    returnCheck: (n) => {
+                        n.children[0].returnCheck();
+                        if( n.children[0].returns)
+                            n.returns = true;
+                    }
+                ),
                 new("stmt :: expr",
                     generateCode: (n) => {
                         n["expr"].generateCode();
                         if( n["expr"].nodeType != NodeType.Void ){
                             Asm.add( new OpAdd(Register.rsp,16));
                         }
+                    },
+                    returnCheck: (n) => {
+                        n.children[0].returnCheck();
+                        if( n.children[0].returns)
+                            n.returns = true;
                     }
                 ),
                 new("break :: BREAK",
@@ -185,6 +249,14 @@ namespace lab{
                         Asm.add( new OpLabel( elseLabel ));
                         n.children[6].generateCode();
                         Asm.add( new OpLabel( endifLabel));
+                    },
+                    returnCheck: (n) => {
+                        n.children[4].returnCheck();
+                        n.children[6].returnCheck();
+
+                        if( n.children[4].returns && n.children[6].returns )
+                            n.returns = true;
+
                     }
                 ),
                 new("loop :: WHILE LPAREN expr RPAREN braceblock",
@@ -251,19 +323,50 @@ namespace lab{
                     }
                 ),
                 new("return :: RETURN expr",
-                    generateCode: (n) => {
+                    setNodeTypes: (n) => {
+                        foreach(var c in n.children){
+                            c.setNodeTypes();
+                        }
+                        TreeNode p = n;
+                        while( p.sym != "funcdecl" ){
+                            p=p.parent;
+                        }
+                        
+                        var retType = p["optionalReturn"].nodeType;
+                        var gotType = n["expr"].nodeType ;
+                        if( gotType != retType ){
+                            Utils.error(n["RETURN"].token, 
+                                $"Return type mismatch: Expected {retType} but got {gotType}"
+                            );
+                        }
 
+                    },
+                    generateCode: (n) => {
                         Asm.add(new OpComment( 
-                                $"Return at line {n.children[0].token.line}"));
+                            $"Return at line {n.children[0].token.line}")
+                        );
                         n["expr"].generateCode();   //leaves value on top of stack
 
+                        //ABI says return values come back in rax
                         Asm.add( new OpPop(Register.rax,null));
+                        //our code expects storage class to come back
+                        //in rbx
+                        Asm.add( new OpPop(Register.rax,Register.rbx));
                         Utils.epilogue(n["RETURN"].token);
+                    },
+                    returnCheck: (n) => {
+                        n.returns = true;
                     }
                 ),
                 new("return :: RETURN",
+                    setNodeTypes: (n) => {
+                        n.nodeType = NodeType.Void;
+                    },
                     generateCode: (n) => {
                         Utils.epilogue(n["RETURN"].token);
+                    },
+                    returnCheck: (n) => {
+                        n.returns = true;
                     }
                 ),
 

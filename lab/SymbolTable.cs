@@ -115,17 +115,18 @@ namespace lab{
             if( table.ContainsKey(varname)){
                 VarInfo vi = table[varname];
                 if( vi.nesting == locals.Count ){
-                    Utils.error(token, "Redeclare variable");
-                } else if( vi.nesting > nesting ){
+                    Utils.error(token, "Redeclaration of variable");
+                } else if( vi.nesting >= nesting ){
                     throw new Exception("ICE");
                 } else {
+                    //vi.nesting must be < nesting
                     shadowed.Peek().Add( table[varname] );
                 }
             }
             table[varname] = new VarInfo(token, 
                     nesting, 
                     type, 
-                    new ParameterLocation(numLocals, token.lexeme)
+                    new ParameterLocation(numParameters, varname)
             );
             locals.Peek().Add(varname);
             numParameters++;
@@ -144,15 +145,16 @@ namespace lab{
             SymbolTable.declareGlobal(
                 new Token("ID", "putc", -1),
                 new FunctionNodeType(NodeType.Int,
-                    new List<NodeType>(){NodeType.Int}
-                ),
+                    new List<NodeType>(){NodeType.Int},
+                    true                ),
                 new Label("putc", "builtin function putc")
             );
 
             SymbolTable.declareGlobal(
                 new Token("ID", "getc", -1),
                 new FunctionNodeType(NodeType.Int,
-                    new List<NodeType>(){}
+                    new List<NodeType>(){},
+                    true
                 ),
                 new Label("getc", "builtin function getc")
             );
@@ -160,7 +162,8 @@ namespace lab{
             SymbolTable.declareGlobal(
                 new Token("ID", "putv", -1),
                 new FunctionNodeType(NodeType.Bool,
-                    new List<NodeType>(){NodeType.Int, NodeType.Int}
+                    new List<NodeType>(){NodeType.Int, NodeType.Int},
+                    true
                 ),
                 new Label("putv", "builtin function putv")
             );
@@ -168,7 +171,8 @@ namespace lab{
             SymbolTable.declareGlobal(
                 new Token("ID", "newline", -1),
                 new FunctionNodeType(NodeType.Bool,
-                    new List<NodeType>(){}
+                    new List<NodeType>(){},
+                    true
                 ),
                 new Label("newline", "builtin function newline")
             );

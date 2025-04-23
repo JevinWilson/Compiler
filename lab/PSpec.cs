@@ -12,6 +12,7 @@ namespace lab{
         public WalkCallbackType setNodeTypes;
         public WalkCallbackType generateCode;
         public WalkCallbackType pushAddressToStack;
+        public WalkCallbackType returnCheck;
 
         //p = "foo :: bar baz bam | boom"
         public PSpec(string p, 
@@ -19,7 +20,8 @@ namespace lab{
                     WalkCallbackType collectFunctionNames=null,
                     WalkCallbackType setNodeTypes = null,
                     WalkCallbackType generateCode=null,
-                    WalkCallbackType pushAddressToStack=null
+                    WalkCallbackType pushAddressToStack=null,
+                    WalkCallbackType returnCheck=null
         ){
             this.spec=p;
             this.collectClassNames = collectClassNames ?? defaultCollectClassNames;
@@ -27,6 +29,7 @@ namespace lab{
             this.setNodeTypes = setNodeTypes ?? defaultSetNodeTypes;
             this.generateCode = generateCode ?? defaultGenerateCode;
             this.pushAddressToStack = pushAddressToStack ?? defaultPushAddressToStack;
+            this.returnCheck = returnCheck ?? defaultReturnCheck;
 
             // if( collectClassNames != null )
             //     this.collectClassNames = collectClassNames;
@@ -63,6 +66,12 @@ namespace lab{
                 n.children[0].pushAddressToStack();
             else
                 Utils.error(n.firstToken(), "Expected lvalue");
+        }
+
+        void defaultReturnCheck(TreeNode n) {
+            foreach( var c in n.children){
+                c.returnCheck();
+            }
         }
 
     }
