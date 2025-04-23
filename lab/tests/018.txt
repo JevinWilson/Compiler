@@ -1,4 +1,2 @@
-    func main(): int {
-        putc=putc
-        return 0
-    }
+func main(): int {
+}

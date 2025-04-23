@@ -1,4 +1,4 @@
-    func main(): int {
-        putc(1,2,3)
-        return 0
-    }
+func main(): int {
+    var x: int
+    x = 42
+}

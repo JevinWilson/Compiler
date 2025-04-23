@@ -1,1 +1,4 @@
-{"returns": "invalid", "output": null}
+{"returns": "invalid",
+    "reason": "no return from non-void function sum",
+    "output": null, "input": null
+}

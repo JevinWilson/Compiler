@@ -1,4 +1,8 @@
-    func main(): int {
-        newline( 42 )
-        return 0
-    }
+
+func main() : int {
+    return foo(10,15)
+}
+
+func foo(x: int, y: int) : int {
+    return y-x
+}

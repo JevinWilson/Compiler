@@ -1,8 +1,10 @@
+
+func main() : int {
     var x: int
-    func main() : int {
-        x=68
-        putc(67)
-        newline()
-        putc(x)
-        return 125
-    }
+    x = foo()
+    return x + 1
+}
+
+func foo() : int {
+    return 42
+}

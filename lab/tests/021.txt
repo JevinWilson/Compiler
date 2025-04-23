@@ -1,4 +1,6 @@
-    func main(): int {
-        putv(1,2,3)
-        return 0
+var x: int
+func main(): int {
+    while( x > 10 ){
+        return 1
     }
+}

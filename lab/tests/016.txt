@@ -1,4 +1,3 @@
-    func main(): int {
-        putc()
-        return 0
-    }
+func main(): bool {
+    return 1
+}

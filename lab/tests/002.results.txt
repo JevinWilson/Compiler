@@ -1,1 +1,1 @@
-{"returns": "125", "output": "C\nD"}
+{"returns": 43, "output": null, "input": null}

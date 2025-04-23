@@ -1,1 +1,1 @@
-{"returns": 66, "input": "A"}
+{"returns": "invalid", "output": null, "input": null}

@@ -78,20 +78,41 @@ def main():
 
     alltests.sort()
 
-    #first=pass, second=fail
-    stats = [0,0]
-    GOOD=0
-    BAD=1
 
-    def good(msg):
-        stats[GOOD]+=1
-        print("OK: ",msg)
-    def bad(msg):
-        stats[BAD]+=1
-        print("BAD:",msg)
+    regularPassed=0
+    regularFailed=0
+    bonusPassed=0
+    bonusFailed=0
+    regularTests=0
+    bonusTests=0
+
+    def bonusgood(msg):
+        nonlocal regularPassed,regularFailed,bonusPassed,bonusFailed,regularTests,bonusTests
+        bonusPassed+=1
+        bonusTests += 1
+        print("Test passed as bonus:",msg)
+
+    def bonusbadregulargood(msg1,msg2):
+        nonlocal regularPassed,regularFailed,bonusPassed,bonusFailed,regularTests,bonusTests
+        bonusFailed+=1
+        regularPassed+=1
+        bonusTests+=1
+        regularTests+=1
+        print("Test failed as bonus but passed as non-bonus:",msg1,msg2)
+
+    def regulargood(msg):
+        nonlocal regularPassed,regularFailed,bonusPassed,bonusFailed,regularTests,bonusTests
+        regularPassed+=1
+        regularTests+=1
+        print("Test passed:",msg)
+
+    def regularbad(msg):
+        nonlocal regularPassed,regularFailed,bonusPassed,bonusFailed,regularTests,bonusTests
+        regularTests += 1
+        regularFailed+=1
+        print("Test failed:",msg)
         if not keepgoing:
             sys.exit(1)
-
 
     for dirpath,f in alltests:
 
@@ -107,46 +128,103 @@ def main():
 
         with open(expfile) as fp:
             expected = json.loads(fp.read().strip())
-            try:
-                v = int(expected["returns"])
-                expected["returns"]=v
-            except ValueError:
-                pass
 
-            if type(expected["returns"]) == int:
-                expected["returntype"] = RETURN
-            else:
-                assert expected["returns"] in [INVALID,HANG,CRASH],f"{expected}"
-                expected["returntype"] = expected["returns"]
+
+        #if there's no regular or bonus notation,
+        #test is regular
+        if "regular" not in expected and "bonus" not in expected:
+            expected={ "regular": expected }
+
+
+        try:
+            #some "returns" items were mistakenly stored as strings.
+            v = int(expected["regular"]["returns"])
+            expected["regular"]["returns"]=v
+        except ValueError:
+            pass
+
 
         compilerstatus, exestatus, exereturntype, exestdout, exestderr = run(f"{base}/tests/{f}",expected.get("input"),verbose)
 
+        #we have several possibilities:
+        #   1. This is a test that must be passed. Same results for bonus
+        #       or non-bonus.
+        #       Keys: returns, input, output
+        #   2. This is a test that has one result for bonus and a different one for non-bonus
+        #       Keys: regular, bonus [dictionaries]
+        #           regular & bonus have returns, input, output
+        #   3. This is a test that must be passed for bonus; ignored for non-bonus
+        #       Keys: bonus
 
-        if expected["returns"] == INVALID:
-            if compilerstatus == 0:
-                bad("Compiler accepted invalid input")
+
+        if "regular" in expected and "bonus" not in expected:
+            #this is a "must-pass" test
+            passed,msg = check(compilerstatus, exestatus, exereturntype, exestdout, exestderr,
+                expected["regular"])
+            if passed:
+                regulargood(msg)
             else:
-                good("Compiler rejected invalid input")
-        else:
-            if compilerstatus != 0:
-                bad("Compiler rejected valid input")
+                regularbad(msg)
+        elif "bonus" in expected and "regular" not in expected:
+            passed = check(compilerstatus, exestatus, exereturntype, exestdout, exestderr,
+                expected["bonus"])
+            if passed:
+                bonusgood()
             else:
-                if exereturntype != expected["returntype"]:
-                    bad(f"Bad return type: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expected['returntype'],expected['returns'])}")
+                bonusbad(msg)
+        elif "regular" in expected and "bonus" in expected:
+            #two possible outputs
+            passed = check(compilerstatus, exestatus, exereturntype, exestdout, exestderr,
+                expected["bonus"])
+            if passed:
+                bonusgood(msg)
+            else:
+                passed,msg2 = check(compilerstatus, exestatus, exereturntype, exestdout, exestderr,
+                    expected["regular"])
+                if passed:
+                    bonusbadregulargood(msg,msg2)
                 else:
-                    if expected["returntype"] == RETURN and exestatus != expected["returns"]:
-                        bad(f"Bad return value: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expected['returntype'],expected['returns'])}")
-                    else:
-                        if expected.get("output") and exestdout != expected["output"]:
-                            bad(f"Executable printed incorrect output")
-                        else:
-                            good("OK!")
+                    regularbad(msg2)
+        else:
+            assert 0
+
     #end loop
 
-    print(f"{stats[GOOD]} passed     {stats[BAD]} failed")
-
+    print("Non-bonus:",regularPassed,"passed;",regularFailed,"failed; total=",regularTests)
+    print("Bonus:",bonusPassed,"passed;",bonusFailed,"failed; total=",bonusTests)
 
     return
+
+
+def check( compilerstatus, exestatus, exereturntype, exestdout, exestderr,
+            expected):
+
+    if type(expected["returns"]) == int:
+        expectedreturntype = RETURN
+    else:
+        assert expected["returns"] in [INVALID,HANG,CRASH],f"{expected}"
+        expectedreturntype = expected["returns"]
+
+
+    if expected["returns"] == INVALID:
+        if compilerstatus == 0:
+            return False,"Compiler accepted invalid input"
+        else:
+            return True,"Compiler rejected invalid input"
+    else:
+        if compilerstatus != 0:
+            return False,"Compiler rejected valid input"
+        else:
+            if exereturntype != expectedreturntype:
+                return False, f"Bad return type: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expectedreturntype,expected["returns"])}"
+            else:
+                if expectedreturntype == RETURN and exestatus != expected["returns"]:
+                    return False,f"Bad return value: Executable {past(exereturntype,exestatus)}, but we expected it to {present(expectedreturntype,expected["returns"])}"
+                else:
+                    if expected.get("output") and exestdout != expected["output"]:
+                        return False,f"Executable printed incorrect output"
+                    else:
+                        return True,"OK!"
 
 def run(fname,input,verbose):
     #returns a tuple: compiler status, executable status, exe error

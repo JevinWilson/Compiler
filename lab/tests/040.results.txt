@@ -1,1 +1,3 @@
-{"returns": "126", "output": "111010110111100110100010101"}
+{
+    "regular": {"returns": "invalid", "output": null, "input": null}
+}

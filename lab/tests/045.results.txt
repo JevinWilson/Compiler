@@ -1,0 +1,8 @@
+{
+    "regular": {
+        "returns": "invalid"
+    },
+    "xbonus": {
+        "returns": 100
+    }
+}

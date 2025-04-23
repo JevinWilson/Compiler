@@ -1,4 +1,9 @@
-    func main() : int {
-        putc(65)
-        return 123
-    }
+
+func main() : int {
+    foo()
+    return 50
+}
+
+func foo() : int {
+    return 42
+}

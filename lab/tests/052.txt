@@ -1,0 +1,7 @@
+func main(): int {
+    return 123
+}
+
+func foo(x: int, y: int, z: int, y: int){
+    return
+}

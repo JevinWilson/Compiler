@@ -1,4 +1,16 @@
-    func main() : int {
-        putv(123456789,2)
-        return 126
-    }
+
+func main(): int {
+    var i: int
+    i=0
+    repeat {
+        if( true ){
+            if( true ){
+                if( true ){
+                    return 50
+                    continue
+                }
+            }
+        }
+        return 2
+    } until(false)
+}
