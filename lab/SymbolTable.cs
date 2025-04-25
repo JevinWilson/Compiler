@@ -178,7 +178,7 @@ namespace lab{
                 ),
                 new Label("newline", "builtin function newline")
             );
-
+            
             SymbolTable.declareGlobal(
                 new Token("ID","length",-1),
                 new FunctionNodeType(
@@ -197,7 +197,7 @@ namespace lab{
                     builtin: true
                 ),
                 new Label("print","builtin function print")
-            );  
+            );    
 
         }
     }
