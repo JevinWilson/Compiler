@@ -17,45 +17,54 @@ _start:
 lbl0:      /* main */
     push %rbp  /* value */
     movq %rsp, %rbp    /*  */
-    movq $1, %rax    /*  */
+    /* x */
+    movabs $emptyString, %rax    /* emptyString */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
-    movabs $lbl1, %rax    /* foo */
+    lea -16(%rbp), %rax  /* x */
+    movq 0(%rax), %rbx    /*  */
+    movq 8(%rax), %rax    /*  */
+    push %rax  /* value */
+    push %rbx  /* storage class */
+    movabs $print, %rax    /* builtin function print */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
     add $8, %rsp   /* discard storage class */
     pop %rax  /* value */
-    call *%rax  /* function call at line 2 */ 
-    add $16, %rsp
-    /* Return at line 3 */
-    movq $123, %rax    /*  */
+    movq %rsp, %rcx    /*  */
+    sub $32, %rsp
+    call *%rax  /* function call at line 3 */ 
+    add $48, %rsp
+    /* Return at line 4 */
+    lea -16(%rbp), %rax  /* x */
+    movq 0(%rax), %rbx    /*  */
+    movq 8(%rax), %rax    /*  */
+    push %rax  /* value */
+    push %rbx  /* storage class */
+    movabs $length, %rax    /* builtin function length */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    add $8, %rsp   /* discard storage class */
+    pop %rax  /* value */
+    movq %rsp, %rcx    /*  */
+    sub $32, %rsp
+    call *%rax  /* function call at line 4 */ 
+    add $48, %rsp
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
     pop %rbx  /* storage class */
     pop %rax  /* value */
-    /* Epilogue at line 3 */
-    movq %rbp, %rsp    /*  */
-    /* Popping register %rbp... */
-    pop %rbp  /* value */
-    ret
     /* Epilogue at line 4 */
     movq %rbp, %rsp    /*  */
     /* Popping register %rbp... */
     pop %rbp  /* value */
     ret
-lbl1:      /* foo */
-    push %rbp  /* value */
-    movq %rsp, %rbp    /*  */
-    /* num loc * 16 = 16 */
-    sub $16, %rsp
-    /* Epilogue at line 8 */
+    /* Epilogue at line 5 */
     movq %rbp, %rsp    /*  */
     /* Popping register %rbp... */
     pop %rbp  /* value */
     ret
-    /* Epilogue at line 9 */
-    movq %rbp, %rsp    /*  */
-    /* Popping register %rbp... */
-    pop %rbp  /* value */
-    ret
+.section .rdata
+emptyString:
+    .quad 0  /* length */
 .section .data

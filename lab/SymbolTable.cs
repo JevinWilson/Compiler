@@ -10,6 +10,7 @@ namespace lab{
         public static Stack< List<VarInfo> > shadowed = new();
 
         public static Dictionary<string, VarInfo> table = new();
+        public static List<Tuple<string,NodeType>> localTypes = new();
 
         public static void enterFunctionScope(){ 
             numParameters=0;
@@ -93,6 +94,7 @@ namespace lab{
         }
         public static void declareLocal(Token token, NodeType type){
             string varname = token.lexeme;
+            localTypes.Add( new(varname,type) );    //new from strings 1
             if( table.ContainsKey(varname)){
                 VarInfo vi = table[varname];
                 if( vi.nesting == nesting ){
@@ -176,6 +178,26 @@ namespace lab{
                 ),
                 new Label("newline", "builtin function newline")
             );
+
+            SymbolTable.declareGlobal(
+                new Token("ID","length",-1),
+                new FunctionNodeType(
+                    returnType: NodeType.Int, 
+                    paramTypes: new List<NodeType>(){NodeType.String},
+                    builtin: true
+                ),
+                new Label("length","builtin function length")
+            );     
+
+            SymbolTable.declareGlobal(
+                new Token("ID","print",-1),
+                new FunctionNodeType(
+                    returnType: NodeType.Void, 
+                    paramTypes: new List<NodeType>(){NodeType.String},
+                    builtin: true
+                ),
+                new Label("print","builtin function print")
+            );  
 
         }
     }

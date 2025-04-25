@@ -24,6 +24,9 @@ namespace lab{
         //absolutely definitely positively no doubt about it returns.
          public bool returns=false;
 
+        //only defined for function declaration nodes
+         public List<Tuple<string,NodeType> > locals;
+
         //only meaningful for loop nodes; otherwise they are null
         public Label entry=null;
         public Label exit=null;

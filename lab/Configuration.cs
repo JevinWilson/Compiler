@@ -27,6 +27,8 @@ namespace Configuration{
             "/entry:_start", "/subsystem:console", "/out:out.exe", "{}", "kernel32.lib", "runtime.o"
         };
 
+        public static string readonlyDataSection = ".rdata";
+
 
         /*//Example paths for Linux
 
