@@ -1,7 +1,0 @@
-func main(): int {
-    var i: int
-    i=0
-    repeat {
-        i=i+1
-    } until(true)
-}

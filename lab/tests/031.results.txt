@@ -1,3 +1,0 @@
-{"returns": "invalid", "output": null, "input": null,
-    "reason": "void function bar returns a value"
-}

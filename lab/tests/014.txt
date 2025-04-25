@@ -1,10 +1,5 @@
-func fib(n: int) : int {
-    if( n < 2 ) {
-        return 1
+    func main(): int{
+        var x: string
+        x = "foo"
+        return length(x)
     }
-    return fib(n-1) + fib(n-2)
-}
-
-func main() : int {
-    return fib(10)
-}

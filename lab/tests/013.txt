@@ -1,11 +1,10 @@
-func main() : int {
-    if( isEven(4) ) {
-        return 3
-    } else {
-        return 5
+    func main() : int {
+        var x: string
+        var y: string
+        var z: string
+        x="bar"
+        y="bam"
+        z="boom"
+        print(y)
+        return 128
     }
-}
-
-func isEven(x: int) : int {
-    return (x & 1) == 0;
-}

@@ -1,1 +1,1 @@
-{"returns": 50, "output": null, "input": null}
+{"returns": "123", "output": "Foo"}

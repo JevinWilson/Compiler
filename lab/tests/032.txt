@@ -1,9 +1,0 @@
-var x: int
-func main(): int {
-    bar()
-    return x
-}
-
-func bar() {
-    x=5
-}

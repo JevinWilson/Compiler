@@ -1,8 +1,6 @@
-
-func main() : int {
-    return foo(10)
-}
-
-func foo(x: int) : int {
-    return x+1
-}
+    var x: string
+    func main() : int {
+        x="bam"
+        print(x)
+        return 125
+    }

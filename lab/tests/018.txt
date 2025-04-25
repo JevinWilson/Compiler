@@ -1,2 +1,4 @@
-func main(): int {
-}
+    func main(): int{
+        print=52
+        return 1
+    }

@@ -1,9 +1,0 @@
-func main(): int {
-    foo()
-    return 123
-}
-
-func foo(x: int){
-    var foo: int
-    return
-}

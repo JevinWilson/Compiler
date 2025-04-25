@@ -1,1 +1,1 @@
-{"returns": 43, "output": null, "input": null}
+{"returns": "125", "output": "Foo\n\nBar"}

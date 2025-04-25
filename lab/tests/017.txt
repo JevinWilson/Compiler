@@ -1,3 +1,5 @@
-func main() {
-    return 1
-}
+    func main(): int{
+        var x: string
+        print(x)
+        return length(x)
+    }

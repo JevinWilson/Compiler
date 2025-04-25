@@ -1,3 +1,0 @@
-{"returns": "invalid", "output": null, "input": null,
-    "reason": "no return in non-void function"
-}

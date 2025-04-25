@@ -1,9 +1,0 @@
-
-func main() : int {
-    return bar + bar
-}
-
-
-func bar(): int {
-    return 42
-}

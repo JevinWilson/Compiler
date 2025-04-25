@@ -1,3 +1,0 @@
-{"returns": "invalid", "output": null, "input": null,
-    "reason": "Assigning bool result to integer variable x"
-}

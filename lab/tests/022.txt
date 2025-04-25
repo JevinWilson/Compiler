@@ -1,9 +1,0 @@
-func main(): int {
-    var i: int
-    i=0
-    repeat {
-        return 2
-        break
-        return 3
-    } until(i<10)
-}

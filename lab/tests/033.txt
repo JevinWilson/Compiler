@@ -1,9 +1,0 @@
-func main(): int {
-    var x: int
-    x = bar()
-    return 4
-}
-
-func bar(): bool {
-    return true
-}
