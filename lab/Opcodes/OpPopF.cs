@@ -8,6 +8,10 @@ namespace lab{
             this.sclass=sclass;
         }
 
+        public override bool touchesStack(){
+            return true;
+        }
+
         public override void output(StreamWriter w){
             if( this.sclass == null ){
                 w.WriteLine("    add $8, %rsp   /* discard storage class */");

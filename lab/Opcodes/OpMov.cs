@@ -14,10 +14,13 @@ namespace lab{
         FloatRegister destFloatReg=null;
         bool destIndirect=false;
 
+        string comment = "";
+
         //move immediate (constant) to an int register
-        public OpMov( long src, IntRegister dest){
+        public OpMov( long src, IntRegister dest, string comment=""){
             this.immediate=src;
             this.destIntReg=dest;
+            this.comment=comment;
         }
 
 
@@ -55,14 +58,18 @@ namespace lab{
             this.destIntReg=dest;
         }
 
+        public override bool touchesStack(){
+           return this.destIntReg == Register.rsp;
+        }
+
         //mov constant to register
-        public OpMov( ulong src, IntRegister dest) : this((long)src, dest){}
+        public OpMov( ulong src, IntRegister dest) : this((long)src, dest,""){}
 
         public override void output(StreamWriter w){
             string opcode = "movq";
 
             string src,dest;
-            string comment = "";
+            string comment = this.comment;
             if( srcIndirect ){
                 src = $"{immediate}({srcIntReg})";
             } else {
@@ -73,7 +80,7 @@ namespace lab{
                 } else if( srcLabel != null ) {
                     opcode = "movabs";
                     src = "$"+srcLabel.value;   //want the address the label is pointing to
-                    comment = srcLabel.comment;
+                    comment += " "+srcLabel.comment;
                 }
                 else
                     src = $"${immediate}";

@@ -1,0 +1,12 @@
+func main(): int {
+    var total: int
+    var n: int
+    n=1000000000
+    total = 0
+    while( n > 0 ){
+        total = total + n
+        n = n - 1
+    }
+    putv(total,10)
+    return 0
+}

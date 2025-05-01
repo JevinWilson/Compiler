@@ -212,7 +212,7 @@ namespace lab{
         public void setNodeTypes(){
             this.production?.pspec.setNodeTypes(this);
         }
-        public void generateCode(){
+        public virtual void generateCode(){
             this.production?.pspec.generateCode(this);
         }
 
