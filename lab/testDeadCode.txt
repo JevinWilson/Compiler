@@ -1,0 +1,28 @@
+func main(): int {
+    var total: int
+    var n: int
+    var unused_var: int // Dead 
+
+    n=1000000000
+    total = 0
+
+    if (false) { // Dead 
+        putv(999, 10)
+        unused_var = 10 // dead block
+    }
+
+    unused_var = 5 // Dead 
+    unused_var = 42 // Dead 
+
+    while( n > 0 ){
+        total = total + n
+        n = n - 1
+    }
+    putv(total,10)
+
+    return 0
+
+    // Dead 
+    total = total + 1
+    putv(total, 10)
+}

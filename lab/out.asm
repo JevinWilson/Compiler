@@ -25,6 +25,10 @@ lbl0:      /* main */
     movq $0, %rax    /*  */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
+    /* unused_var */
+    movq $0, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
     lea -32(%rbp), %rax  /* n */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
@@ -49,7 +53,69 @@ lbl0:      /* main */
     pop %rcx  /* value */
     movq %rbx, 0(%rcx)    /*  */
     movq %rax, 8(%rcx)    /*  */
-lbl1:      /* top of while loop at line 6 */
+    movq $0, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    add $8, %rsp   /* discard storage class */
+    pop %rax  /* value */
+    test %rax, %rax
+    jz lbl1  /* end of if starting at line 9 */
+    movq $10, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    movq $999, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    movabs $putv, %rax    /*  builtin function putv */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    add $8, %rsp   /* discard storage class */
+    pop %rax  /* value */
+    movq %rsp, %rcx    /*  */
+    sub $32, %rsp
+    call *%rax   /* function call at line 10 */
+    add $64, %rsp
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    add $16, %rsp
+    lea -48(%rbp), %rax  /* unused_var */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    movq $10, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    pop %rbx  /* storage class */
+    pop %rax  /* value */
+    add $8, %rsp   /* discard storage class */
+    pop %rcx  /* value */
+    movq %rbx, 0(%rcx)    /*  */
+    movq %rax, 8(%rcx)    /*  */
+lbl1:      /* end of if starting at line 9 */
+    lea -48(%rbp), %rax  /* unused_var */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    movq $5, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    pop %rbx  /* storage class */
+    pop %rax  /* value */
+    add $8, %rsp   /* discard storage class */
+    pop %rcx  /* value */
+    movq %rbx, 0(%rcx)    /*  */
+    movq %rax, 8(%rcx)    /*  */
+    lea -48(%rbp), %rax  /* unused_var */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    movq $42, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    pop %rbx  /* storage class */
+    pop %rax  /* value */
+    add $8, %rsp   /* discard storage class */
+    pop %rcx  /* value */
+    movq %rbx, 0(%rcx)    /*  */
+    movq %rax, 8(%rcx)    /*  */
+lbl2:      /* top of while loop at line 17 */
     lea -32(%rbp), %rax  /* n */
     movq 0(%rax), %rbx    /*  */
     movq 8(%rax), %rax    /*  */
@@ -70,7 +136,7 @@ lbl1:      /* top of while loop at line 6 */
     add $8, %rsp   /* discard storage class */
     pop %rax  /* value */
     test %rax, %rax
-    jz lbl2  /* end of while loop at line 6 */
+    jz lbl3  /* end of while loop at line 17 */
     lea -16(%rbp), %rax  /* total */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
@@ -121,8 +187,8 @@ lbl1:      /* top of while loop at line 6 */
     pop %rcx  /* value */
     movq %rbx, 0(%rcx)    /*  */
     movq %rax, 8(%rcx)    /*  */
-    jmp lbl1  /* top of while loop at line 6 */
-lbl2:      /* end of while loop at line 6 */
+    jmp lbl2  /* top of while loop at line 17 */
+lbl3:      /* end of while loop at line 17 */
     movq $10, %rax    /*  */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
@@ -138,23 +204,67 @@ lbl2:      /* end of while loop at line 6 */
     pop %rax  /* value */
     movq %rsp, %rcx    /*  */
     sub $32, %rsp
-    call *%rax   /* function call at line 10 */
+    call *%rax   /* function call at line 21 */
     add $64, %rsp
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
     add $16, %rsp
-    /* Return at line 11 */
+    /* Return at line 23 */
     movq $0, %rax    /*  */
     push %rax  /* value */
     push $0  /* storage class PRIMITIVE*/
     pop %rbx  /* storage class */
     pop %rax  /* value */
-    /* Epilogue at line 11 */
+    /* Epilogue at line 23 */
     movq %rbp, %rsp    /*  */
     /* Popping register %rbp... */
     pop %rbp  /* value */
     ret
-    /* Epilogue at line 12 */
+    lea -16(%rbp), %rax  /* total */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    lea -16(%rbp), %rax  /* total */
+    movq 0(%rax), %rbx    /*  */
+    movq 8(%rax), %rax    /*  */
+    push %rax  /* value */
+    push %rbx  /* storage class */
+    movq $1, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    add $8, %rsp   /* discard storage class */
+    pop %rbx  /* value */
+    add $8, %rsp   /* discard storage class */
+    pop %rax  /* value */
+    add %rbx, %rax
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    pop %rbx  /* storage class */
+    pop %rax  /* value */
+    add $8, %rsp   /* discard storage class */
+    pop %rcx  /* value */
+    movq %rbx, 0(%rcx)    /*  */
+    movq %rax, 8(%rcx)    /*  */
+    movq $10, %rax    /*  */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    lea -16(%rbp), %rax  /* total */
+    movq 0(%rax), %rbx    /*  */
+    movq 8(%rax), %rax    /*  */
+    push %rax  /* value */
+    push %rbx  /* storage class */
+    movabs $putv, %rax    /*  builtin function putv */
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    add $8, %rsp   /* discard storage class */
+    pop %rax  /* value */
+    movq %rsp, %rcx    /*  */
+    sub $32, %rsp
+    call *%rax   /* function call at line 27 */
+    add $64, %rsp
+    push %rax  /* value */
+    push $0  /* storage class PRIMITIVE*/
+    add $16, %rsp
+    /* Epilogue at line 28 */
     movq %rbp, %rsp    /*  */
     /* Popping register %rbp... */
     pop %rbp  /* value */

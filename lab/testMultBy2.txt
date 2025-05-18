@@ -1,0 +1,20 @@
+func main() : int {
+    var x: int
+    var i: int
+    var iterations: int
+    
+    x = 1
+    iterations = 100000000  // iterations
+    
+    i = 0
+    while (i < iterations) {
+        x = x * 2
+        // Reset x if it gets too large to avoid overflow
+        if (x > 1000000) {
+            x = 1
+        }
+        i = i + 1
+    }
+    
+    return x
+}

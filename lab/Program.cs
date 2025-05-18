@@ -24,7 +24,7 @@ public class CompilersAreGreat{
             return;
         }
 
-        bool optimize=true;
+        bool optimize=false;
         string infile;
 
         if( args[0] == "-O" ){
